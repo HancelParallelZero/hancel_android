@@ -16,18 +16,16 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.parallelzero.hancel.Config;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -42,8 +40,8 @@ public class MapTasksFragment extends MapFragment implements OnMapClickListener,
     private static final int 	ANIM_TIME 	= 1600;
     private GoogleMap map;
 
-//    private HashMap<Visit, Marker> hmMarks=new HashMap<Visit, Marker>();
-//    private HashMap<String, String> hmIDs=new HashMap<String, String>();
+    private HashMap<Location, Marker> hmMarks=new HashMap<Location, Marker>();
+    private HashMap<Long, String> hmIDs=new HashMap<Long,String>();
 
 //    private MGPlatformApi platformApi = new MGPlatformApi();
     private Polyline lastPoline;
@@ -71,14 +69,28 @@ public class MapTasksFragment extends MapFragment implements OnMapClickListener,
 
     }
 
-    public void addVisitMark(Location location){
+
+    public void addPoints(List<Location> data) {
+        Iterator<Location> it = data.iterator();
+        while (it.hasNext()){
+            Location point = it.next();
+            if(!hmIDs.containsKey(point.getTime()))addMark(point);
+            else if(DEBUG)Log.d(TAG,"skip add mark");
+        }
+    }
+
+    public void addMark(Location location){
         if(location!=null) {
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(location.getLatitude(),location.getLongitude()))
                     .rotation(location.getBearing())
                     );
+            hmIDs.put(location.getTime(),marker.getId());
+            hmMarks.put(location,marker);
+            if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addMark: "+marker.getId());
+
         }else{
-            if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addVisitMark failed!! SKIP!");
+            if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addMark failed!! SKIP!");
         }
 
     }
@@ -88,7 +100,7 @@ public class MapTasksFragment extends MapFragment implements OnMapClickListener,
 
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
 
-        moveMyLocationButton(mapView);
+//        moveMyLocationButton(mapView);
 
         return mapView;
 

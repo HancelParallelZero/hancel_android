@@ -1,11 +1,13 @@
 package org.parallelzero.hancel;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,16 +30,21 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
+import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
 import org.parallelzero.hancel.services.TrackLocationService;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
@@ -49,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean toggle;
     private TextView _tv_share_url;
     private FloatingActionButton _fab;
+    private MapTasksFragment tasksMap;
 
 
     @Override
@@ -63,6 +71,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fbRef = new Firebase(Config.FIREBASE_MAIN);
 
         loadDataFromIntent();
+
+    }
+
+    private void initMapFragment(){
+
+        tasksMap = new MapTasksFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.content_default, tasksMap, MapTasksFragment.TAG);
+        ft.commitAllowingStateLoss();
+        tasksMap.getMapAsync(this);
 
     }
 
@@ -148,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(DEBUG)Log.d(TAG,"[HOME] EXTERNAL INTENT: PORT: "+uri.getPort());
             if(DEBUG)Log.d(TAG,"[HOME] EXTERNAL INTENT: AUTHORITY: "+uri.getAuthority());
 
-            subscribeLastTrack(getFbRef(), uri.getPath());
-
+            subscribeAllTrack(getFbRef(), uri.getPath());
+            initMapFragment();
         }
 
     }
@@ -182,11 +200,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (DEBUG) Log.d(TAG, "onDataChange:");
                 Map<String, Object> tracks = (Map<String, Object>) dataSnapshot.getValue();
                 if(tracks!=null) {
+                    List<Location> data = new ArrayList<>();
+                    if (DEBUG) Log.d(TAG, "data: "+tracks.toString());
                     Iterator<Object> it = tracks.values().iterator();
                     while (it.hasNext()) {
                         Map<String, Object> track = (Map<String, Object>) it.next();
-                        if (DEBUG) Log.d(TAG, "geo: " +track.get("latitude")+","+track.get("longitude"));
+                        Location loc = new Location("");
+                        loc.setLatitude(Double.parseDouble(track.get("latitude").toString()));
+                        loc.setLongitude(Double.parseDouble(track.get("longitude").toString()));
+                        loc.setAccuracy(Float.parseFloat(track.get("accuracy").toString()));
+                        loc.setBearing(Float.parseFloat(track.get("bearing").toString()));
+                        loc.setTime(Long.parseLong(track.get("time").toString()));
+                        data.add(loc);
+//                        if (DEBUG) Log.d(TAG, "geo: " +track.get("latitude")+","+track.get("longitude"));
                     }
+                    tasksMap.addPoints(data);
                 }
                 else
                     if(DEBUG)Log.w(TAG,"no data");
@@ -198,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        tasksMap.initMap(googleMap);
     }
 
     private class OnFireBaseConnect extends BroadcastReceiver {
@@ -270,7 +303,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
