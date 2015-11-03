@@ -4,12 +4,12 @@ import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.parallelzero.hancel.Config;
+import org.parallelzero.hancel.System.Tools;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/2/15.
@@ -28,22 +29,37 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
 
     public static final String TAG = TrackLocationService.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
+    public static final String FIREBASE_CONNECT = "brodcast_onfirebase_connected";
+    public static final String KEY_TRACKID = "key_trackId";
 
 
     private GoogleApiClient mGoogleApiClient;
     private Location location;
     private LocationRequest locationRequest;
+    private String trackId;
+
+    public Firebase getFbRef() {
+        return fbRef;
+    }
+
     private Firebase fbRef;
 
     @Override
     public void onCreate(){
-//        fbRef = new Firebase(Config.FIREBASE_MAIN);
+        startFireBase();
         startLocationService();
+    }
+
+    private void startFireBase() {
+        Firebase.setAndroidContext(this);
+        fbRef = new Firebase(Config.FIREBASE_MAIN);
+        sendBroadcast(new Intent(FIREBASE_CONNECT));
     }
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
         if(DEBUG) Log.i(TAG, "=== OnStartCommand ");
+        this.trackId = intent.getStringExtra(KEY_TRACKID);
         return Service.START_STICKY;
     }
 
@@ -55,7 +71,10 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     }
 
     public void onDestroy(){
+
         stopLocationService();
+        Firebase fbRef = new Firebase(Config.FIREBASE_MAIN+ "/"+Tools.getAndroidDeviceId(this));
+        fbRef.removeValue();
         if(DEBUG)Log.i(TAG, "=== onDestroy");
     }
 
@@ -66,10 +85,31 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
         }
     }
 
-    private void sendDataFrame() {
-        if(DEBUG)Log.i(TAG, "=== Sending Tracking to server");
+    private void sendDataFrame(Location location) {
 
+        if(DEBUG)Log.i(TAG, "=== Sending Tracking to server");
+        Firebase trackerRef = getFbRef().child(trackId).push();
+        if (DEBUG) Log.d(TAG, "== trackerRef: " + trackerRef);
+        trackerRef.setValue(location, new Firebase.CompletionListener() {
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+
+                if (firebaseError != null) {
+                    if (DEBUG) Log.d(TAG, "=firebaseError: " + firebaseError.toString());
+                    if (DEBUG) Tools.showToast(TrackLocationService.this, firebaseError.toString());
+                } else {
+                    if (DEBUG) Log.d(TAG, "=add track ok!");
+                }
+
+            }
+
+        });
+//        String transactionId = trackerRef.getKey();
     }
+
+
+
 
     private void setupLocationForMap() {
         long fastUpdate = Config.DEFAULT_INTERVAL_FASTER;
@@ -119,7 +159,7 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     public void onLocationChanged(Location location) {
         this.location = location;
         if(DEBUG)Log.i(TAG, "=== onLocationChanged: Latitude: " + this.location.getLatitude() + " Longitude: " + this.location.getLongitude());
-        sendDataFrame();
+        sendDataFrame(location);
     }
 
 

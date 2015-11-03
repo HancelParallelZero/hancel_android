@@ -33,6 +33,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter android:priority="0" >
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data
+					android:host="hancel.firebaseio.com"
+					android:scheme="https" />
+			</intent-filter>
+
         </activity>
 
         <!-- Tracking services -->

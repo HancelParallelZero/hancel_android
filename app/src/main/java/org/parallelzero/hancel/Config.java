@@ -9,6 +9,7 @@ public class Config {
 	public static final boolean DEBUG_SERVICE = true;
 	public static final boolean DEBUG_LOCATION = false;
 	public static final boolean DEBUG_TASKS = true;
+	public static final boolean DEBUG_MAP = true;
 
     // location
  	public static final int     TIME_AFTER_START   = 15;  // Start on x seconds after init Scheduler
@@ -21,4 +22,6 @@ public class Config {
 	public static final int		VIBRATION_TIME_SMS = 2000;
 
 	public static final String FIREBASE_MAIN = "https://hancel.firebaseio.com";
+	public static final String FIREBASE_TRANSACTIONS = "tracks";
+	public static float map_zoom_init = 14;
 }
