@@ -15,8 +15,19 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="com.meridian.itinerary.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.meridian.itinerary.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.meridian.itinerary.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
 
     <application
         android:allowBackup="true"
@@ -30,21 +41,25 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:priority="0" >
-				<action android:name="android.intent.action.VIEW" />
+            <intent-filter android:priority="0">
+                <action android:name="android.intent.action.VIEW" />
 
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-				<data
-					android:host="hancel.firebaseio.com"
-					android:scheme="https" />
-			</intent-filter>
+                <data
+                    android:host="hancel.firebaseio.com"
+                    android:scheme="https" />
+            </intent-filter>
+
 
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/key_debug" />
 
         <!-- Tracking services -->
         <service android:name=".services.TrackLocationService" />
