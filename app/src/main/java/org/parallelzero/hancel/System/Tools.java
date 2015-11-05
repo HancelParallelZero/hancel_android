@@ -23,6 +23,9 @@ import android.widget.Toast;
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +49,6 @@ public class Tools {
     public static String getAndroidDeviceId(Context ctx){
     	return Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
-
 
 	public static void hideKeyboard(Activity act) {
 		act.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -88,7 +90,6 @@ public class Tools {
 	    return matcher.matches();
 
 	}
-
 
     public static int getVersionCode(Context ctx){
         try {
@@ -188,5 +189,12 @@ public class Tools {
         sendIntent.setType("text/plain");
         ctx.startActivity(Intent.createChooser(sendIntent, ctx.getResources().getText(R.string.send_to)));
     }
+
+
+    public static String getDateFormatTrack(Calendar cal) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MMM-yyyy hh:mm aa", Locale.getDefault());
+        return sdf.format(cal.getTime());
+    }
+
 
 }

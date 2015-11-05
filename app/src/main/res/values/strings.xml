@@ -1,4 +1,4 @@
-<resources>
+ <resources>
     <string name="app_name">Hancel</string>
     <string name="key_debug" translatable="false">AIzaSyDvdxR50ECGFT6q2hUxa76PeV9RCYHcHtE</string>
 
@@ -7,4 +7,13 @@
 
     <string name="action_settings">Settings</string>
     <string name="send_to">Compartir con:</string>
+
+    <!-- Hardware button alarm service -->
+     <string name="no_panic_alerts">Sin alertas</string>
+     <string name="panic_alert_sent">Alerta enviada</string>
+     <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
+     <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
+     <string name="no_configured_rings">No se encontraron anillos configurados</string>
+     <string name="map_provider">http://maps.google.com/?q=</string>
+
 </resources>

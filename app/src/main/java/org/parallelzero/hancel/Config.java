@@ -11,6 +11,9 @@ public class Config {
 	public static final boolean DEBUG_TASKS = true;
 	public static final boolean DEBUG_MAP = true;
 
+	//Alert Button
+	public static final int RESTART_HARDWARE_BUTTON_TIME = 5000;
+
     // location
  	public static final int     TIME_AFTER_START   = 15;  // Start on x seconds after init Scheduler
 	public static final long    DEFAULT_INTERVAL   = 1000 * 60 * 3;  // Default interval for background service: 3 minutes
@@ -19,7 +22,7 @@ public class Config {
 	public static final long    LOCATION_ROUTE_INTERVAL = 1000 * 60;
 	public static final long    LOCATION_MAP_INTERVAL = 1000 * 120;
 
-	public static final int		VIBRATION_TIME_SMS = 2000;
+	public static final int		VIBRATION_TIME_SMS = 1000;
 
 	public static final String FIREBASE_MAIN = "https://hancel.firebaseio.com";
 	public static final String FIREBASE_TRANSACTIONS = "tracks";
