@@ -10,7 +10,9 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -18,6 +20,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
+import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     private Firebase fbRef;
     private OnFireBaseConnect fbConnectReceiver;
+    private boolean toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         Firebase.setAndroidContext(this);
         fbRef = new Firebase(Config.FIREBASE_MAIN);
 
+        fabHide();
         setContactListener(this);
 
         loadDataFromIntent();
@@ -60,6 +65,27 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         tasksMap.getMapAsync(this);
 
     }
+
+
+    private View.OnClickListener onFabLocationService = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(!toggle){
+                toggle=true;
+                Snackbar.make(view, "StartLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                String trackId = Tools.getAndroidDeviceId(MainActivity.this);
+                String share_text=Config.FIREBASE_MAIN+"/"+trackId;
+                Tools.shareText(MainActivity.this,share_text);
+                startTrackLocationService(trackId);
+
+            }else{
+                toggle=false;
+                Snackbar.make(view, "StopLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                stopTrackLocationService();
+            }
+        }
+    };
+
 
     private void loadDataFromIntent() {
 

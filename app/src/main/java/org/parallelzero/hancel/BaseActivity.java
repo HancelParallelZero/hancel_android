@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -52,7 +53,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     private Uri uriContact;
     private String contactID;     // contacts unique ID
 
-    private TextView _tv_share_url;
     private FloatingActionButton _fab;
     public MapTasksFragment tasksMap;
     private boolean toggle;
@@ -65,7 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         setSupportActionBar(toolbar);
 
         _fab = (FloatingActionButton) findViewById(R.id.fab);
-        _fab.setOnClickListener(onButtonActionListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -75,32 +74,25 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        _tv_share_url=(TextView)findViewById(R.id.tv_share_url);
     }
 
-    private View.OnClickListener onButtonActionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(!toggle){
-                toggle=true;
-                Snackbar.make(view, "StartLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                String trackId = Tools.getAndroidDeviceId(BaseActivity.this);
-                String share_text=Config.FIREBASE_MAIN+"/"+trackId;
-                _tv_share_url.setText(share_text);
-                Tools.shareText(BaseActivity.this,share_text);
-                startTrackLocationService(trackId);
+    public void fabHide(){
+        _fab.setVisibility(View.GONE);
+    }
 
-            }else{
-                toggle=false;
-                Snackbar.make(view, "StopLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                _tv_share_url.setText("");
-                stopTrackLocationService();
-            }
-        }
-    };
+    public void fabShow(){
+        _fab.setVisibility(View.VISIBLE);
+    }
 
+    public void fabSetIcon(){
+        _fab.setVisibility(View.VISIBLE);
+    }
 
-    private void startTrackLocationService(String trackId){
+    public void fabSetOnClickListener(OnClickListener onButtonActionListener){
+        _fab.setOnClickListener(onButtonActionListener);
+    }
+
+    public void startTrackLocationService(String trackId){
         if(DEBUG) Log.d(TAG, "[MainActivity] startMainService");
         Intent service = new Intent(this, TrackLocationService.class);
         service.putExtra(TrackLocationService.KEY_TRACKID,trackId);
@@ -108,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
     }
 
-    private void stopTrackLocationService() {
+    public void stopTrackLocationService() {
         if(DEBUG)Log.d(TAG,"[MainActivity] stopTrackLocationService");
         StatusScheduleReceiver.stopSheduleService(this);
         stopService(new Intent(this, TrackLocationService.class));
