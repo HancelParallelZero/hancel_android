@@ -145,6 +145,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     public void onPickerContact(String name, String number, Bitmap photo) {
 
         if(DEBUG)Log.d(TAG, "Contact Name: " + name);
+        if(DEBUG)Log.d(TAG, "Contact Phone Number: " + number);
 
     }
 

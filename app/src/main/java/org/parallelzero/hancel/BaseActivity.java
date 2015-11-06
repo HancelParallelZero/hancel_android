@@ -259,9 +259,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         }
 
         cursorPhone.close();
-
-        if(DEBUG)Log.d(TAG, "Contact Phone Number: " + number);
-
         return number;
 
     }
