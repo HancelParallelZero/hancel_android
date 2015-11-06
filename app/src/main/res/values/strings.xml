@@ -9,7 +9,7 @@
     <string name="send_to">Compartir con:</string>
 
     <!-- Hardware button alarm service -->
-     <string name="no_panic_alerts">Sin alertas</string>
+     <string name="no_panic_alert">Sin alertas</string>
      <string name="panic_alert_sent">Alerta enviada</string>
      <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
      <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
