@@ -16,4 +16,11 @@
      <string name="no_configured_rings">No se encontraron anillos configurados</string>
      <string name="map_provider">http://maps.google.com/?q=</string>
 
+     <!-- Main Layout -->
+     <string name="button_rings">Anillos</string>
+     <string name="button_about">Acerca de</string>
+     <string name="button_history">Historia</string>
+     <string name="button_help">Ayuda</string> <!-- nuevo -->
+     <string name="button_home">Inicio</string> <!-- nuevo -->
+
 </resources>
