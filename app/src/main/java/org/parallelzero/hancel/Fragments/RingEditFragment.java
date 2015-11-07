@@ -19,6 +19,15 @@ public class RingEditFragment extends DialogFragment {
     private Button _bt_picker;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        int style = DialogFragment.STYLE_NORMAL;
+        setStyle(style,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ring_edit, container, false);
 
