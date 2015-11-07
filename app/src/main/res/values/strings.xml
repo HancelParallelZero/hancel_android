@@ -21,6 +21,8 @@
      <string name="button_about">Acerca de</string>
      <string name="button_history">Historia</string>
      <string name="button_help">Ayuda</string> <!-- nuevo -->
-     <string name="button_home">Inicio</string> <!-- nuevo -->
+     <string name="button_home">Inicio</string>
+     <string name="msg_rings_empty">No has configurado anillos</string>
+     <!-- nuevo -->
 
 </resources>

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.models.Ring;
-import org.parallelzero.hancel.view.ListCharactersAdapter.RingViewHolder;
+import org.parallelzero.hancel.view.ListRingsAdapter.RingViewHolder;
 
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Antonio Vanegas @hpsaturn on 10/20/15.
  */
 
-public class ListCharactersAdapter extends RecyclerView.Adapter<RingViewHolder> implements ItemTouchHelperAdapter {
+public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> implements ItemTouchHelperAdapter {
 
     private AdapterView.OnItemClickListener mOnItemClickListener;
     private Context ctx;
@@ -101,17 +101,17 @@ public class ListCharactersAdapter extends RecyclerView.Adapter<RingViewHolder> 
         notifyItemRemoved(position);
     }
 
-    public List<Ring> getCharacters() {
+    public List<Ring> getRings() {
         return rings;
     }
 
     public class RingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         protected final TextView character_name;
-        private final ListCharactersAdapter mAdapter;
+        private final ListRingsAdapter mAdapter;
 
 
-        public RingViewHolder(View itemView, ListCharactersAdapter adapter) {
+        public RingViewHolder(View itemView, ListRingsAdapter adapter) {
             super(itemView);
             itemView.setOnClickListener(this);
             this.mAdapter = adapter;

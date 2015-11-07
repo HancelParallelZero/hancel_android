@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
+import org.parallelzero.hancel.Fragments.RingsFragment;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.services.TrackLocationService;
 
@@ -37,6 +37,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private Firebase fbRef;
     private OnFireBaseConnect fbConnectReceiver;
     private boolean toggle;
+
+    private RingsFragment mRingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         public void onClick(View view) {
             if(!toggle){
                 toggle=true;
-                Snackbar.make(view, "StartLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                showSnackLong("StartLocationService");
                 String trackId = Tools.getAndroidDeviceId(MainActivity.this);
                 String share_text=Config.FIREBASE_MAIN+"/"+trackId;
                 Tools.shareText(MainActivity.this,share_text);
@@ -80,7 +82,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
             }else{
                 toggle=false;
-                Snackbar.make(view, "StopLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                showSnackLong("StopLocationService");
                 stopTrackLocationService();
             }
         }
@@ -173,6 +175,12 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if(DEBUG)Log.d(TAG, "Contact Name: " + name);
         if(DEBUG)Log.d(TAG, "Contact Phone Number: " + number);
 
+    }
+
+    @Override
+    void showRings() {
+        mRingsFragment = new RingsFragment();
+        showFragment(mRingsFragment,RingsFragment.TAG,true);
     }
 
     private class OnFireBaseConnect extends BroadcastReceiver {

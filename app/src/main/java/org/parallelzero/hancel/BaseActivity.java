@@ -14,6 +14,9 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -77,6 +80,54 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+
+    public void showFragment(Fragment fragment, String fragmentTag, boolean toStack){
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_default, fragment, fragmentTag);
+        if(toStack)ft.addToBackStack(fragmentTag);
+        ft.commitAllowingStateLoss();
+
+    }
+
+    public void showFragmentFull(Fragment fragment, String fragmentTag, boolean toStack){
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_default, fragment, fragmentTag);
+        if(toStack)ft.addToBackStack(fragmentTag);
+        ft.commitAllowingStateLoss();
+
+    }
+
+    public void popBackStackSecure(String TAG){
+        try {
+            if(DEBUG) Log.d(TAG, "popBackStackSecure to: "+TAG);
+            getFragmentManager().popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void popBackLastFragment(){
+        if (getFragmentManager().getBackStackEntryCount() != 0) {
+            if(DEBUG) Log.d(TAG, "onBackPressed popBackStack for:" + getLastFragmentName());
+            getFragmentManager().popBackStack();
+        }
+    }
+
+
+    public void removeFragment(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.remove(fragment);
+    }
+
+    public String getLastFragmentName(){
+        if (getFragmentManager().getBackStackEntryCount() == 0) return "";
+        FragmentManager fm = getSupportFragmentManager();
+        return fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+    }
+
     public void fabHide(){
         _fab.setVisibility(View.GONE);
     }
@@ -85,12 +136,20 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         _fab.setVisibility(View.VISIBLE);
     }
 
-    public void fabSetIcon(){
-        _fab.setVisibility(View.VISIBLE);
+    public void fabSetIcon(int resourse){
+        _fab.setImageResource(resourse);
     }
 
     public void fabSetOnClickListener(OnClickListener onButtonActionListener){
         _fab.setOnClickListener(onButtonActionListener);
+    }
+
+    public void showSnackLong(String msg){
+        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    public void showSnackLong(int msg){
+        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void startTrackLocationService(String trackId){
@@ -181,7 +240,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         int id = item.getItemId();
 
         if (id == R.id.nav_rings) {
-            // Handle the camera action
+
+            showRings();
+
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_about) {
@@ -194,6 +255,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    abstract void showRings();
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
