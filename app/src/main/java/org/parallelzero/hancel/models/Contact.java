@@ -13,4 +13,22 @@ public class Contact {
 
     public Bitmap photo;
 
+    public Contact(String name, String phone, Bitmap photo) {
+        this.name=name;
+        this.phone=phone;
+        this.photo=photo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "name: "+name+" phone:"+phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 }

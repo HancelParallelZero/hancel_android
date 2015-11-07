@@ -23,6 +23,7 @@ import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.Fragments.RingEditFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
 import org.parallelzero.hancel.System.Tools;
+import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.util.ArrayList;
@@ -129,7 +130,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (DEBUG) Log.d(TAG, "onDataChange: " + child.getValue());
-
                 }
             }
 
@@ -176,10 +176,12 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     @Override
-    public void onPickerContact(String name, String number, Bitmap photo) {
+    public void onPickerContact(String name, String phone, Bitmap photo) {
 
         if(DEBUG)Log.d(TAG, "Contact Name: " + name);
-        if(DEBUG)Log.d(TAG, "Contact Phone Number: " + number);
+        if(DEBUG)Log.d(TAG, "Contact Phone Number: " + phone);
+
+       if(mRingEditFragment!=null)mRingEditFragment.addConctact(new Contact(name,phone,photo));
 
     }
 

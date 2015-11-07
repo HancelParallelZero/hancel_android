@@ -48,13 +48,13 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_characters"
+        android:id="@+id/rv_contacts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rl_rings_header"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_ring_edit_header"
         android:layout_marginTop="10dp"
         android:elevation="5dp"
         android:gravity="center"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>

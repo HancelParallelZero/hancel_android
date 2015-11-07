@@ -9,9 +9,8 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.models.Ring;
-import org.parallelzero.hancel.view.ListRingsAdapter.RingViewHolder;
-
+import org.parallelzero.hancel.models.Contact;
+import org.parallelzero.hancel.view.ListContactsAdapter.ContactViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,58 +20,59 @@ import java.util.List;
  * Created by Antonio Vanegas @hpsaturn on 10/20/15.
  */
 
-public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> implements ItemTouchHelperAdapter {
+public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> implements ItemTouchHelperAdapter {
 
     private AdapterView.OnItemClickListener mOnItemClickListener;
     private Context ctx;
-    private ArrayList<Ring> rings = new ArrayList<>();
+    private ArrayList<Contact> contacts = new ArrayList<>();
 
     @Override
-    public RingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View rowView = inflater.inflate(R.layout.fragment_rings_item, parent, false);
+        View rowView = inflater.inflate(R.layout.fragment_ring_contact_item, parent, false);
         this.ctx = parent.getContext();
-        return new RingViewHolder(rowView, this);
+        return new ContactViewHolder(rowView, this);
     }
 
     @Override
-    public void onBindViewHolder(RingViewHolder holder, int position) {
-        final Ring ring = rings.get(position);
-        holder.character_name.setText(ring.getName());
+    public void onBindViewHolder(ContactViewHolder holder, int position) {
+        final Contact contact = contacts.get(position);
+        holder.contact_name.setText(contact.getName());
+        holder.contact_phone.setText(contact.getPhone());
     }
 
     @Override
     public int getItemCount() {
-        return rings.size();
+        return contacts.size();
     }
 
-    public void updateData(ArrayList<Ring> rings) {
-        this.rings = rings;
+    public void updateData(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
         notifyDataSetChanged();
     }
 
-    public void addItem(int position, Ring ring) {
-        if (position > rings.size()) return;
-        rings.add(position, ring);
+    public void addItem(int position, Contact contact) {
+        if (position > contacts.size()) return;
+        contacts.add(position, contact);
         notifyItemInserted(position);
     }
 
     public void removeItem(int position) {
-        if (position >= rings.size()) return;
-        rings.remove(position);
+        if (position >= contacts.size()) return;
+        contacts.remove(position);
         notifyItemRemoved(position);
     }
 
-    public Ring getItem(int position) {
-        return rings.get(position);
+    public Contact getItem(int position) {
+        return contacts.get(position);
     }
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void onItemHolderClick(RingViewHolder itemHolder) {
+    public void onItemHolderClick(ContactViewHolder itemHolder) {
 
         if (mOnItemClickListener != null) {
             mOnItemClickListener.onItemClick(
@@ -85,11 +85,11 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
     public void onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(rings, i, i + 1);
+                Collections.swap(contacts, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(rings, i, i - 1);
+                Collections.swap(contacts, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -97,25 +97,28 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
 
     @Override
     public void onItemDismiss(int position) {
-        rings.remove(position);
+        contacts.remove(position);
         notifyItemRemoved(position);
     }
 
-    public List<Ring> getRings() {
-        return rings;
+    public List<Contact> getContacts() {
+        return contacts;
     }
 
-    public class RingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        protected final TextView character_name;
-        private final ListRingsAdapter mAdapter;
+        protected final TextView contact_name;
+        protected final TextView contact_phone;
+
+        private final ListContactsAdapter mAdapter;
 
 
-        public RingViewHolder(View itemView, ListRingsAdapter adapter) {
+        public ContactViewHolder(View itemView, ListContactsAdapter adapter) {
             super(itemView);
             itemView.setOnClickListener(this);
             this.mAdapter = adapter;
-            character_name = (TextView) itemView.findViewById(R.id.tv_contact_name);
+            contact_name = (TextView) itemView.findViewById(R.id.tv_contact_name);
+            contact_phone = (TextView) itemView.findViewById(R.id.tv_contact_phone);
         }
 
         @Override
