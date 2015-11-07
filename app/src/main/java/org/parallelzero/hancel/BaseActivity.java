@@ -257,6 +257,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     }
 
     abstract void showRings();
+    abstract void showMain();
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

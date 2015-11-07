@@ -18,6 +18,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.Fragments.RingEditFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
@@ -41,6 +42,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     private RingsFragment mRingsFragment;
     private RingEditFragment mRingEditFragment;
+    private MainFragment mMainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         setContentView(R.layout.activity_main);
 
         initDrawer();
+        showMain();
+
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
 
         Firebase.setAndroidContext(this);
@@ -183,6 +187,12 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     void showRings() {
         if(mRingsFragment==null) mRingsFragment = new RingsFragment();
         showFragment(mRingsFragment, RingsFragment.TAG, true);
+    }
+
+    @Override
+    void showMain() {
+        if(mMainFragment==null) mMainFragment = new MainFragment();
+        showFragment(mMainFragment, MainFragment.TAG, false);
     }
 
     public void showRingEditFragment() {
