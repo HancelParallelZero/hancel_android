@@ -9,6 +9,13 @@
     android:background="@color/mainBackground"
     tools:showIn="@layout/app_bar_main">
 
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/bt_home_main_alert"/>
+
     <FrameLayout
         android:id="@+id/content_default"
         android:layout_width="match_parent"
