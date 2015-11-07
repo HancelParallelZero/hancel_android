@@ -48,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
 
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     public static final int PERMISSIONS_REQUEST_COARSE_LOCATION = 1;
+    private static final int PERMISSIONS_READ_CONTACTS = 2;
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
@@ -123,10 +124,16 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if(DEBUG)Log.d(TAG,"PERMISSIONS_REQUEST_FINE_LOCATION PERMISSION_GRANTED");
                     loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,PERMISSIONS_REQUEST_COARSE_LOCATION);
+                    loadPermissions(Manifest.permission.READ_CONTACTS,PERMISSIONS_READ_CONTACTS);
                 }
                 return;
             }
             case PERMISSIONS_REQUEST_COARSE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+            }
+            case PERMISSIONS_READ_CONTACTS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 }
@@ -180,16 +187,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_history) {
-
-        } else if (id == R.id.nav_history) {
-
-        }/*else if (id == R.id.nav_share) {
-
             getContact();
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
