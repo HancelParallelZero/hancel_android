@@ -40,6 +40,7 @@ public class RingsFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(DEBUG) Log.d(TAG, "onRingAddClickListener");
+            getMain().showRingEditFragment();
         }
     };
 

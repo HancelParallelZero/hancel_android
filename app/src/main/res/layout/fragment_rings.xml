@@ -2,16 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/rl_rings_header"
         android:layout_width="fill_parent"
         android:layout_height="160dp"
         android:background="@color/mainBackground"
-        android:elevation="10dp"
-        >
+        android:elevation="10dp">
+
+        <ImageView
+            android:id="@+id/iv_ring_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_ring_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center_horizontal"
+            android:layout_toRightOf="@+id/iv_ring_logo"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:lines="3"
+            android:text="@string/msg_ring_help"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

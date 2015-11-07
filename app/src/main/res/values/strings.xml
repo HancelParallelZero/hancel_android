@@ -22,7 +22,11 @@
      <string name="button_history">Historia</string>
      <string name="button_help">Ayuda</string> <!-- nuevo -->
      <string name="button_home">Inicio</string>
-     <string name="msg_rings_empty">No has configurado anillos</string>
+     <string name="msg_rings_empty">Adiciona un Anillo</string>
+     <string name="hint_ring_name">Nombre del anillo</string>
+     <string name="ring_pick_contact">Adicionar Contacto</string>
+     <string name="msg_ring_contacts_empty">Adiciona Contactos</string>
+     <string name="msg_ring_help">Crea anillos con contactos de confianza, seran notificados en el momento de una alerta.</string>
      <!-- nuevo -->
 
 </resources>
