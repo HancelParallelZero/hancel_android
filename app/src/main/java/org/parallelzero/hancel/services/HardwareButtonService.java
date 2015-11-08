@@ -1,12 +1,10 @@
 package org.parallelzero.hancel.services;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
@@ -18,7 +16,6 @@ import android.os.ResultReceiver;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,12 +25,11 @@ import com.google.android.gms.location.LocationServices;
 
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.System.HancelPreferences;
+import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Timer;
 
 /**
@@ -320,7 +316,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
             if (result.equalsIgnoreCase("OK")) {
                 String currentDateandTime = Tools.getDateFormatTrack(Calendar.getInstance());
-                HancelPreferences.setLastPanicAlertDate(getApplicationContext(),
+                Storage.setLastPanicAlertDate(getApplicationContext(),
                         currentDateandTime);
                 Tools.showToast(getApplicationContext(), getString(
                         R.string.panic_alert_sent));

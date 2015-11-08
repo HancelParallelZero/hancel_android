@@ -10,7 +10,7 @@ import org.parallelzero.hancel.R;
 /**
  * Created by izel on 4/11/15.
  */
-public class HancelPreferences {
+public class Storage {
 
     public static final String PREF_GENERAL_PANIC_ALERT = "lastPanic";
 
