@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
+import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
+import org.parallelzero.hancel.models.Ring;
 import org.parallelzero.hancel.view.ItemTouchHelperAdapter;
 import org.parallelzero.hancel.view.ListContactsAdapter;
 
@@ -32,10 +35,13 @@ public class RingEditFragment extends DialogFragment {
     private static final boolean DEBUG = Config.DEBUG;
 
     private Button mButtonPicker;
+    private Button mButtonSave;
 
     private ListContactsAdapter mContactsAdapter;
     private RecyclerView mContactsRecycler;
     private TextView mEmptyMessage;
+    private EditText mEditRingName;
+    private String name;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +56,13 @@ public class RingEditFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ring_edit, container, false);
 
-
+        mEditRingName = (EditText)view.findViewById(R.id.et_ring_edit_name);
         mEmptyMessage = (TextView)view.findViewById(R.id.tv_ring_contacts_empty);
         mButtonPicker = (Button)view.findViewById(R.id.bt_ring_edit_pick_contact);
+        mButtonSave   = (Button)view.findViewById(R.id.bt_ring_edit_save);
         mContactsRecycler= (RecyclerView) view.findViewById(R.id.rv_contacts);
         mButtonPicker.setOnClickListener(onPickerContactListener);
+        mButtonSave.setOnClickListener(onSaveButtonListener);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mContactsRecycler.setLayoutManager(gridLayoutManager);
@@ -130,6 +138,29 @@ public class RingEditFragment extends DialogFragment {
         super.onDestroy();
     }
 
+
+    private boolean isValidData() {
+
+        name = mEditRingName.getText().toString();
+        if(name.length()==0){
+            Tools.showToast(getActivity(),R.string.error_ring_empty_name);
+            return false;
+        }
+        else if (mContactsAdapter.getItemCount()==0){
+            Tools.showToast(getActivity(),R.string.error_ring_empty_contacts);
+            return false;
+        }
+        return true;
+    }
+
+    private Ring saveData() {
+        Ring ring = new Ring();
+        ring.setName(name);
+        ring.setContacts(mContactsAdapter.getContacts());
+        ring.setDescription(""+mContactsAdapter.getItemCount()+" "+getString(R.string.ring_desc_contacts));
+        return ring;
+    }
+
     private OnItemClickListener onItemClickListener = new OnItemClickListener() {
 
         @Override
@@ -142,6 +173,17 @@ public class RingEditFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             getMain().getContact();
+        }
+    };
+
+    private View.OnClickListener onSaveButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(isValidData()){
+                if(DEBUG)Log.d(TAG,"saving ring..");
+                getMain().getRingsFragment().addRing(saveData());
+                getDialog().dismiss();
+            }
         }
     };
 

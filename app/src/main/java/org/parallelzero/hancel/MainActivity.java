@@ -181,7 +181,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if(DEBUG)Log.d(TAG, "Contact Name: " + name);
         if(DEBUG)Log.d(TAG, "Contact Phone Number: " + phone);
 
-       if(mRingEditFragment!=null)mRingEditFragment.addConctact(new Contact(name,phone,photo));
+       if(mRingEditFragment!=null)mRingEditFragment.addConctact(new Contact(name, phone, photo));
 
     }
 
@@ -204,6 +204,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         ft.add(mRingEditFragment, RingEditFragment.TAG);
         ft.show(mRingEditFragment);
         ft.commitAllowingStateLoss();
+    }
+
+    public RingsFragment getRingsFragment() {
+        return mRingsFragment;
     }
 
     private class OnFireBaseConnect extends BroadcastReceiver {

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
+import org.parallelzero.hancel.models.Ring;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/5/15.
@@ -31,6 +32,10 @@ public class RingsFragment extends Fragment {
         return view;
     }
 
+    public void addRing(Ring ring) {
+
+    }
+
     private MainActivity getMain() {
         return ((MainActivity)getActivity());
     }
@@ -49,4 +54,6 @@ public class RingsFragment extends Fragment {
         getMain().fabHide();
         super.onDestroy();
     }
+
+
 }
