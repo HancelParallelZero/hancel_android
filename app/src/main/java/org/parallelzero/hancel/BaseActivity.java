@@ -257,6 +257,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         return true;
     }
 
+    public void drawerUnSelectAll(){
+
+    }
+
     abstract void showRings();
 
     abstract void showMain();

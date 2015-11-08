@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     @Override
     void showRings() {
         if(mRingsFragment==null) mRingsFragment = new RingsFragment();
-        showFragment(mRingsFragment, RingsFragment.TAG, true);
+        if(!mRingsFragment.isVisible())showFragment(mRingsFragment, RingsFragment.TAG, true);
     }
 
     @Override
