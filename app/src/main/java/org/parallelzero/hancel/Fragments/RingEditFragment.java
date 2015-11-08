@@ -124,6 +124,12 @@ public class RingEditFragment extends DialogFragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        if(DEBUG)Log.d(TAG,"onDestroy");
+        super.onDestroy();
+    }
+
     private OnItemClickListener onItemClickListener = new OnItemClickListener() {
 
         @Override

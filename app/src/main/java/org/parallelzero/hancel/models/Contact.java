@@ -31,4 +31,8 @@ public class Contact {
     public String getPhone() {
         return phone;
     }
+
+    public Bitmap getPhoto() {
+        return photo;
+    }
 }

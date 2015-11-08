@@ -40,6 +40,7 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
         final Contact contact = contacts.get(position);
         holder.contact_name.setText(contact.getName());
         holder.contact_phone.setText(contact.getPhone());
+//        holder.contact_photo.setImageBitmap(contact.getPhoto());
     }
 
     @Override
@@ -109,6 +110,7 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
 
         protected final TextView contact_name;
         protected final TextView contact_phone;
+//        protected final ImageView contact_photo;
 
         private final ListContactsAdapter mAdapter;
 
@@ -119,6 +121,7 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
             this.mAdapter = adapter;
             contact_name = (TextView) itemView.findViewById(R.id.tv_contact_name);
             contact_phone = (TextView) itemView.findViewById(R.id.tv_contact_phone);
+//            contact_photo = (ImageView) itemView.findViewById(R.id.iv_contact_icon);
         }
 
         @Override
