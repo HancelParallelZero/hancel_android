@@ -48,7 +48,7 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
         return contacts.size();
     }
 
-    public void updateData(ArrayList<Contact> contacts) {
+    public void loadData (ArrayList<Contact> contacts) {
         this.contacts = contacts;
         notifyDataSetChanged();
     }

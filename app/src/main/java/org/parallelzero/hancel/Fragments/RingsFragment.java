@@ -16,6 +16,7 @@ import android.widget.TextView;
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
+import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.models.Ring;
 import org.parallelzero.hancel.view.ItemTouchHelperAdapter;
 import org.parallelzero.hancel.view.ListRingsAdapter;
@@ -48,22 +49,35 @@ public class RingsFragment extends Fragment {
 
         mRingsAdapter= new ListRingsAdapter();
         mRingsAdapter.setOnItemClickListener(onItemClickListener);
+        mRingsAdapter.loadData(Storage.getRings(getActivity()));
         mRingsRecycler.setAdapter(mRingsAdapter);
 
         ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mRingsAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mRingsRecycler);
 
+        refreshUI();
 
         return view;
     }
 
     public void addRing(Ring ring) {
 
-        if(DEBUG)Log.d(TAG,"addRing: "+ring.toString());
-        mEmptyMessage.setVisibility(View.GONE);
-        mRingsRecycler.setVisibility(View.VISIBLE);
-        mRingsAdapter.addItem(0,ring);
+        if(DEBUG)Log.d(TAG, "addRing: " + ring.toString());
+        mRingsAdapter.addItem(0, ring);
+        Storage.saveRing(getActivity(),ring);
+        refreshUI();
+
+    }
+
+    private void refreshUI(){
+        if(mRingsAdapter.getItemCount()>0){
+            mEmptyMessage.setVisibility(View.GONE);
+            mRingsRecycler.setVisibility(View.VISIBLE);
+        }else{
+            mRingsRecycler.setVisibility(View.GONE);
+            mEmptyMessage.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -103,8 +117,9 @@ public class RingsFragment extends Fragment {
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            Storage.removeRing(getActivity(),mRingsAdapter.getItem(viewHolder.getAdapterPosition()));
             mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
-//            getMain().getCharactersFragment().notifyPlayersChange();
+            refreshUI();
         }
 
     }

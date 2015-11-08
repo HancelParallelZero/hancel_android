@@ -48,7 +48,7 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
         return rings.size();
     }
 
-    public void updateData(ArrayList<Ring> rings) {
+    public void loadData(ArrayList<Ring> rings) {
         this.rings = rings;
         notifyDataSetChanged();
     }
