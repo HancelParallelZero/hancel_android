@@ -39,7 +39,8 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
     @Override
     public void onBindViewHolder(RingViewHolder holder, int position) {
         final Ring ring = rings.get(position);
-        holder.character_name.setText(ring.getName());
+        holder.ring_name.setText(ring.getName());
+        holder.ring_description.setText(ring.getDescription());
     }
 
     @Override
@@ -107,7 +108,8 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
 
     public class RingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        protected final TextView character_name;
+        protected final TextView ring_name;
+        protected final TextView ring_description;
         private final ListRingsAdapter mAdapter;
 
 
@@ -115,7 +117,8 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
             super(itemView);
             itemView.setOnClickListener(this);
             this.mAdapter = adapter;
-            character_name = (TextView) itemView.findViewById(R.id.tv_contact_name);
+            ring_name = (TextView) itemView.findViewById(R.id.tv_ring_name);
+            ring_description = (TextView) itemView.findViewById(R.id.tv_ring_description);
         }
 
         @Override

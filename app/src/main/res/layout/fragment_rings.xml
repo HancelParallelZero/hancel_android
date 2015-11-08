@@ -15,8 +15,8 @@
             android:id="@+id/iv_ring_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
             android:src="@drawable/ic_ring_logo" />
 
         <TextView
@@ -24,10 +24,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:gravity="center_horizontal"
             android:layout_toRightOf="@+id/iv_ring_logo"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
             android:lines="3"
             android:text="@string/msg_ring_help"
             android:textColor="@android:color/white"
@@ -37,7 +37,7 @@
 
 
     <TextView
-        android:id="@+id/tv_characters_empty_list"
+        android:id="@+id/tv_rings_empty_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_rings_header"
@@ -46,7 +46,7 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_contacts"
+        android:id="@+id/rv_rings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_rings_header"
