@@ -11,6 +11,8 @@ public class Ring {
 
     public String description;
 
+    public boolean enable=true;
+
     public List<Contact> contacts;
 
     public String getName() {
@@ -32,5 +34,14 @@ public class Ring {
     public String getDescription() {
         return description;
     }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
 
 }

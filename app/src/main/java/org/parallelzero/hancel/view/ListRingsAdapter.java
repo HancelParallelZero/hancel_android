@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.parallelzero.hancel.R;
@@ -39,6 +40,10 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
     @Override
     public void onBindViewHolder(RingViewHolder holder, int position) {
         final Ring ring = rings.get(position);
+        int icon;
+        if(ring.isEnable())icon=R.drawable.bt_rings_orange_rings;
+        else icon=R.drawable.bt_rings_grey_rings;
+        holder.ringIcon.setImageResource(icon);
         holder.ring_name.setText(ring.getName());
         holder.ring_description.setText(ring.getDescription());
     }
@@ -76,8 +81,7 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
     public void onItemHolderClick(RingViewHolder itemHolder) {
 
         if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(
-                    null, itemHolder.itemView, itemHolder.getAdapterPosition(), itemHolder.getItemId());
+            mOnItemClickListener.onItemClick(null, itemHolder.itemView, itemHolder.getAdapterPosition(), itemHolder.getItemId());
         }
 
     }
@@ -102,6 +106,12 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
         notifyItemRemoved(position);
     }
 
+    @Override
+    public void onItemDisable(int position, boolean enable) {
+        rings.get(position).setEnable(enable);
+        notifyDataSetChanged();
+    }
+
     public List<Ring> getRings() {
         return rings;
     }
@@ -110,6 +120,7 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
 
         protected final TextView ring_name;
         protected final TextView ring_description;
+        protected final ImageView ringIcon;
         private final ListRingsAdapter mAdapter;
 
 
@@ -117,8 +128,10 @@ public class ListRingsAdapter extends RecyclerView.Adapter<RingViewHolder> imple
             super(itemView);
             itemView.setOnClickListener(this);
             this.mAdapter = adapter;
+            ringIcon = (ImageView) itemView.findViewById(R.id.iv_ring_icon);
             ring_name = (TextView) itemView.findViewById(R.id.tv_ring_name);
             ring_description = (TextView) itemView.findViewById(R.id.tv_ring_description);
+
         }
 
         @Override

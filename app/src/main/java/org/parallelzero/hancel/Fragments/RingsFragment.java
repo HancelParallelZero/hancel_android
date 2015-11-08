@@ -117,8 +117,17 @@ public class RingsFragment extends Fragment {
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            Storage.removeRing(getActivity(),mRingsAdapter.getItem(viewHolder.getAdapterPosition()));
-            mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+            if (DEBUG) Log.d(TAG, "ItemTouchHelperCallback: onSwiped: direction="+direction);
+            int position = viewHolder.getAdapterPosition();
+            if(direction==16) {
+                Storage.removeRing(getActivity(), mRingsAdapter.getItem(position));
+                mAdapter.onItemDismiss(position);
+            }else if(direction==32){
+                Ring ring = mRingsAdapter.getItem(position);
+                boolean enable = !ring.isEnable();
+                Storage.enableRing(getActivity(), ring, enable);
+                mAdapter.onItemDisable(position,enable);
+            }
             refreshUI();
         }
 

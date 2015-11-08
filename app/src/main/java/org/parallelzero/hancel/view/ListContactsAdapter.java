@@ -102,6 +102,11 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
         notifyItemRemoved(position);
     }
 
+    @Override
+    public void onItemDisable(int position, boolean enable) {
+
+    }
+
     public List<Contact> getContacts() {
         return contacts;
     }

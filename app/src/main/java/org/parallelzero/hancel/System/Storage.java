@@ -3,6 +3,8 @@ package org.parallelzero.hancel.System;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -68,4 +70,13 @@ public class Storage {
         saveRings(ctx,rings);
     }
 
+    public static void enableRing(Context ctx, Ring ring, boolean enable) {
+        ArrayList<Ring> rings = getRings(ctx);
+        Iterator<Ring> it = rings.iterator();
+        while(it.hasNext()){
+            Ring item = it.next();
+            if(item.getName().equals(ring.getName()))item.setEnable(enable);
+        }
+        saveRings(ctx,rings);
+    }
 }
