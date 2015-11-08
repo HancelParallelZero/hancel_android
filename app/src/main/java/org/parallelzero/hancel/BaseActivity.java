@@ -9,11 +9,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.CommonDataKinds;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -47,12 +53,11 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
 
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     public static final int PERMISSIONS_REQUEST_COARSE_LOCATION = 1;
+    private static final int PERMISSIONS_READ_CONTACTS = 2;
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
-    private String contactID;     // contacts unique ID
 
-    private TextView _tv_share_url;
     private FloatingActionButton _fab;
     public MapTasksFragment tasksMap;
     private boolean toggle;
@@ -65,7 +70,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         setSupportActionBar(toolbar);
 
         _fab = (FloatingActionButton) findViewById(R.id.fab);
-        _fab.setOnClickListener(onButtonActionListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -75,41 +79,90 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        _tv_share_url=(TextView)findViewById(R.id.tv_share_url);
     }
 
-    private View.OnClickListener onButtonActionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(!toggle){
-                toggle=true;
-                Snackbar.make(view, "StartLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                String trackId = Tools.getAndroidDeviceId(BaseActivity.this);
-                String share_text=Config.FIREBASE_MAIN+"/"+trackId;
-                _tv_share_url.setText(share_text);
-                Tools.shareText(BaseActivity.this,share_text);
-                startTrackLocationService(trackId);
 
-            }else{
-                toggle=false;
-                Snackbar.make(view, "StopLocationService", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                _tv_share_url.setText("");
-                stopTrackLocationService();
-            }
+    public void showFragment(Fragment fragment, String fragmentTag, boolean toStack) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_default, fragment, fragmentTag);
+        if (toStack) ft.addToBackStack(fragmentTag);
+        ft.commitAllowingStateLoss();
+
+    }
+
+    public void showFragmentFull(Fragment fragment, String fragmentTag, boolean toStack) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_default, fragment, fragmentTag);
+        if (toStack) ft.addToBackStack(fragmentTag);
+        ft.commitAllowingStateLoss();
+
+    }
+
+    public void popBackStackSecure(String TAG) {
+        try {
+            if (DEBUG) Log.d(TAG, "popBackStackSecure to: " + TAG);
+            getFragmentManager().popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    };
+    }
+
+    public void popBackLastFragment() {
+        if (getFragmentManager().getBackStackEntryCount() != 0) {
+            if (DEBUG) Log.d(TAG, "onBackPressed popBackStack for:" + getLastFragmentName());
+            getFragmentManager().popBackStack();
+        }
+    }
 
 
-    private void startTrackLocationService(String trackId){
-        if(DEBUG) Log.d(TAG, "[MainActivity] startMainService");
+    public void removeFragment(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.remove(fragment);
+    }
+
+    public String getLastFragmentName() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) return "";
+        FragmentManager fm = getSupportFragmentManager();
+        return fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+    }
+
+    public void fabHide() {
+        _fab.setVisibility(View.GONE);
+    }
+
+    public void fabShow() {
+        _fab.setVisibility(View.VISIBLE);
+    }
+
+    public void fabSetIcon(int resourse) {
+        _fab.setImageResource(resourse);
+    }
+
+    public void fabSetOnClickListener(OnClickListener onButtonActionListener) {
+        _fab.setOnClickListener(onButtonActionListener);
+    }
+
+    public void showSnackLong(String msg) {
+        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    public void showSnackLong(int msg) {
+        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    public void startTrackLocationService(String trackId) {
+        if (DEBUG) Log.d(TAG, "[MainActivity] startMainService");
         Intent service = new Intent(this, TrackLocationService.class);
-        service.putExtra(TrackLocationService.KEY_TRACKID,trackId);
+        service.putExtra(TrackLocationService.KEY_TRACKID, trackId);
         startService(service);
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
     }
 
-    private void stopTrackLocationService() {
-        if(DEBUG)Log.d(TAG,"[MainActivity] stopTrackLocationService");
+    public void stopTrackLocationService() {
+        if (DEBUG) Log.d(TAG, "[MainActivity] stopTrackLocationService");
         StatusScheduleReceiver.stopSheduleService(this);
         stopService(new Intent(this, TrackLocationService.class));
     }
@@ -118,7 +171,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     public void loadPermissions(String perm, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
-                ActivityCompat.requestPermissions(this, new String[]{perm},requestCode);
+                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
             }
         }
     }
@@ -129,12 +182,18 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
             case PERMISSIONS_REQUEST_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(DEBUG)Log.d(TAG,"PERMISSIONS_REQUEST_FINE_LOCATION PERMISSION_GRANTED");
-                    loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,PERMISSIONS_REQUEST_COARSE_LOCATION);
+                    if (DEBUG) Log.d(TAG, "PERMISSIONS_REQUEST_FINE_LOCATION PERMISSION_GRANTED");
+                    loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, PERMISSIONS_REQUEST_COARSE_LOCATION);
+                    loadPermissions(Manifest.permission.READ_CONTACTS, PERMISSIONS_READ_CONTACTS);
                 }
                 return;
             }
             case PERMISSIONS_REQUEST_COARSE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+            }
+            case PERMISSIONS_READ_CONTACTS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 }
@@ -182,36 +241,44 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         int id = item.getItemId();
 
         if (id == R.id.nav_rings) {
-            // Handle the camera action
+
+            showRings();
+
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_history) {
-
-        } else if (id == R.id.nav_history) {
-
-        }/*else if (id == R.id.nav_share) {
-
             getContact();
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    public void drawerUnSelectAll(){
+
+    }
+
+    abstract void showRings();
+
+    abstract void showMain();
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         tasksMap.initMap(googleMap);
     }
 
-    public void getContact(){
-        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult(intent, PICK_CONTACT);
+    public void getContact() {
+//        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//        startActivityForResult(intent, PICK_CONTACT);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(CommonDataKinds.Phone.CONTENT_TYPE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_CONTACT);
+        }
+
     }
 
     @Override
@@ -219,50 +286,30 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         super.onActivityResult(reqCode, resultCode, data);
 
         if (reqCode == PICK_CONTACT && resultCode == RESULT_OK) {
-            if(DEBUG)Log.d(TAG, "Response: " + data.toString());
+            if (DEBUG) Log.d(TAG, "Response: " + data.toString());
             uriContact = data.getData();
 
             String name = retrieveContactName();
             String number = retrieveContactNumber();
             Bitmap photo = retrieveContactPhoto();
 
-            if(contactListener !=null) contactListener.onPickerContact(name,number,photo);
+            if (contactListener != null) contactListener.onPickerContact(name, number, photo);
 
         }
 
     }
+
     private String retrieveContactNumber() {
 
         String number = "";
-        // getting contacts ID
-        Cursor cursorID = getContentResolver().query(uriContact, new String[]{ContactsContract.Contacts._ID}, null, null, null);
-
-        if (cursorID.moveToFirst()) {
-            contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
+        String[] projection = new String[]{CommonDataKinds.Phone.NUMBER};
+        Cursor cursor = getContentResolver().query(uriContact, projection, null, null, null);
+        // If the cursor returned is valid, get the phone number
+        if (cursor != null && cursor.moveToFirst()) {
+            int numberIndex = cursor.getColumnIndex(CommonDataKinds.Phone.NUMBER);
+            number = cursor.getString(numberIndex);
+            cursor.close();
         }
-
-        cursorID.close();
-
-        if(DEBUG)Log.d(TAG, "Contact ID: " + contactID);
-
-        // Using the contact ID now we will get contact phone number
-        Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
-
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
-                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
-                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
-
-                new String[]{contactID},
-                null);
-
-        if (cursorPhone.moveToFirst()) {
-            number = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-        }
-
-        cursorPhone.close();
-
-        if(DEBUG)Log.d(TAG, "Contact Phone Number: " + number);
 
         return number;
 
@@ -274,16 +321,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         // querying contact data store
         Cursor cursor = getContentResolver().query(uriContact, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-
-            // DISPLAY_NAME = The display name for the contact.
-            // HAS_PHONE_NUMBER =   An indicator of whether this contact has at least one phone number.
-
-            name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+        if (cursor!=null&&cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndex(Contacts.DISPLAY_NAME));
+            cursor.close();
         }
-
-        cursor.close();
-
 
         return name;
 
@@ -292,10 +333,17 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     private Bitmap retrieveContactPhoto() {
 
         Bitmap photo = null;
+        Cursor cursorID = getContentResolver().query(uriContact, new String[]{Contacts._ID}, null, null, null);
+
+        String contactID="";
+        if (cursorID!=null&&cursorID.moveToFirst()) {
+            contactID = cursorID.getString(cursorID.getColumnIndex(Contacts._ID));
+            cursorID.close();
+        }
 
         try {
-            InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(),
-                    ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(contactID)));
+            InputStream inputStream = Contacts.openContactPhotoInputStream(getContentResolver(),
+                    ContentUris.withAppendedId(Contacts.CONTENT_URI, new Long(contactID)));
 
             if (inputStream != null) {
                 photo = BitmapFactory.decodeStream(inputStream);
@@ -315,7 +363,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     }
 
 
-    public interface OnPickerContact{
+    public interface OnPickerContact {
         void onPickerContact(String name, String number, Bitmap photo);
     }
 

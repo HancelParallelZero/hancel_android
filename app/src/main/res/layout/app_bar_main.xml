@@ -29,6 +29,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        app:pressedTranslationZ="12dp"
+        app:elevation="6dp"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:rippleColor="@android:color/white"
+        android:src="@android:drawable/ic_input_add" />
 
 </android.support.design.widget.CoordinatorLayout>

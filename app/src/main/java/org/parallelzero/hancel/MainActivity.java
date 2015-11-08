@@ -1,7 +1,6 @@
 package org.parallelzero.hancel;
 
 import android.Manifest;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,14 +9,21 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
+import org.parallelzero.hancel.Fragments.RingEditFragment;
+import org.parallelzero.hancel.Fragments.RingsFragment;
+import org.parallelzero.hancel.System.Tools;
+import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.util.ArrayList;
@@ -33,6 +39,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     private Firebase fbRef;
     private OnFireBaseConnect fbConnectReceiver;
+    private boolean toggle;
+
+    private RingsFragment mRingsFragment;
+    private RingEditFragment mRingEditFragment;
+    private MainFragment mMainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +51,14 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         setContentView(R.layout.activity_main);
 
         initDrawer();
+        showMain();
+
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
 
         Firebase.setAndroidContext(this);
         fbRef = new Firebase(Config.FIREBASE_MAIN);
 
+        fabHide();
         setContactListener(this);
 
         loadDataFromIntent();
@@ -54,12 +68,33 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private void initMapFragment(){
 
         tasksMap = new MapTasksFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(R.id.content_default, tasksMap, MapTasksFragment.TAG);
         ft.commitAllowingStateLoss();
         tasksMap.getMapAsync(this);
 
     }
+
+
+    private View.OnClickListener onFabLocationService = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(!toggle){
+                toggle=true;
+                showSnackLong("StartLocationService");
+                String trackId = Tools.getAndroidDeviceId(MainActivity.this);
+                String share_text=Config.FIREBASE_MAIN+"/"+trackId;
+                Tools.shareText(MainActivity.this,share_text);
+                startTrackLocationService(trackId);
+
+            }else{
+                toggle=false;
+                showSnackLong("StopLocationService");
+                stopTrackLocationService();
+            }
+        }
+    };
+
 
     private void loadDataFromIntent() {
 
@@ -95,7 +130,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if (DEBUG) Log.d(TAG, "onDataChange: " + child.getValue());
-
                 }
             }
 
@@ -142,10 +176,38 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     @Override
-    public void onPickerContact(String name, String number, Bitmap photo) {
+    public void onPickerContact(String name, String phone, Bitmap photo) {
 
         if(DEBUG)Log.d(TAG, "Contact Name: " + name);
+        if(DEBUG)Log.d(TAG, "Contact Phone Number: " + phone);
 
+       if(mRingEditFragment!=null)mRingEditFragment.addConctact(new Contact(name, phone, photo));
+
+    }
+
+    @Override
+    void showRings() {
+        if(mRingsFragment==null) mRingsFragment = new RingsFragment();
+        if(!mRingsFragment.isVisible())showFragment(mRingsFragment, RingsFragment.TAG, true);
+    }
+
+    @Override
+    void showMain() {
+        if(mMainFragment==null) mMainFragment = new MainFragment();
+        showFragment(mMainFragment, MainFragment.TAG, false);
+    }
+
+    public void showRingEditFragment() {
+
+        mRingEditFragment = new RingEditFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(mRingEditFragment, RingEditFragment.TAG);
+        ft.show(mRingEditFragment);
+        ft.commitAllowingStateLoss();
+    }
+
+    public RingsFragment getRingsFragment() {
+        return mRingsFragment;
     }
 
     private class OnFireBaseConnect extends BroadcastReceiver {
