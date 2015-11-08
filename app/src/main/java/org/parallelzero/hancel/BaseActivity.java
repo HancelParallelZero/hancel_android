@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.support.design.widget.FloatingActionButton;
@@ -46,7 +45,7 @@ import java.io.InputStream;
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/5/15.
  */
-public abstract class BaseActivity extends AppCompatActivity implements OnMapReadyCallback, OnNavigationItemSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
     public static final String TAG = BaseActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
@@ -59,8 +58,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     private Uri uriContact;
 
     private FloatingActionButton _fab;
-    public MapTasksFragment tasksMap;
-    private boolean toggle;
 
     private OnPickerContact contactListener;
 
@@ -153,10 +150,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
         Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
-    public void startTrackLocationService(String trackId) {
+    public void startTrackLocationService() {
         if (DEBUG) Log.d(TAG, "[MainActivity] startMainService");
         Intent service = new Intent(this, TrackLocationService.class);
-        service.putExtra(TrackLocationService.KEY_TRACKID, trackId);
         startService(service);
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
     }
@@ -265,10 +261,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
 
     abstract void showMain();
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        tasksMap.initMap(googleMap);
-    }
 
     public void getContact() {
 //        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);

@@ -8,4 +8,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="popup_width">300dp</dimen>
     <dimen name="popup_height">450dp</dimen>
+    <dimen name="alert_width_buttons">140dp</dimen>
+    <dimen name="alert_margin_lateral">15dp</dimen>
 </resources>

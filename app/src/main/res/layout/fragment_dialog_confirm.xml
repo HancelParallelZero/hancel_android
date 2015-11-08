@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_alert_dialog_header"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:background="@color/mainBackground"
+        android:elevation="10dp">
+
+        <TextView
+            android:id="@+id/tv_alert_dialog_decription_l1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:lines="3"
+            android:text="@string/alert_help"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+
+        <Button
+            android:id="@+id/bt_alert_dialog_sms"
+            android:layout_width="@dimen/alert_width_buttons"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="@dimen/alert_margin_lateral"
+            android:backgroundTint="@color/red"
+            android:text="@string/alert_send_sms"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/bt_alert_dialog_share"
+            android:layout_width="@dimen/alert_width_buttons"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/bt_alert_dialog_sms"
+            android:layout_marginRight="@dimen/alert_margin_lateral"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/alert_send_share"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

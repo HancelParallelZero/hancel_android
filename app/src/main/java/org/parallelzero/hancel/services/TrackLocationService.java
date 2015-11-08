@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.parallelzero.hancel.Config;
+import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 
 /**
@@ -59,7 +60,7 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
         if(DEBUG) Log.i(TAG, "=== OnStartCommand ");
-        this.trackId = intent.getStringExtra(KEY_TRACKID);
+        this.trackId = Storage.getTrackId(this);
         return Service.START_STICKY;
     }
 
