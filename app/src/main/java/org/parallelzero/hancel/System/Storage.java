@@ -122,4 +122,10 @@ public class Storage {
         return prefs.getString(PREF_TRACKING_TARGET, null);
     }
 
+    public static ArrayList<Ring> getRingsEnable(Context ctx) {
+        ArrayList<Ring> rings = getRings(ctx);
+        Iterator<Ring> it = rings.iterator();
+        while(it.hasNext())if(!it.next().isEnable())it.remove();
+        return rings;
+    }
 }

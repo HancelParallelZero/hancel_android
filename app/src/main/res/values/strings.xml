@@ -38,6 +38,7 @@
      <string name="alert_help">Hancel generará un link de tu posición o enviará un SMS a los contactos de tus anillos activos</string>
      <string name="msg_home_generate_link">Creando link de seguimiento..</string>
   <string name="home_tracking_service">Compartiendo tú ubicación:</string>
+  <string name="msg_alert_not_rings">No existen anillos activos</string>
   <!-- nuevo -->
 
 </resources>
