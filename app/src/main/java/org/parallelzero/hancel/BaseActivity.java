@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
+import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
 import org.parallelzero.hancel.services.TrackLocationService;
@@ -155,12 +156,14 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Intent service = new Intent(this, TrackLocationService.class);
         startService(service);
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
+        Storage.setShareLocationEnable(this,true);
     }
 
     public void stopTrackLocationService() {
         if (DEBUG) Log.d(TAG, "[MainActivity] stopTrackLocationService");
         StatusScheduleReceiver.stopSheduleService(this);
         stopService(new Intent(this, TrackLocationService.class));
+        Storage.setShareLocationEnable(this, false);
     }
 
 

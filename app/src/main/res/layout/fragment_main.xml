@@ -27,6 +27,7 @@
 
     </RelativeLayout>
 
+
     <Button
         android:id="@+id/bt_home_main_alert"
         android:layout_width="250dp"
@@ -36,4 +37,36 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/bt_home_main_alert" />
 
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:id="@+id/tv_tracking_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_toggle_margin"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/home_tracking_service"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/tb_home_enable_tracking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:backgroundTintMode="multiply"
+            android:hapticFeedbackEnabled="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/home_toggle_margin"
+            android:layout_marginRight="@dimen/home_toggle_margin" />
+
+    </RelativeLayout>
 </RelativeLayout>

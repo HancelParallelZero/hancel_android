@@ -10,4 +10,5 @@
     <dimen name="popup_height">450dp</dimen>
     <dimen name="alert_width_buttons">140dp</dimen>
     <dimen name="alert_margin_lateral">15dp</dimen>
+    <dimen name="home_toggle_margin">20dp</dimen>
 </resources>

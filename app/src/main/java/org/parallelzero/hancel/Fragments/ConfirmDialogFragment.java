@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
@@ -72,7 +71,8 @@ public class ConfirmDialogFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             if(DEBUG)Log.d(TAG,"onShareClickListener");
-            getMain().startShareLocation();
+            getMain().shareLocation();
+            getDialog().dismiss();
         }
     };
 

@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private static final boolean DEBUG = Config.DEBUG;
 
     private Firebase fbRef;
-    private OnFireBaseConnect fbConnectReceiver;
+    private OnTrackServiceConnected fbConnectReceiver;
 
     public MapTasksFragment tasksMap;
     private RingsFragment mRingsFragment;
@@ -63,6 +63,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         Firebase.setAndroidContext(this);
         fbRef = new Firebase(Config.FIREBASE_MAIN);
+        String trackId = Tools.getAndroidDeviceId(MainActivity.this);
+        Storage.setTrackId(this, trackId);
 
         fabHide();
         setContactListener(this);
@@ -85,20 +87,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
-    public void startShareLocation() {
+    public void shareLocation() {
         showSnackLong(R.string.msg_home_generate_link);
-        String trackId = Tools.getAndroidDeviceId(MainActivity.this);
-        String share_text = Config.FIREBASE_MAIN + "/" + trackId;
+        String share_text = Config.FIREBASE_MAIN + "/" + Storage.getTrackId(this);
         Tools.shareText(MainActivity.this, share_text);
-        Storage.setTrackId(this,trackId);
         startTrackLocationService();
-        Storage.setShareLocationEnable(this,true);
-    }
-
-    public void stopShareLocation() {
-        showSnackLong("StopLocationService");
-        stopTrackLocationService();
-        Storage.setShareLocationEnable(this,false);
     }
 
     private void loadDataFromIntent() {
@@ -244,19 +237,20 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         return mRingsFragment;
     }
 
-    private class OnFireBaseConnect extends BroadcastReceiver {
+    private class OnTrackServiceConnected extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(TrackLocationService.FIREBASE_CONNECT)) {
-                if (DEBUG) Log.i(TAG, "[MainActivity] onFireBaseConnect");
+            if (intent.getAction().equals(TrackLocationService.TRACK_SERVICE_CONNECT)) {
+                if (DEBUG) Log.i(TAG, "[MainActivity] service Connected");
+                if(mMainFragment!=null)mMainFragment.setServiceButtonEnable(true);
             }
         }
     }
 
     @Override
     protected void onResume() {
-        if (fbConnectReceiver == null) fbConnectReceiver = new OnFireBaseConnect();
-        IntentFilter intentFilter = new IntentFilter(TrackLocationService.FIREBASE_CONNECT);
+        if (fbConnectReceiver == null) fbConnectReceiver = new OnTrackServiceConnected();
+        IntentFilter intentFilter = new IntentFilter(TrackLocationService.TRACK_SERVICE_CONNECT);
         registerReceiver(fbConnectReceiver, intentFilter);
         super.onResume();
     }

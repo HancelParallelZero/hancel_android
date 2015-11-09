@@ -30,7 +30,7 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
 
     public static final String TAG = TrackLocationService.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
-    public static final String FIREBASE_CONNECT = "brodcast_onfirebase_connected";
+    public static final String TRACK_SERVICE_CONNECT = "brodcast_onfirebase_connected";
     public static final String KEY_TRACKID = "key_trackId";
 
 
@@ -54,13 +54,13 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     private void startFireBase() {
         Firebase.setAndroidContext(this);
         fbRef = new Firebase(Config.FIREBASE_MAIN);
-        sendBroadcast(new Intent(FIREBASE_CONNECT));
     }
 
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId){
         if(DEBUG) Log.i(TAG, "=== OnStartCommand ");
         this.trackId = Storage.getTrackId(this);
+        sendBroadcast(new Intent(TRACK_SERVICE_CONNECT));
         return Service.START_STICKY;
     }
 
@@ -109,9 +109,6 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
 //        String transactionId = trackerRef.getKey();
     }
 
-
-
-
     private void setupLocationForMap() {
         long fastUpdate = Config.DEFAULT_INTERVAL_FASTER;
         locationRequest = LocationRequest.create();
@@ -141,8 +138,6 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
 
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             startLocationUpdates();
-//            this.location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//            if(DEBUG)Log.i(TAG, "=== Connected: Latitude: " + this.location.getLatitude() + " Longitude: " + this.location.getLongitude());
         }
 
     }
