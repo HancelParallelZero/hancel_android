@@ -15,8 +15,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -48,6 +50,10 @@ public class Tools {
 
     public static String getAndroidDeviceId(Context ctx){
     	return Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public static void setButtonTintBackground(Context ctx,Button mButtonSMS, int tintColor){
+        mButtonSMS.getBackground().setColorFilter(ContextCompat.getColor(ctx, tintColor), PorterDuff.Mode.MULTIPLY);
     }
 
 	public static void hideKeyboard(Activity act) {
