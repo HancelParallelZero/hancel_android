@@ -45,20 +45,18 @@ public class ConfirmDialogFragment extends DialogFragment {
         mButtonSMS.setOnClickListener(onSMSClickListener);
         mButtonShare.setOnClickListener(onShareClickListener);
 
-        if (Storage.getRings(getActivity()).size() == 0) setSMSButtonEnable(false);
-        if (Storage.getRingsEnable(getActivity()).size() == 0) setSMSButtonEnable(false);  // TODO: fix not work!
+        validateSMS();
 
         return v;
     }
 
-    private void setSMSButtonEnable(boolean enable) {
-        if (enable) {
-            mButtonSMS.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.red), PorterDuff.Mode.MULTIPLY);
-            this.sms_enable = enable;
-        } else {
-            mButtonSMS.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey), PorterDuff.Mode.MULTIPLY);
-            this.sms_enable = false;
-        }
+    private void validateSMS() {
+
+        if (Storage.getRingsEnable(getActivity()).size() == 0 || Storage.getRings(getActivity()).size() == 0)
+            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.grey);
+        else
+            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
+
     }
 
     private View.OnClickListener onSMSClickListener = new View.OnClickListener() {
@@ -85,8 +83,7 @@ public class ConfirmDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Storage.getRings(getActivity()).size() == 0) setSMSButtonEnable(false);
-        else setSMSButtonEnable(true);
+        validateSMS();
     }
 
     private MainActivity getMain() {
