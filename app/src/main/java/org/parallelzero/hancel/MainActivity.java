@@ -22,6 +22,7 @@ import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.Fragments.RingEditFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
+import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.services.TrackLocationService;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startIntro();
         initDrawer();
         showMain();
 
@@ -63,6 +65,13 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         loadDataFromIntent();
 
+    }
+
+    private void startIntro() {
+        if(Storage.isFirstIntro(this)){
+            startActivity(new Intent(this, IntroActivity.class));
+            Storage.setFirstIntro(this,false);
+        }
     }
 
     private void initMapFragment(){

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.models.Ring;
@@ -25,6 +26,7 @@ public class Storage {
 
     public static final String PREF_GENERAL_PANIC_ALERT = "lastPanic";
     private static final String PREF_SAVE_RINGS = "ringsSaved";
+    private static final String PREF_FIRST_INTRO = "firsIntro";
 
     public static void setLastPanicAlertDate(Context ctx,String time){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -79,4 +81,18 @@ public class Storage {
         }
         saveRings(ctx,rings);
     }
+
+    public static boolean isFirstIntro(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return prefs.getBoolean(PREF_FIRST_INTRO,true);
+    }
+
+
+    public static void setFirstIntro(Context ctx,boolean enable){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = prefs.edit();
+        ed.putBoolean(PREF_FIRST_INTRO, enable);
+        ed.commit();
+    }
+
 }
