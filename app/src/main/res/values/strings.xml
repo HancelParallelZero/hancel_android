@@ -6,48 +6,43 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="send_to">Compartir con:</string>
+    <string name="send_to">Share:</string>
     <string name="drawer_separator1">Hancel Info</string>
-    drawer_separator1
+   
 
     <!-- Hardware button alarm service -->
-    <string name="no_panic_alert">Sin alertas</string>
-    <string name="panic_alert_sent">Alerta enviada</string>
-    <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
-    <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
-    <string name="no_configured_rings">No se encontraron anillos configurados</string>
+    <string name="no_panic_alert">No Alerts</string>
+    <string name="panic_alert_sent">Alert Sent</string>
+    <string name="tracking_invalid_contac_numbers">Contact numbers are not valid</string>
+    <string name="tracking_SMS_message">[ALERT]I need help. my location is: %map and my battery level is %battery Inform the authorities.\n By Hancel APP, security app</string>
+    <string name="no_configured_rings">No configured rings found</string>
     <string name="map_provider">http://maps.google.com/?q=</string>
 
     <!-- Main Layout -->
-    <string name="button_rings">Anillos</string>
-    <string name="button_about">Acerca de</string>
-    <string name="button_history">Historia</string>
-    <string name="button_help">Ayuda</string>
+    <string name="button_rings">Rings</string>
+    <string name="button_about">About</string>
+    <string name="button_history">History</string>
+    <string name="button_help">Help</string>
+    <string name="button_share">Share</string>
     <!-- nuevo -->
-    <string name="button_home">Inicio</string>
-    <string name="msg_rings_empty">Adiciona un Anillo</string>
-    <string name="hint_ring_name">Nombre del anillo</string>
-    <string name="ring_pick_contact">Adicionar Contacto</string>
-    <string name="msg_ring_contacts_empty">Adiciona Contactos</string>
-    <string name="msg_ring_help">Crea anillos con contactos de confianza, seran notificados en el momento de una alerta.</string>
-    <string name="error_ring_empty_name">Ingresa un nombre para tu anillo</string>
-    <string name="error_ring_empty_contacts">Ingresa por lo menos un contacto</string>
-    <string name="ring_edit_save">GUARDAR</string>
-    <string name="ring_save">GUARDAR ANILLO</string>
-    <string name="ring_desc_contacts">contactos</string>
-    <string name="msg_home_help">Con Hancel comparte tu ubicación anónimamente o notifica a tus anillos de confianza en cualquier momento.</string>
-    <string name="alert_send_sms">ENVIAR POR SMS</string>
+    <string name="button_home">Home</string>
+    <string name="msg_rings_empty">Add ring</string>
+    <string name="hint_ring_name">Ring name</string>
+    <string name="ring_pick_contact">Add contact</string>
+    <string name="msg_ring_contacts_empty">Add contacts</string>
+    <string name="msg_ring_help">Make your own trusted contact rings, they will be notified for alerts.</string>
+    <string name="error_ring_empty_name">Give a ring name</string>
+    <string name="error_ring_empty_contacts">Give at least one contact</string>
+    <string name="ring_edit_save">SAVE</string>
+    <string name="ring_save">SAVE RING</string>
+    <string name="ring_desc_contacts">contacts</string>
+    <string name="msg_home_help">Share your location with Hancel anonymously or notify your trsuted rings in any moment.</string>
+    <string name="alert_send_sms">SEND BY SMS</string>
     <string name="alert_send_share">SHARE</string>
-    <string name="alert_help">Hancel generará un link de tu posición o enviará un SMS a los contactos de tus anillos activos</string>
-    <string name="msg_home_generate_link">Creando link de seguimiento..</string>
-    <string name="home_tracking_service">Compartiendo tú ubicación:</string>
-    <string name="msg_alert_not_rings">No existen anillos activos</string>
-
-    <!--Intro & help -->
-    <string name="slide0">Crea anillos con tus contactos y alertarlos cuando estes en peligro</string>
-    <string name="slide1">Comparte tu ubicación en zonas peligrosas usando la función rastreo</string>
-    <string name="slide2">Usa el botón de alerta sí afrontas situaciones de peligro inevitabe</string>
-    <string name="slide4">Chatea con otros usuarios Hancel. Todos tus mensajes serán cifrados</string>
+    <string name="alert_help">Hancel will generate a likn with your position or send an SMS to your active ring contacts</string>
+    <string name="msg_home_generate_link">Building tracking link...</string>
+    <string name="home_tracking_service">Sharing your location:</string>
+    <string name="msg_alert_not_rings">There are not active rings</string>
 
     <!-- About -->
     <string name="about_licence_l1">Hancel %s parallel zero</string>
@@ -59,7 +54,7 @@
     <string name="about_survey_link">http://bit.ly/hancel_riesgos</string>
     <string name="content_description_welcome"></string>
     <!--<string name="image_credits_value">using alert by Alain LOUBET, motion by Juan Pablo Bravo, share by Housin Aziz, history by Paweł Wypych, telephone by Benny Forsberg, service tower by Nick Abrams, Tools by Kenton Quatman, Smartphone by Yamini Chandra, Trash by Filip Malinowski, Speech by P.J. Onori, Wireless by Thomas Le Bas y Minicons by Dani Rolli from the noun project under CC-BY 3.0 and The PICOL-Icons by Melih Bilgil under CC-BY 3.0</string>-->
-    <string name="image_credits_value">Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo, Gloria Meneses @gpmeneses, Pilar Saenz @mapisaro</string>
+    <string name="image_credits_value">Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo @amalia_toledo, Gloria Meneses @gpmeneses, Pilar Saenz @mapisaro</string>
     <string name="image_credits">Credits in alphabetic order:</string>
     <string name="button_map">Map</string>
     <string name="hancel_based_on">Based on</string>
