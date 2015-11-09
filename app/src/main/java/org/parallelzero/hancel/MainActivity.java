@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
                         loc.setLatitude(Double.parseDouble(track.get("latitude").toString()));
                         loc.setLongitude(Double.parseDouble(track.get("longitude").toString()));
                         loc.setAccuracy(Float.parseFloat(track.get("accuracy").toString()));
-                        loc.setBearing(Float.parseFloat(track.get("bearing").toString()));
+//                        loc.setBearing(Float.parseFloat(track.get("bearing").toString()));
                         loc.setTime(Long.parseLong(track.get("time").toString()));
                         data.add(loc);
 //                        if (DEBUG) Log.d(TAG, "geo: " +track.get("latitude")+","+track.get("longitude"));
