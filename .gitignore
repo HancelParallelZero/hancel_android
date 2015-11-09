@@ -33,3 +33,15 @@ proguard/
 .DS_Store
 /build
 /captures
+
+# Android Studio
+*.iml
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
+*.swp
+
+#NDK
+obj/
+app/fabric.properties
