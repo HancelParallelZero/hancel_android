@@ -226,9 +226,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @Override
     void showAbout() {
-        if (mAboutFragment == null)
-            mAboutFragment = new AboutFragment();
-        showFragment(mAboutFragment, AboutFragment.TAG, false);
+        if (mAboutFragment == null) mAboutFragment = new AboutFragment();
+        showFragment(mAboutFragment, AboutFragment.TAG, true);
     }
 
     public void showConfirmAlertFragment() {

@@ -251,8 +251,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         } else if (id == R.id.nav_about) {
             showAbout();
 
-        } else if (id == R.id.nav_history) {
-            getContact();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

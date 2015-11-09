@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
+import org.parallelzero.hancel.System.Tools;
 
 /**
  * Created by izel on 9/11/15.
@@ -22,24 +23,35 @@ public class AboutFragment extends Fragment {
     public static final String TAG = AboutFragment.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
     private ScrollView _sv_about;
+    private TextView _tv_survey;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
+
         View view = inflater.inflate(R.layout.about, container, false);
-        TextView aboutText = (TextView) view.findViewById(R.id.AboutText);
+        TextView aboutText = (TextView) view.findViewById(R.id.AboutTextL1);
         try {
-            aboutText.setText(String.format(getString(R.string.about_licence),
-                    getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),
-                            0).versionName));
+            aboutText.setText(String.format(getString(R.string.about_licence_l1),
+                    getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
         }
         catch (PackageManager.NameNotFoundException e) {
             if(DEBUG) Log.i(TAG, "cannot get version name");
         }
 
-        _sv_about = (ScrollView)view.findViewById(R.id.sv_about);
-        Animation translatebu= AnimationUtils.loadAnimation(getActivity(), R.anim.about);
-        _sv_about.startAnimation(translatebu);
+//        _sv_about = (ScrollView)view.findViewById(R.id.sv_about);
+//        Animation translatebu= AnimationUtils.loadAnimation(getActivity(), R.anim.about);
+//        _sv_about.startAnimation(translatebu);
+
+        _tv_survey = (TextView)view.findViewById(R.id.tv_about_survey);
+        _tv_survey.setOnClickListener(onSurverClickListener);
 
         return view;
     }
+
+    private View.OnClickListener onSurverClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Tools.viewLink(getActivity(), _tv_survey.getText().toString());
+        }
+    };
 }
