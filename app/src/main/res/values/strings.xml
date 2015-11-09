@@ -60,5 +60,8 @@
     <string name="image_credits_value">Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo, Gloria Meneses @gpmeneses, Pilar Saenz @mapisaro</string>
     <string name="image_credits">Credits in alphabetic order:</string>
     <string name="button_map">Mapa</string>
+    <string name="hint_tracking_name">Nombre o Alias</string>
+    <string name="button_continuar">CONTINUAR</string>
+    <string name="msg_track_alias">Escoger un nombre para este track</string>
 
 </resources>

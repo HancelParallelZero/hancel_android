@@ -141,6 +141,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
+    public void newTrackId(String trackId, String alias) {
+        
+    }
 
     private void subscribeLastTrack(Firebase fb, String trackId) {
 
@@ -266,6 +269,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     public RingsFragment getRingsFragment() {
         return mRingsFragment;
     }
+
 
     private class OnTrackServiceConnected extends BroadcastReceiver {
         @Override
