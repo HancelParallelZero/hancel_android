@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
+        startIntro();
         initDrawer();
         showMain();
 
@@ -76,6 +77,13 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         if(Storage.isShareLocationEnable(this))startTrackLocationService();
 
+    }
+
+    private void startIntro() {
+        if(Storage.isFirstIntro(this)){
+            startActivity(new Intent(this, IntroActivity.class));
+            Storage.setFirstIntro(this,false);
+        }
     }
 
     private void initMapFragment() {
@@ -202,6 +210,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         showFragment(mMainFragment, MainFragment.TAG, false);
     }
 
+    @Override
+    void showHelp() {
+        startActivity(new Intent(this, IntroActivity.class));
+    }
+
     public void showConfirmAlertFragment() {
 
         ConfirmDialogFragment mConfirmDialogFragment = new ConfirmDialogFragment();
@@ -209,7 +222,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         ft.add(mConfirmDialogFragment, ConfirmDialogFragment.TAG);
         ft.show(mConfirmDialogFragment);
         ft.commitAllowingStateLoss();
-
     }
 
     public void showRingEditFragment() {
@@ -263,7 +275,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         tasksMap.initMap(googleMap);
         subscribeAllTrack(getFbRef(), Storage.getTargetTracking(this));
     }
-
 
     public Firebase getFbRef() {
         return fbRef;

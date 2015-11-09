@@ -37,8 +37,17 @@
      <string name="alert_send_share">SHARE</string>
      <string name="alert_help">Hancel generará un link de tu posición o enviará un SMS a los contactos de tus anillos activos</string>
      <string name="msg_home_generate_link">Creando link de seguimiento..</string>
-  <string name="home_tracking_service">Compartiendo tú ubicación:</string>
-  <string name="msg_alert_not_rings">No existen anillos activos</string>
-  <!-- nuevo -->
+     <string name="home_tracking_service">Compartiendo tú ubicación:</string>
+     <string name="msg_alert_not_rings">No existen anillos activos</string>
+
+     <!--Intro & help -->
+     <string name="slide0">Crea anillos con tus contactos y alertarlos cuando estes en peligro</string>
+     <string name="slide1">Comparte tu ubicación en zonas peligrosas usando la función rastreo</string>
+     <string name="slide2">Usa el botón de alerta sí afrontas situaciones de peligro inevitabe</string>
+     <string name="slide4">Chatea con otros usuarios Hancel. Todos tus mensajes serán cifrados</string>
+
+     <!--remove this item when the slide backgrounds are ready -->
+     <string name="tmp_slide"></string>
+
 
 </resources>
