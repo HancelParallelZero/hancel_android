@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import org.parallelzero.hancel.System.Storage;
+import org.parallelzero.hancel.services.HardwareButtonService;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
 import org.parallelzero.hancel.services.TrackLocationService;
 
@@ -151,6 +152,13 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         startService(service);
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
         Storage.setShareLocationEnable(this,true);
+    }
+
+
+    public void startSMSService(){
+        if (DEBUG) Log.d(TAG, "[MainActivity] startSMSService");
+        Intent service = new Intent(this, HardwareButtonService.class);
+        startService(service);
     }
 
     public void stopTrackLocationService() {

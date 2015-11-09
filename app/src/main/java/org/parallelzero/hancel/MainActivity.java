@@ -105,6 +105,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         startTrackLocationService();
     }
 
+    public void sendSMS(){
+        startSMSService();
+    }
+
+
     private void loadDataFromIntent() {
 
         Intent intent = getIntent();
