@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <ScrollView
@@ -86,6 +86,40 @@
                 <!--android:textSize="12sp" />-->
 
             <TextView
+                android:id="@+id/hancel_based_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="@string/hancel_based_on"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_default"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+                <ImageView
+                    android:id="@+id/logoHancelFractual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/content_description_hancel_fractual"
+                    android:src="@drawable/logo_hancel_fractual" />
+
+                <TextView
+                    android:id="@+id/url_hancel_fractual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:gravity="center"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:textSize="15sp"
+                    android:text="@string/hancel_fractual_link"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold" />
+
+
+            <TextView
                 android:id="@+id/textColaboration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +129,6 @@
                 android:textColor="@color/text_default"
                 android:textSize="15sp"
                 android:textStyle="bold" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,10 +174,10 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:gravity="center"
-                android:textColorLink="@color/white"
+                android:textColorLink="@color/colorPrimaryDark"
                 android:textSize="15sp"
                 android:text="@string/about_survey_link"
-                android:textColor="@color/text_contrast"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
 
             <TextView
