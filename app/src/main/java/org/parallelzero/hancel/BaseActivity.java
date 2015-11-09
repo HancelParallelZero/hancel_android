@@ -8,8 +8,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds;
+import android.provider.ContactsContract.Contacts;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -29,14 +29,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
-import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.System.Storage;
-import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
 import org.parallelzero.hancel.services.TrackLocationService;
 
@@ -244,6 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             showRings();
 
         } else if (id == R.id.nav_help) {
+            showHelp();
 
         } else if (id == R.id.nav_about) {
 
@@ -264,6 +259,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     abstract void showMain();
 
+    abstract void showHelp();
 
     public void getContact() {
 //        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);

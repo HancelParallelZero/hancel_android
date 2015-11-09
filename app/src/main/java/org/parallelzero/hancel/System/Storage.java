@@ -30,7 +30,7 @@ public class Storage {
     private static final String PREF_SHARE_LOCATION = "shareLocationEnable";
     private static final String PREF_TRACK_ID = "trackId";
     private static final String PREF_TRACKING_TARGET = "trackingTarget";
-
+    private static final String PREF_FIRST_INTRO = "firsIntro";
 
     public static void setLastPanicAlertDate(Context ctx,String time){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -128,4 +128,17 @@ public class Storage {
         while(it.hasNext())if(!it.next().isEnable())it.remove();
         return rings;
     }
+
+    public static boolean isFirstIntro(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return prefs.getBoolean(PREF_FIRST_INTRO,true);
+    }
+
+    public static void setFirstIntro(Context ctx,boolean enable){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = prefs.edit();
+        ed.putBoolean(PREF_FIRST_INTRO, enable);
+        ed.commit();
+    }
+
 }
