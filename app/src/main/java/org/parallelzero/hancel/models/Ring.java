@@ -27,6 +27,8 @@ public class Ring {
         this.contacts = contacts;
     }
 
+    public List<Contact> getContacts(){return contacts;}
+
     public void setDescription(String description) {
         this.description = description;
     }

@@ -27,9 +27,12 @@ import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
+import org.parallelzero.hancel.models.Contact;
+import org.parallelzero.hancel.models.Ring;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 
 /**
@@ -339,27 +342,21 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             }
         }
 
-
-        //TODO: Load the active rings and get the contacts phone numbers
         private ArrayList contactsRingNumbers() {
+            List<Contact> contacts;
+            ArrayList<Ring> enableRings = Storage.getRingsEnable(getApplicationContext());
             ArrayList<String> numbers = new ArrayList<String>();
-            numbers.add("3015036470");
-            numbers.add("3158740288");
-            /*RingDAO ringDao = new RingDAO(HardwareButtonService.this);
 
-            ringDao.open();
-            Cursor c = ringDao.getNotificationContactsId();
+            if(enableRings == null)
+                return null;
 
-            if (c != null && c.getCount() > 0) {
-                c.moveToFirst();
-                for (int i = 0; i < c.getCount(); i++) {
-                    List<String> contactNumbers = Compatibility.extractContactNumbers(
-                            c.getString(0), getContentResolver());
-                    if (contactNumbers != null && contactNumbers.size() > 0)
-                        numbers.addAll(contactNumbers);
-                    c.moveToNext();
+            for (Ring ring: enableRings) {
+                contacts = ring.getContacts();
+                for(Contact c : contacts){
+                    if(DEBUG)Log.i(TAG, "Contact Number: " + c.getPhone());
+                    numbers.add(c.getPhone().trim());
                 }
-            }*/
+            }
             if(DEBUG)Log.i(TAG, "=== Number of contacts to notify: " + numbers.size());
 
             return numbers;

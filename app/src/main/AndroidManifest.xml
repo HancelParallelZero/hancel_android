@@ -24,6 +24,7 @@
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+
     <permission
         android:name="com.meridian.itinerary.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -64,6 +65,10 @@
         <!-- Tracking services -->
         <service android:name=".services.TrackLocationService" />
         <receiver android:name=".services.StatusScheduleReceiver"></receiver>
+
+        <!-- Hardware button alarm -->
+        <service android:name=".services.HardwareButtonService" />
+        <receiver android:name=".services.HardwareButtonReceiver"></receiver>
 
         <meta-data
             android:name="io.fabric.ApiKey"
