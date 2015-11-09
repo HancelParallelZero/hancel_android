@@ -20,7 +20,7 @@
 
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/drawer_separator1">
         <menu>
 
             <item
