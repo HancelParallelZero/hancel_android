@@ -46,8 +46,14 @@
      <string name="slide2">Usa el botón de alerta sí afrontas situaciones de peligro inevitabe</string>
      <string name="slide4">Chatea con otros usuarios Hancel. Todos tus mensajes serán cifrados</string>
 
-     <!--remove this item when the slide backgrounds are ready -->
-     <string name="tmp_slide"></string>
+     <!-- About -->
+     <string name="about_licence">Hancel %s (rfc 3261) GNU GPL License V2</string>
+     <string name="about_based_title">Based on</string>
+     <string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
+     <string name="about_text_colaboration">Colaboration</string>
+     <string name="about_survey_title">Check your risk level</string>
+     <string name="about_survey_link">http://bit.ly/18Hf5iX</string>
+     <string name="content_description_welcome"></string>
+     <string name="image_credits_value">using alert by Alain LOUBET, motion by Juan Pablo Bravo, share by Housin Aziz, history by Paweł Wypych, telephone by Benny Forsberg, service tower by Nick Abrams, Tools by Kenton Quatman, Smartphone by Yamini Chandra, Trash by Filip Malinowski, Speech by P.J. Onori, Wireless by Thomas Le Bas y Minicons by Dani Rolli from the noun project under CC-BY 3.0 and The PICOL-Icons by Melih Bilgil under CC-BY 3.0</string>     <string name="image_credits">Image credits:</string>
 
-
-</resources>
+ </resources>

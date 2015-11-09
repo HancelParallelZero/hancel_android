@@ -22,6 +22,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import io.fabric.sdk.android.Fabric;
+
+import org.parallelzero.hancel.Fragments.AboutFragment;
 import org.parallelzero.hancel.Fragments.ConfirmDialogFragment;
 import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
@@ -51,6 +53,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private RingsFragment mRingsFragment;
     private RingEditFragment mRingEditFragment;
     private MainFragment mMainFragment;
+    private AboutFragment mAboutFragment;
     private int mStackLevel = 0;
 
     @Override
@@ -217,7 +220,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @Override
     void showHelp() {
+
         startActivity(new Intent(this, IntroActivity.class));
+    }
+
+    @Override
+    void showAbout() {
+        if (mAboutFragment == null)
+            mAboutFragment = new AboutFragment();
+        showFragment(mAboutFragment, AboutFragment.TAG, false);
     }
 
     public void showConfirmAlertFragment() {

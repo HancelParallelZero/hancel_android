@@ -249,6 +249,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             showHelp();
 
         } else if (id == R.id.nav_about) {
+            showAbout();
 
         } else if (id == R.id.nav_history) {
             getContact();
@@ -268,6 +269,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     abstract void showMain();
 
     abstract void showHelp();
+
+    abstract void showAbout();
 
     public void getContact() {
 //        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
