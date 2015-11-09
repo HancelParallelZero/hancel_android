@@ -96,16 +96,16 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public void popBackStackSecure(String TAG) {
         try {
             if (DEBUG) Log.d(TAG, "popBackStackSecure to: " + TAG);
-            getFragmentManager().popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getSupportFragmentManager().popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void popBackLastFragment() {
-        if (getFragmentManager().getBackStackEntryCount() != 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             if (DEBUG) Log.d(TAG, "onBackPressed popBackStack for:" + getLastFragmentName());
-            getFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -117,9 +117,14 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     }
 
     public String getLastFragmentName() {
-        if (getFragmentManager().getBackStackEntryCount() == 0) return "";
-        FragmentManager fm = getSupportFragmentManager();
-        return fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+        try {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) return "";
+            FragmentManager fm = getSupportFragmentManager();
+            return fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public void fabHide() {
@@ -151,11 +156,11 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Intent service = new Intent(this, TrackLocationService.class);
         startService(service);
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
-        Storage.setShareLocationEnable(this,true);
+        Storage.setShareLocationEnable(this, true);
     }
 
 
-    public void startSMSService(){
+    public void startSMSService() {
         if (DEBUG) Log.d(TAG, "[MainActivity] startSMSService");
         Intent service = new Intent(this, HardwareButtonService.class);
         startService(service);
@@ -206,11 +211,16 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            try {
+                super.onBackPressed();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -241,7 +251,15 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_rings) {
+        if (id == R.id.nav_home) {
+
+            showMain();
+
+        } else if (id == R.id.nav_map){
+
+            showMap();
+
+        } else if (id == R.id.nav_rings) {
 
             showRings();
 
@@ -258,9 +276,12 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         return true;
     }
 
-    public void drawerUnSelectAll(){
+
+    public void drawerUnSelectAll() {
 
     }
+
+    abstract void showMap();
 
     abstract void showRings();
 
@@ -321,7 +342,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         // querying contact data store
         Cursor cursor = getContentResolver().query(uriContact, null, null, null, null);
 
-        if (cursor!=null&&cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             name = cursor.getString(cursor.getColumnIndex(Contacts.DISPLAY_NAME));
             cursor.close();
         }
@@ -335,8 +356,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Bitmap photo = null;
         Cursor cursorID = getContentResolver().query(uriContact, new String[]{Contacts._ID}, null, null, null);
 
-        String contactID="";
-        if (cursorID!=null&&cursorID.moveToFirst()) {
+        String contactID = "";
+        if (cursorID != null && cursorID.moveToFirst()) {
             contactID = cursorID.getString(cursorID.getColumnIndex(Contacts._ID));
             cursorID.close();
         }

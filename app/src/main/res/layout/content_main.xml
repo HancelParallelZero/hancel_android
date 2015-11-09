@@ -10,12 +10,12 @@
 
 
     <FrameLayout
-        android:id="@+id/content_default"
+        android:id="@+id/content_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <FrameLayout
-        android:id="@+id/content_map"
+        android:id="@+id/content_default"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Created by hasus on 4/9/15.
  */
-public class MapTasksFragment extends MapFragment implements OnMapClickListener,OnMarkerClickListener,OnMapLongClickListener {
+public class MapTasksFragment extends SupportMapFragment implements OnMapClickListener,OnMarkerClickListener,OnMapLongClickListener {
 
     public static final String TAG = MapTasksFragment.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG&&Config.DEBUG_MAP;
@@ -65,7 +66,7 @@ public class MapTasksFragment extends MapFragment implements OnMapClickListener,
         //Setting on long click listener
         map.setOnMapLongClickListener(this);
 
-        animToPosition(new LatLng(4.65149, -74.05929)); // Default Bogot?
+//        animToPosition(new LatLng(4.65149, -74.05929)); // Default Bogot?
 
     }
 

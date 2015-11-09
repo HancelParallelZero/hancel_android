@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import io.fabric.sdk.android.Fabric;
@@ -59,47 +61,60 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         startIntro();
         initDrawer();
         showMain();
+        fabHide();
 
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
 
-        Firebase.setAndroidContext(this);
-        fbRef = new Firebase(Config.FIREBASE_MAIN);
-        String trackId = Tools.getAndroidDeviceId(MainActivity.this);
-        Storage.setTrackId(this, trackId);
-
-        fabHide();
-        setContactListener(this);
-
-        loadDataFromIntent();
-
-        if(Storage.isShareLocationEnable(this))startTrackLocationService();
+        new initStartAsync().execute();
 
     }
 
-    private void startIntro() {
-        if(Storage.isFirstIntro(this)){
-            startActivity(new Intent(this, IntroActivity.class));
-            Storage.setFirstIntro(this,false);
+    private class initStartAsync extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            Fabric.with(MainActivity.this, new Crashlytics());
+            Firebase.setAndroidContext(MainActivity.this);
+            fbRef = new Firebase(Config.FIREBASE_MAIN);
+            String trackId = Tools.getAndroidDeviceId(MainActivity.this);
+            Storage.setTrackId(MainActivity.this, trackId);
+
+            setContactListener(MainActivity.this);
+
+            loadDataFromIntent();
+
+            if (Storage.isShareLocationEnable(MainActivity.this)) startTrackLocationService();
+
+            return null;
         }
     }
 
-    private void initMapFragment() {
+    private void startIntro() {
+        if (Storage.isFirstIntro(this)) {
+            startActivity(new Intent(this, IntroActivity.class));
+            Storage.setFirstIntro(this, false);
+        }
+    }
 
-        if(tasksMap==null)tasksMap = new MapTasksFragment();
-        if(tasksMap!=null&&!tasksMap.isVisible()) {
-            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.content_map, tasksMap, MapTasksFragment.TAG);
+    private void showMapFragment() {
+
+        if (tasksMap == null) tasksMap = new MapTasksFragment();
+        if (tasksMap != null && !tasksMap.isVisible()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_default, tasksMap, MapTasksFragment.TAG);
+            ft.addToBackStack(MapTasksFragment.TAG);
             ft.commitAllowingStateLoss();
             tasksMap.getMapAsync(this);
         }
 
     }
+
 
     public void shareLocation() {
         showSnackLong(R.string.msg_home_generate_link);
@@ -108,7 +123,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         startTrackLocationService();
     }
 
-    public void sendSMS(){
+    public void sendSMS() {
         startSMSService();
     }
 
@@ -122,7 +137,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         if (Intent.ACTION_VIEW.equals(action)) { // TODO: maybe OR with BROWSER and others filters
 
-            initMapFragment();
+            showMapFragment();
 
             Uri uri = intent.getData();
             String url = uri.toString();
@@ -210,31 +225,38 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     @Override
+    void showMap() {
+        popBackLastFragment();
+        showMapFragment();
+    }
+
+    @Override
     void showRings() {
+        popBackLastFragment();
         if (mRingsFragment == null) mRingsFragment = new RingsFragment();
         if (!mRingsFragment.isVisible()) showFragment(mRingsFragment, RingsFragment.TAG, true);
     }
 
     @Override
     void showMain() {
+        popBackLastFragment();
         if (mMainFragment == null) mMainFragment = new MainFragment();
-        showFragment(mMainFragment, MainFragment.TAG, false);
+        if (!mMainFragment.isVisible()) showFragment(mMainFragment, MainFragment.TAG, false);
     }
 
     @Override
     void showHelp() {
-
         startActivity(new Intent(this, IntroActivity.class));
     }
 
     @Override
     void showAbout() {
+        popBackLastFragment();
         if (mAboutFragment == null) mAboutFragment = new AboutFragment();
-        showFragment(mAboutFragment, AboutFragment.TAG, true);
+        if (!mAboutFragment.isVisible()) showFragment(mAboutFragment, AboutFragment.TAG, true);
     }
 
     public void showConfirmAlertFragment() {
-
         ConfirmDialogFragment mConfirmDialogFragment = new ConfirmDialogFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(mConfirmDialogFragment, ConfirmDialogFragment.TAG);
@@ -243,7 +265,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     public void showRingEditFragment() {
-
         mRingEditFragment = new RingEditFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(mRingEditFragment, RingEditFragment.TAG);
@@ -276,7 +297,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(TrackLocationService.TRACK_SERVICE_CONNECT)) {
                 if (DEBUG) Log.i(TAG, "[MainActivity] service Connected");
-                if(mMainFragment!=null)mMainFragment.setServiceButtonEnable(true);
+                if (mMainFragment != null) mMainFragment.setServiceButtonEnable(true);
             }
         }
     }
@@ -292,7 +313,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         tasksMap.initMap(googleMap);
-        subscribeAllTrack(getFbRef(), Storage.getTargetTracking(this));
     }
 
     public Firebase getFbRef() {
