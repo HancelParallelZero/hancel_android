@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     public void newTrackId(String trackId, String alias) {
-        
+
     }
 
     private void subscribeLastTrack(Firebase fb, String trackId) {
