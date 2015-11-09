@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if(tasksMap==null)tasksMap = new MapTasksFragment();
         if(tasksMap!=null&&!tasksMap.isVisible()) {
             android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.content_default, tasksMap, MapTasksFragment.TAG);
+            ft.add(R.id.content_map, tasksMap, MapTasksFragment.TAG);
             ft.commitAllowingStateLoss();
             tasksMap.getMapAsync(this);
         }
@@ -123,7 +123,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
 
-            subscribeAllTrack(getFbRef(), uri.getPath());
+            Storage.setTargetTracking(this, uri.getPath());
+
         }
 
     }
@@ -263,6 +264,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         tasksMap.initMap(googleMap);
+        subscribeAllTrack(getFbRef(), Storage.getTargetTracking(this));
     }
 
 

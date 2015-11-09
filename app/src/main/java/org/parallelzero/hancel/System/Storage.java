@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.models.Ring;
@@ -28,6 +29,7 @@ public class Storage {
     private static final String PREF_SAVE_RINGS = "ringsSaved";
     private static final String PREF_SHARE_LOCATION = "shareLocationEnable";
     private static final String PREF_TRACK_ID = "trackId";
+    private static final String PREF_TRACKING_TARGET = "trackingTarget";
 
 
     public static void setLastPanicAlertDate(Context ctx,String time){
@@ -99,7 +101,7 @@ public class Storage {
     public static void setTrackId(Context ctx, String trackId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PREF_TRACK_ID,trackId);
+        editor.putString(PREF_TRACK_ID, trackId);
         editor.commit();
     }
 
@@ -107,4 +109,17 @@ public class Storage {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         return prefs.getString(PREF_TRACK_ID, null);
     }
+
+    public static void setTargetTracking(Context ctx, String path) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PREF_TRACKING_TARGET, path);
+        editor.commit();
+    }
+
+    public static String getTargetTracking(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return prefs.getString(PREF_TRACKING_TARGET, null);
+    }
+
 }
