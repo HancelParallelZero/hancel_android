@@ -65,6 +65,9 @@
         <service android:name=".services.TrackLocationService" />
         <receiver android:name=".services.StatusScheduleReceiver"></receiver>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="78deae26fe9c8f597807a0869205d784cbbdab07" />
     </application>
 
 </manifest>
