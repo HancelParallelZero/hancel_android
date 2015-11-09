@@ -245,6 +245,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
             showRings();
 
         } else if (id == R.id.nav_help) {
+            showHelp();
 
         } else if (id == R.id.nav_about) {
 
@@ -264,6 +265,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnMapRea
     abstract void showRings();
 
     abstract void showMain();
+
+    abstract void showHelp();
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

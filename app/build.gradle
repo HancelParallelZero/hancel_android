@@ -39,4 +39,7 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.google.code.gson:gson:2.2.+'
 
+    compile 'com.github.paolorotolo:appintro:3.2.0'
 }
+
+

@@ -197,6 +197,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         showFragment(mMainFragment, MainFragment.TAG, false);
     }
 
+    @Override
+    void showHelp() {
+        startActivity(new Intent(this, IntroActivity.class));
+    }
+
     public void showRingEditFragment() {
 
         mRingEditFragment = new RingEditFragment();

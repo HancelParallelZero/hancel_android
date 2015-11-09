@@ -32,6 +32,16 @@
      <string name="ring_edit_save">GUARDAR</string>
      <string name="ring_save">GUARDAR ANILLO</string>
      <string name="ring_desc_contacts">contactos</string>
+
+     <!--Intro & help -->
+     <string name="slide0">Crea anillos con tus contactos y alertarlos cuando estes en peligro</string>
+     <string name="slide1">Comparte tu ubicación en zonas peligrosas usando la función rastreo</string>
+     <string name="slide2">Usa el botón de alerta sí afrontas situaciones de peligro inevitabe</string>
+     <string name="slide4">Chatea con otros usuarios Hancel. Todos tus mensajes serán cifrados</string>
+
+     <!--remove this item when the slide backgrounds are ready -->
+     <string name="tmp_slide"></string>
+
      <!-- nuevo -->
 
 </resources>
