@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/rl_rings_header"
         android:layout_width="fill_parent"
-        android:layout_height="160dp"
+        android:layout_height="170dp"
         android:background="@color/mainBackground"
         android:elevation="10dp">
 
@@ -20,6 +20,7 @@
             android:src="@drawable/ic_ring_logo" />
 
         <TextView
+            android:id="@+id/tv_rings_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -32,6 +33,22 @@
             android:text="@string/msg_ring_help"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_rings_desc_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:lines="1"
+            android:text="@string/msg_ring_desc_hint"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
 
     </RelativeLayout>
 

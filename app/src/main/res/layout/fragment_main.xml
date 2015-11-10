@@ -30,8 +30,8 @@
 
     <Button
         android:id="@+id/bt_home_main_alert"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/rl_home_header"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
