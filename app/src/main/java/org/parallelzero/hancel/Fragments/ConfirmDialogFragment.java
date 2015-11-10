@@ -66,6 +66,7 @@ public class ConfirmDialogFragment extends DialogFragment {
             if (!sms_enable) Tools.showToast(getActivity(), R.string.msg_alert_not_rings);
             else {
                 getMain().sendSMS();
+                getDialog().dismiss();
             }
         }
     };

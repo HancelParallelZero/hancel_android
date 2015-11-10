@@ -160,8 +160,15 @@ public class Storage {
     public static void addTracker(Context ctx, String trackId, String alias) {
 
         ArrayList<Track> trackers = getTrackers(ctx);
-        trackers.add(new Track(trackId,alias));
-        saveTrackers(ctx,trackers);
+        trackers.add(new Track(trackId, alias));
+        saveTrackers(ctx, trackers);
 
+    }
+
+    public static boolean isOldTracker(Context ctx,String trackerId) {
+        ArrayList<Track> trackers = getTrackers(ctx);
+        Iterator<Track> it = trackers.iterator();
+        while (it.hasNext())if(it.next().trackId.equals(trackerId))return true;
+        return false;
     }
 }

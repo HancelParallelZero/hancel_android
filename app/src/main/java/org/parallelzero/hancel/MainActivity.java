@@ -149,8 +149,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
 
-            Storage.setTargetTracking(this, uri.getPath());
-            showInputDialogFragment(uri.getPath());
+            String trackerId = uri.getPath();
+            if(!Storage.isOldTracker(this,trackerId)) showInputDialogFragment(trackerId);
 
         }
 
