@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,13 +19,13 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import io.fabric.sdk.android.Fabric;
 
 import org.parallelzero.hancel.Fragments.AboutFragment;
 import org.parallelzero.hancel.Fragments.ConfirmDialogFragment;
+import org.parallelzero.hancel.Fragments.InputDialogFragment;
 import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.Fragments.RingEditFragment;
@@ -35,11 +34,11 @@ import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
+import org.parallelzero.hancel.models.Track;
 import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 
@@ -67,10 +66,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         initDrawer();
         showMain();
         fabHide();
-
-        loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
+        initPermissionsFlow();
 
         new initStartAsync().execute();
+
+        loadDataFromIntent();
 
     }
 
@@ -87,8 +87,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
             setContactListener(MainActivity.this);
 
-            loadDataFromIntent();
-
             if (Storage.isShareLocationEnable(MainActivity.this)) startTrackLocationService();
 
             return null;
@@ -100,6 +98,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             startActivity(new Intent(this, IntroActivity.class));
             Storage.setFirstIntro(this, false);
         }
+    }
+
+    public void initPermissionsFlow(){
+        loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
     }
 
     private void showMapFragment() {
@@ -151,16 +153,18 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
 
             Storage.setTargetTracking(this, uri.getPath());
+            showInputDialogFragment(uri.getPath());
 
         }
 
     }
 
     public void newTrackId(String trackId, String alias) {
-
+        Storage.addTracker(this,trackId,alias);
+        subscribeTrack(getFbRef(), trackId, alias);
     }
 
-    private void subscribeLastTrack(Firebase fb, String trackId) {
+    private void subscribeForSingleTrack(Firebase fb, String trackId, String alias) {
 
         fb.child(trackId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -178,31 +182,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
-    private void subscribeAllTrack(Firebase fb, String trackId) {
-        if (DEBUG) Log.d(TAG, "subscribeAllTrack");
+    private void subscribeTrack(Firebase fb, final String trackId, final String alias) {
+        if (DEBUG) Log.d(TAG, "subscribeTrack");
         fb.child(trackId).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (DEBUG) Log.d(TAG, "onDataChange:");
                 Map<String, Object> tracks = (Map<String, Object>) dataSnapshot.getValue();
-                if (tracks != null) {
-                    List<Location> data = new ArrayList<>();
-                    if (DEBUG) Log.d(TAG, "data: " + tracks.toString());
-                    Iterator<Object> it = tracks.values().iterator();
-                    while (it.hasNext()) {
-                        Map<String, Object> track = (Map<String, Object>) it.next();
-                        Location loc = new Location("");
-                        loc.setLatitude(Double.parseDouble(track.get("latitude").toString()));
-                        loc.setLongitude(Double.parseDouble(track.get("longitude").toString()));
-                        loc.setAccuracy(Float.parseFloat(track.get("accuracy").toString()));
-//                        loc.setBearing(Float.parseFloat(track.get("bearing").toString()));
-                        loc.setTime(Long.parseLong(track.get("time").toString()));
-                        data.add(loc);
-//                        if (DEBUG) Log.d(TAG, "geo: " +track.get("latitude")+","+track.get("longitude"));
-                    }
-                    tasksMap.addPoints(data);
-                } else if (DEBUG) Log.w(TAG, "no data");
+                tasksMap.addPoints(tracks, trackId, alias);
             }
 
             @Override
@@ -272,6 +260,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         ft.commitAllowingStateLoss();
     }
 
+    public void showInputDialogFragment(String trackId) {
+        InputDialogFragment dialog = InputDialogFragment.newInstance(trackId);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(dialog, InputDialogFragment.TAG);
+        ft.show(dialog);
+        ft.commitAllowingStateLoss();
+    }
+
+
     public void showTestDialog() {
         mStackLevel++;
         // DialogFragment.show() will take care of adding the fragment
@@ -304,15 +301,29 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @Override
     protected void onResume() {
-        if (fbConnectReceiver == null) fbConnectReceiver = new OnTrackServiceConnected();
-        IntentFilter intentFilter = new IntentFilter(TrackLocationService.TRACK_SERVICE_CONNECT);
-        registerReceiver(fbConnectReceiver, intentFilter);
         super.onResume();
+        try {
+            if (fbConnectReceiver == null) fbConnectReceiver = new OnTrackServiceConnected();
+            IntentFilter intentFilter = new IntentFilter(TrackLocationService.TRACK_SERVICE_CONNECT);
+            registerReceiver(fbConnectReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         tasksMap.initMap(googleMap);
+        registerTrackers();
+    }
+
+    private void registerTrackers() {
+        ArrayList<Track> trackers = Storage.getTrackers(this);
+        Iterator<Track> it = trackers.iterator();
+        while(it.hasNext()){
+            Track track = it.next();
+            subscribeTrack(getFbRef(),track.trackId,track.alias);
+        }
     }
 
     public Firebase getFbRef() {

@@ -20,7 +20,7 @@ import org.parallelzero.hancel.System.Tools;
  */
 public class InputDialogFragment extends DialogFragment {
 
-    private static final String TAG = InputDialogFragment.class.getSimpleName();
+    public static final String TAG = InputDialogFragment.class.getSimpleName();
     private static final String TRACK_ID = "trackId";
     private static final boolean DEBUG = Config.DEBUG;
 
@@ -29,7 +29,7 @@ public class InputDialogFragment extends DialogFragment {
     private String trackId;
     private String alias;
 
-    static InputDialogFragment newInstance(String trackId){
+    public static InputDialogFragment newInstance(String trackId){
 
         InputDialogFragment dialog = new InputDialogFragment();
 
@@ -73,6 +73,7 @@ public class InputDialogFragment extends DialogFragment {
         public void onClick(View view) {
 
             if(isValidData())getMain().newTrackId(trackId,alias);
+            getDialog().dismiss();
 
         }
     };

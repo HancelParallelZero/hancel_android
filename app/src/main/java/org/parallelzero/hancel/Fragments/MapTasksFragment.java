@@ -24,32 +24,35 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 
 import org.parallelzero.hancel.Config;
+import org.parallelzero.hancel.models.Track;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * Created by hasus on 4/9/15.
  */
-public class MapTasksFragment extends SupportMapFragment implements OnMapClickListener,OnMarkerClickListener,OnMapLongClickListener {
+public class MapTasksFragment extends SupportMapFragment implements OnMapClickListener, OnMarkerClickListener, OnMapLongClickListener {
 
     public static final String TAG = MapTasksFragment.class.getSimpleName();
-    private static final boolean DEBUG = Config.DEBUG&&Config.DEBUG_MAP;
+    private static final boolean DEBUG = Config.DEBUG && Config.DEBUG_MAP;
 
-    private static final int 	ANIM_TIME 	= 1600;
+    private static final int ANIM_TIME = 1600;
     private GoogleMap map;
 
-    private HashMap<Location, Marker> hmMarks=new HashMap<Location, Marker>();
-    private HashMap<Long, String> hmIDs=new HashMap<Long,String>();
+    private HashMap<Track, Marker> hmMarks = new HashMap<Track, Marker>();
+    private HashMap<Long, String> hmIDs = new HashMap<Long, String>();
 
-//    private MGPlatformApi platformApi = new MGPlatformApi();
+    //    private MGPlatformApi platformApi = new MGPlatformApi();
     private Polyline lastPoline;
 
-    public void initMap(GoogleMap map){
-        
-        this.map=map;
+    public void initMap(GoogleMap map) {
+
+        this.map = map;
 
         if (DEBUG) Log.d(TAG, "initMap..");
         UiSettings settings = map.getUiSettings();
@@ -71,29 +74,25 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
     }
 
 
-    public void addPoints(List<Location> data) {
-        Iterator<Location> it = data.iterator();
-        while (it.hasNext()){
-            Location point = it.next();
-            if(!hmIDs.containsKey(point.getTime()))addMark(point);
-            else if(DEBUG)Log.d(TAG,"skip add mark");
+    public void addPoints(List<Track> data) {
+        Iterator<Track> it = data.iterator();
+        while (it.hasNext()) {
+            Track track = it.next();
+            if (!hmIDs.containsKey(track.loc.getTime())) addMark(track);
+            else if (DEBUG) Log.d(TAG, "skip add mark");
         }
     }
 
-    public void addMark(Location location){
-        if(location!=null) {
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(new LatLng(location.getLatitude(),location.getLongitude()))
-                    .rotation(location.getBearing())
-                    );
-            hmIDs.put(location.getTime(),marker.getId());
-            hmMarks.put(location,marker);
-            if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addMark: "+marker.getId());
-
-        }else{
-            if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addMark failed!! SKIP!");
-        }
-
+    public void addMark(Track track) {
+        if (DEBUG)Log.d(TAG,"addMark: "+track.toString());
+        Marker marker = map.addMarker(new MarkerOptions()
+                        .position(new LatLng(track.loc.getLatitude(), track.loc.getLongitude()))
+                        .title(track.alias)
+        );
+        hmIDs.put(track.loc.getTime(), marker.getId());
+        hmMarks.put(track, marker);
+        animToPosition(new LatLng(track.loc.getLatitude(),track.loc.getLongitude()));
+        if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addMark: " + marker.getId());
     }
 
     @Override
@@ -107,7 +106,8 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
 
     }
 
-    private void moveMyLocationButton(View mapView){
+    /*
+    private void moveMyLocationButton(View mapView) {
 
         // Get the button view
         View locationButton = ((View) mapView.findViewById(1).getParent()).findViewById(2);
@@ -119,16 +119,15 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         rlp.setMargins(0, 0, 40, 40);
 
-    }
+    }*/
 
     public void animToPosition(LatLng pos) {
-        if(pos!=null) {
+        if (pos != null) {
             if (DEBUG)
                 Log.d(TAG, "[MAP_FRAGMENT] animateMark at: " + pos.latitude + "," + pos.longitude);
             CameraUpdate center = CameraUpdateFactory.newLatLngZoom(pos, Config.map_zoom_init);
             map.animateCamera(center, ANIM_TIME, null);
-        }else
-            if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] animateMark SKIP! pos is NULL");
+        } else if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] animateMark SKIP! pos is NULL");
 
     }
 
@@ -175,15 +174,39 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
 //    }
 
 
-	private void fixZoom(Polyline route){
+    private void fixZoom(Polyline route) {
 
-		List<LatLng> points = route.getPoints();
-	    LatLngBounds.Builder bc = new LatLngBounds.Builder();
+        List<LatLng> points = route.getPoints();
+        LatLngBounds.Builder bc = new LatLngBounds.Builder();
 
-	    for (LatLng item : points) { bc.include(item); }
-	    map.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
+        for (LatLng item : points) {
+            bc.include(item);
+        }
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
 
-	}
+    }
 
 
+    public void addPoints(Map<String, Object> tracks, String trackId, String alias) {
+        if (tracks != null) {
+            List<Track> data = new ArrayList<>();
+            if (DEBUG) Log.d(TAG, "data: " + tracks.toString());
+            Iterator<Object> it = tracks.values().iterator();
+            while (it.hasNext()) {
+                Map<String, Object> fbtrack = (Map<String, Object>) it.next();
+                Location loc = new Location("");
+                loc.setLatitude(Double.parseDouble(fbtrack.get("latitude").toString()));
+                loc.setLongitude(Double.parseDouble(fbtrack.get("longitude").toString()));
+                loc.setAccuracy(Float.parseFloat(fbtrack.get("accuracy").toString()));
+//                        loc.setBearing(Float.parseFloat(track.get("bearing").toString()));
+                loc.setTime(Long.parseLong(fbtrack.get("time").toString()));
+                Track track = new Track();
+                track.trackId = trackId;
+                track.loc = loc;
+                track.alias=alias;
+                data.add(track);
+            }
+            addPoints(data);
+        } else if (DEBUG) Log.w(TAG, "no data");
+    }
 }

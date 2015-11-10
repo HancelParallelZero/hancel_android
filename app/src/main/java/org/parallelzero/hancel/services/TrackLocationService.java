@@ -38,6 +38,7 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     private Location location;
     private LocationRequest locationRequest;
     private String trackId;
+    private Firebase trackerRef;
 
     public Firebase getFbRef() {
         return fbRef;
@@ -74,9 +75,14 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     public void onDestroy(){
 
         stopLocationService();
+        removeDeviceId();
+        if(DEBUG)Log.i(TAG, "=== onDestroy");
+    }
+
+    private void removeDeviceId(){
+        if(trackerRef!=null)trackerRef.removeValue();
         Firebase fbRef = new Firebase(Config.FIREBASE_MAIN+ "/"+Tools.getAndroidDeviceId(this));
         fbRef.removeValue();
-        if(DEBUG)Log.i(TAG, "=== onDestroy");
     }
 
     public void stopLocationService() {
@@ -89,7 +95,8 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     private void sendDataFrame(Location location) {
 
         if(DEBUG)Log.i(TAG, "=== Sending Tracking to server");
-        Firebase trackerRef = getFbRef().child(trackId).push();
+        if(trackerRef!=null)trackerRef.removeValue();
+        trackerRef = getFbRef().child(trackId).push();
         if (DEBUG) Log.d(TAG, "== trackerRef: " + trackerRef);
         trackerRef.setValue(location, new Firebase.CompletionListener() {
 
@@ -112,7 +119,7 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     private void setupLocationForMap() {
         long fastUpdate = Config.DEFAULT_INTERVAL_FASTER;
         locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(Config.DEFAULT_INTERVAL);
         locationRequest.setFastestInterval(fastUpdate);
     }
