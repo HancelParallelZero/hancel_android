@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/secondaryBackgound"
         android:elevation="10dp">
 
         <EditText
@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:textColorHint="@color/white"
+            android:textColorHint="@color/secondaryText"
             android:layout_marginTop="20dp"
             android:hint="@string/hint_tracking_name"
             />
@@ -29,7 +29,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="@color/colorPrimaryDark"
+            android:backgroundTint="@color/colorPrimary"
             android:text="@string/button_continuar"
             android:textColor="@color/white" />
 

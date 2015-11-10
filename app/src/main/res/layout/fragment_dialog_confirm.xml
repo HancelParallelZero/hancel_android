@@ -6,9 +6,9 @@
 
     <RelativeLayout
         android:id="@+id/rl_alert_dialog_header"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:background="@color/mainBackground"
+        android:background="@color/secondaryBackgound"
         android:elevation="10dp">
 
         <TextView
@@ -23,7 +23,7 @@
             android:gravity="center_horizontal"
             android:lines="3"
             android:text="@string/alert_help"
-            android:textColor="@android:color/white"
+            android:textColor="@color/secondaryText"
             android:textSize="20sp" />
 
 
@@ -34,7 +34,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="@dimen/alert_margin_lateral"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/grey"
             android:text="@string/alert_send_sms"
             android:textColor="@color/white" />
 
@@ -45,7 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/bt_alert_dialog_sms"
             android:layout_marginRight="@dimen/alert_margin_lateral"
-            android:backgroundTint="@color/colorPrimaryDark"
+            android:backgroundTint="@color/colorPrimary"
             android:text="@string/alert_send_share"
             android:textColor="@color/white" />
 

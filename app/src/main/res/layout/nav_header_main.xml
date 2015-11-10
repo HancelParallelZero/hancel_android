@@ -15,7 +15,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/bt_drawer_profile" />
+        android:src="@drawable/hancelb" />
 
     <TextView
         android:layout_width="wrap_content"

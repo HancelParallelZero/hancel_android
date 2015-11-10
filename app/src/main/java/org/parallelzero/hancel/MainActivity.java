@@ -67,11 +67,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         showMain();
         fabHide();
         initPermissionsFlow();
-
         new initStartAsync().execute();
-
         loadDataFromIntent();
-
     }
 
     private class initStartAsync extends AsyncTask {
