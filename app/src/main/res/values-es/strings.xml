@@ -59,5 +59,6 @@
     <string name="hancel_based_on">Basado en</string>
     <string name="content_description_hancel_fractual">Hancel App por Fractual</string>
     <string name="hancel_fractual_link">http://hanselapp.com</string>
+    <string name="msg_ring_desc_hint">Deslizar a la izquier el anillo lo borra a la derecha lo activa o desactiva</string>
 
 </resources>
