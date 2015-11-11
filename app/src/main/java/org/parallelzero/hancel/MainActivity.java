@@ -2,13 +2,16 @@ package org.parallelzero.hancel;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -35,6 +38,8 @@ import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.models.Track;
+import org.parallelzero.hancel.services.HardwareButtonReceiver;
+import org.parallelzero.hancel.services.HardwareButtonService;
 import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.util.ArrayList;
@@ -56,6 +61,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private MainFragment mMainFragment;
     private AboutFragment mAboutFragment;
     private int mStackLevel = 0;
+    private HardwareButtonService mHardwareButtonService;
+    private boolean mBound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         initPermissionsFlow();
         new initStartAsync().execute();
         loadDataFromIntent();
+        startHardwareButtonService();
     }
 
     private class initStartAsync extends AsyncTask {
@@ -123,7 +131,14 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     public void sendSMS() {
-        startSMSService();
+        if(DEBUG) Log.d(TAG, " Before mHardwareButtonService");
+        if(mHardwareButtonService != null ) {
+            if(DEBUG) Log.d(TAG, " mHardwareButtonService ins not null");
+            getHardwareButtonService().sendAlertSMS();
+        }
+        else{
+            if(DEBUG) Log.d(TAG, " mHardwareButtonService is null");
+        }
     }
 
 
@@ -327,4 +342,49 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         return fbRef;
     }
 
+    private void startHardwareButtonService(){
+        if(DEBUG)Log.d(TAG,"startHardwareButtonService");
+        startService(new Intent(this, HardwareButtonService.class));
+        HardwareButtonReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            HardwareButtonService.HardwareButtonServiceBinder binder =
+                    (HardwareButtonService.HardwareButtonServiceBinder) service;
+            mHardwareButtonService = binder.getService();
+            mBound = true;
+            if(DEBUG)Log.d(TAG,"HardwareButtonService onServiceConnected");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            if(DEBUG)Log.d(TAG,"HardwareButtonService onServiceDisconnected");
+            mBound = false;
+        }
+    };
+
+    public HardwareButtonService getHardwareButtonService() {
+        return mHardwareButtonService;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, HardwareButtonService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
 }

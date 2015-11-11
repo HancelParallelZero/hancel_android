@@ -56,40 +56,11 @@
                 android:textColor="@color/text_contrast"
                 android:textSize="12sp" />
 
-            <!--<TextView-->
-                <!--android:id="@+id/basedTitle"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:paddingTop="5dp"-->
-                <!--android:text="@string/about_based_title"-->
-                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                <!--android:textColor="@color/text_contrast"-->
-                <!--android:textSize="15sp"-->
-                <!--android:textStyle="bold" />-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/logoLp"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:contentDescription="@string/content_description_welcome"-->
-                <!--android:paddingTop="10sp"-->
-                <!--android:src="@drawable/logo_linphone_57x57" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/AboutLink"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:autoLink="web"-->
-                <!--android:gravity="center"-->
-                <!--android:text="@string/about_based_link"-->
-                <!--android:textColor="@color/text_contrast"-->
-                <!--android:textSize="12sp" />-->
-
             <TextView
                 android:id="@+id/hancel_based_on"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="15dp"
                 android:text="@string/hancel_based_on"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/text_default"
@@ -123,7 +94,7 @@
                 android:id="@+id/textColaboration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
+                android:paddingTop="15dp"
                 android:text="@string/about_text_colaboration"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/text_default"
@@ -161,7 +132,7 @@
                 android:id="@+id/surveyTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
+                android:paddingTop="15dp"
                 android:text="@string/about_survey_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/text_default"
@@ -184,25 +155,12 @@
                 android:id="@+id/developers_credits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="15dp"
                 android:text="@string/image_credits"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/text_default"
                 android:textSize="15sp"
                 android:textStyle="bold" />
-
-            <!--<TextView-->
-                <!--android:id="@+id/imageCreditsValue"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:autoLink="web"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:lines="15"-->
-                <!--android:padding="15dp"-->
-                <!--android:text="@string/image_credits_value"-->
-                <!--android:textColor="@color/text_contrast"-->
-                <!--android:textSize="14sp" />-->
-
 
             <TextView
                 android:id="@+id/imageCreditsValue"

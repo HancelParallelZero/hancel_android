@@ -1,13 +1,16 @@
 package org.parallelzero.hancel;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.IBinder;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.support.design.widget.FloatingActionButton;
@@ -52,9 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
-
     private FloatingActionButton _fab;
-
     private OnPickerContact contactListener;
 
 
@@ -387,5 +388,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public interface OnPickerContact {
         void onPickerContact(String name, String number, Bitmap photo);
     }
+
+
 
 }

@@ -54,8 +54,10 @@ public class ConfirmDialogFragment extends DialogFragment {
 
         if (Storage.getRingsEnable(getActivity()).size() == 0 || Storage.getRings(getActivity()).size() == 0)
             Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.grey);
-        else
-            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
+        else {
+            //Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
+            sms_enable = true;
+        }
 
     }
 
