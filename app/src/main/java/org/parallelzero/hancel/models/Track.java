@@ -14,6 +14,10 @@ public class Track {
     public String alias;
 
 
+    private int color;
+
+    private boolean enable;
+
     public Track(String trackId, String alias) {
         this.trackId=trackId;
         this.alias=alias;
@@ -23,8 +27,25 @@ public class Track {
 
     }
 
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
     @Override
     public String toString() {
         return "track: "+trackId+" alias:"+alias+" loc:"+loc;
     }
+
 }

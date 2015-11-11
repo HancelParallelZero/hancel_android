@@ -309,6 +309,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         tasksMap.initMap(googleMap);
         registerTrackers();
