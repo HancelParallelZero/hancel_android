@@ -52,6 +52,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     public static final int PERMISSIONS_REQUEST_COARSE_LOCATION = 1;
     private static final int PERMISSIONS_READ_CONTACTS = 2;
+    private static final int PERMISSIONS_SEND_SMS = 3;
+
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
@@ -192,6 +194,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                     if (DEBUG) Log.d(TAG, "PERMISSIONS_REQUEST_FINE_LOCATION PERMISSION_GRANTED");
                     loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, PERMISSIONS_REQUEST_COARSE_LOCATION);
                     loadPermissions(Manifest.permission.READ_CONTACTS, PERMISSIONS_READ_CONTACTS);
+                    loadPermissions(Manifest.permission.SEND_SMS, PERMISSIONS_SEND_SMS);
                 }
                 return;
             }
