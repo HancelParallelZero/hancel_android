@@ -142,8 +142,7 @@ public class Tools {
             );
         }
 
-        final Bitmap output = Bitmap.createBitmap(crop.getWidth(),
-                crop.getHeight(), Bitmap.Config.ARGB_8888);
+        final Bitmap output = Bitmap.createBitmap(crop.getWidth(), crop.getHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(output);
 
         final int color = Color.RED;
@@ -168,19 +167,16 @@ public class Tools {
 
     public static String getGoogleApiKey(Context ctx) {
         try {
-            ApplicationInfo ai = ctx.getPackageManager().getApplicationInfo(
-                    ctx.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo ai = ctx.getPackageManager().getApplicationInfo(ctx.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             String myAPIKey = bundle.getString("clientId");
             System.out.println("API KEY : " + myAPIKey);
             return myAPIKey;
         } catch (PackageManager.NameNotFoundException e) {
-            if (DEBUG) Log.e(TAG,
-                    "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            if (DEBUG) Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
             return null;
         } catch (NullPointerException e) {
-            if (DEBUG) Log.e(TAG,
-                    "Failed to load meta-data, NullPointer: " + e.getMessage());
+            if (DEBUG) Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
             return null;
         }
     }
