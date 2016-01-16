@@ -21,7 +21,7 @@ import java.util.Iterator;
  */
 public class Storage {
 
-    public static final String PREF_GENERAL_PANIC_ALERT = "lastPanic";
+    private static final String PREF_GENERAL_PANIC_ALERT = "lastPanic";
     private static final String PREF_SAVE_RINGS = "ringsSaved";
     private static final String PREF_SHARE_LOCATION = "shareLocationEnable";
     private static final String PREF_TRACK_ID = "trackId";

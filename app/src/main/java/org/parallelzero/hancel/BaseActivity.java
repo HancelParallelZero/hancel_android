@@ -1,13 +1,16 @@
 package org.parallelzero.hancel;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.IBinder;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.support.design.widget.FloatingActionButton;
@@ -49,12 +52,12 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 0;
     public static final int PERMISSIONS_REQUEST_COARSE_LOCATION = 1;
     private static final int PERMISSIONS_READ_CONTACTS = 2;
+    private static final int PERMISSIONS_SEND_SMS = 3;
+
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
-
     private FloatingActionButton _fab;
-
     private OnPickerContact contactListener;
 
 
@@ -191,6 +194,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                     if (DEBUG) Log.d(TAG, "PERMISSIONS_REQUEST_FINE_LOCATION PERMISSION_GRANTED");
                     loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, PERMISSIONS_REQUEST_COARSE_LOCATION);
                     loadPermissions(Manifest.permission.READ_CONTACTS, PERMISSIONS_READ_CONTACTS);
+                    loadPermissions(Manifest.permission.SEND_SMS, PERMISSIONS_SEND_SMS);
                 }
                 return;
             }
@@ -387,5 +391,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public interface OnPickerContact {
         void onPickerContact(String name, String number, Bitmap photo);
     }
+
+
 
 }

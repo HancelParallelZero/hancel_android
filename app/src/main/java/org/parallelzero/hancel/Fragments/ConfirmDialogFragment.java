@@ -52,10 +52,14 @@ public class ConfirmDialogFragment extends DialogFragment {
 
     private void validateSMS() {
 
-        if (Storage.getRingsEnable(getActivity()).size() == 0 || Storage.getRings(getActivity()).size() == 0)
-            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.grey);
-        else
+        if (Storage.getRingsEnable(getActivity()).size() == 0 || Storage.getRings(getActivity()).size() == 0) {
+            Tools.setButtonTintBackground(getActivity(), mButtonSMS, R.color.grey);
+            sms_enable = false;
+        }
+        else {
             Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
+            sms_enable = true;
+        }
 
     }
 

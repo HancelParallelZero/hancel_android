@@ -38,12 +38,12 @@ public class AboutFragment extends Fragment {
             if(DEBUG) Log.i(TAG, "cannot get version name");
         }
 
-//        _sv_about = (ScrollView)view.findViewById(R.id.sv_about);
-//        Animation translatebu= AnimationUtils.loadAnimation(getActivity(), R.anim.about);
-//        _sv_about.startAnimation(translatebu);
-
         _tv_survey = (TextView)view.findViewById(R.id.tv_about_survey);
         _tv_survey.setOnClickListener(onSurverClickListener);
+
+        _sv_about = (ScrollView)view.findViewById(R.id.sv_about);
+        Animation translatebu= AnimationUtils.loadAnimation(getActivity(), R.anim.about);
+        _sv_about.startAnimation(translatebu);
 
         return view;
     }
