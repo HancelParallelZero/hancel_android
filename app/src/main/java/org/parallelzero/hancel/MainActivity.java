@@ -122,7 +122,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
-
     public void shareLocation() {
         showSnackLong(R.string.msg_home_generate_link);
         String share_text = Config.FIREBASE_MAIN + "/" + Storage.getTrackId(this);
