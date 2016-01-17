@@ -128,10 +128,17 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     private void showPartnersFragment() {
         if (mPartnersFragment == null) mPartnersFragment = new MapPartnersFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_map_partners, mPartnersFragment, MapPartnersFragment.TAG);
-        ft.addToBackStack(MapPartnersFragment.TAG);
-        ft.commitAllowingStateLoss();
+        if(!mPartnersFragment.isVisible()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_map_partners, mPartnersFragment, MapPartnersFragment.TAG);
+            ft.addToBackStack(MapPartnersFragment.TAG);
+            ft.commitAllowingStateLoss();
+        }
+    }
+
+    public void removePartnersFragment() {
+        popBackStackSecure(MapPartnersFragment.TAG);
+//        removeFragment(mPartnersFragment);
     }
 
     public void shareLocation() {

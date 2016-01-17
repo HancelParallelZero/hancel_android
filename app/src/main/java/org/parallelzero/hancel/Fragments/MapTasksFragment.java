@@ -14,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 
 import org.parallelzero.hancel.Config;
+import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.models.Track;
 
 import java.util.ArrayList;
@@ -209,4 +209,16 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
             addPoints(data);
         } else if (DEBUG) Log.w(TAG, "no data");
     }
+
+    @Override
+    public void onDestroy() {
+        if (DEBUG) Log.w(TAG, "onDestroy");
+        getMain().removePartnersFragment();
+        super.onDestroy();
+    }
+
+    private MainActivity getMain() {
+        return ((MainActivity)getActivity());
+    }
+
 }
