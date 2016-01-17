@@ -30,6 +30,7 @@ import org.parallelzero.hancel.Fragments.AboutFragment;
 import org.parallelzero.hancel.Fragments.ConfirmDialogFragment;
 import org.parallelzero.hancel.Fragments.InputDialogFragment;
 import org.parallelzero.hancel.Fragments.MainFragment;
+import org.parallelzero.hancel.Fragments.MapPartnersFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.Fragments.RingEditFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
@@ -37,6 +38,7 @@ import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
+import org.parallelzero.hancel.models.Partner;
 import org.parallelzero.hancel.models.Track;
 import org.parallelzero.hancel.services.HardwareButtonReceiver;
 import org.parallelzero.hancel.services.HardwareButtonService;
@@ -60,6 +62,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private RingEditFragment mRingEditFragment;
     private MainFragment mMainFragment;
     private AboutFragment mAboutFragment;
+    private MapPartnersFragment mPartnersFragment;
     private int mStackLevel = 0;
     private HardwareButtonService mHardwareButtonService;
     private boolean mBound;
@@ -119,7 +122,16 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             ft.commitAllowingStateLoss();
             tasksMap.getMapAsync(this);
         }
+        showPartnersFragment();
 
+    }
+
+    private void showPartnersFragment() {
+        if (mPartnersFragment == null) mPartnersFragment = new MapPartnersFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_map_partners, mPartnersFragment, MapPartnersFragment.TAG);
+        ft.addToBackStack(MapPartnersFragment.TAG);
+        ft.commitAllowingStateLoss();
     }
 
     public void shareLocation() {
@@ -339,8 +351,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         while(it.hasNext()){
             Track track = it.next();
             subscribeTrack(getFbRef(),track.trackId,track.alias);
+            mPartnersFragment.addPartner(new Partner(track.alias,track.getLastUpdate()));
         }
     }
+
 
     public Firebase getFbRef() {
         return fbRef;

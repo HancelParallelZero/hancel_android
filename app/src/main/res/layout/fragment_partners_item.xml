@@ -7,7 +7,7 @@
     >
 
     <TextView
-        android:id="@+id/tv_track_alias"
+        android:id="@+id/tv_partner_alias"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -16,11 +16,28 @@
         android:layout_centerHorizontal="true"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
-        android:lines="2"
         android:gravity="center_horizontal"
         android:text="Alias Track"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+
+    <TextView
+        android:id="@+id/tv_partner_last_update"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="end"
+        android:layout_below="@id/tv_partner_alias"
+        android:fontFamily="sans-serif-medium"
+        android:lines="1"
+        android:textSize="11sp"
+        android:gravity="center_horizontal"
+        android:text="Tuesday 13 18:54"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="normal"
         android:textColor="@color/white"
         android:textColorHint="@color/white"/>
 

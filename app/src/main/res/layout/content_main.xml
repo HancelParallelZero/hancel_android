@@ -19,5 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <FrameLayout
+        android:id="@+id/content_map_partners"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="64dp" />
+
+
 
 </RelativeLayout>

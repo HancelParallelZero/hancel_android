@@ -13,10 +13,11 @@ public class Track {
 
     public String alias;
 
-
     private int color;
 
     private boolean enable;
+
+    private String lastUpdate;
 
     public Track(String trackId, String alias) {
         this.trackId=trackId;
@@ -48,4 +49,9 @@ public class Track {
         return "track: "+trackId+" alias:"+alias+" loc:"+loc;
     }
 
+    public String getLastUpdate() {
+        // TODO: set last update on track
+        lastUpdate="Wednesday 23, 17:25";
+        return lastUpdate;
+    }
 }

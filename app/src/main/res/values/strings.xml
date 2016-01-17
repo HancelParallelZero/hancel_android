@@ -64,5 +64,6 @@
     <string name="content_description_hancel_fractual">Hancel App by Fractual</string>
     <string name="hancel_fractual_link">http://hanselapp.com</string>
     <string name="msg_ring_desc_hint">swipe left to delete ring, swipe right to enable/disable ring.</string>
+    <string name="msg_parners_empty">Not active partners</string>
 
 </resources>
