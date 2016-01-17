@@ -33,6 +33,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.google.android.gms.maps.MapFragment;
+
+import org.parallelzero.hancel.Fragments.MapPartnersFragment;
+import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.services.HardwareButtonService;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
@@ -80,10 +84,27 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     public void showFragment(Fragment fragment, String fragmentTag, boolean toStack) {
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_default, fragment, fragmentTag);
-        if (toStack) ft.addToBackStack(fragmentTag);
-        ft.commitAllowingStateLoss();
+        try {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_default, fragment, fragmentTag);
+            if (toStack) ft.addToBackStack(fragmentTag);
+            ft.commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showFragment(Fragment fragment, String fragmentTag, boolean toStack,int content) {
+
+        try {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(content, fragment, fragmentTag);
+            if (toStack) ft.addToBackStack(fragmentTag);
+            ft.commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -116,7 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public void removeFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.remove(fragment);
+        ft.remove(fragment).commit();
     }
 
     public String getLastFragmentName() {
@@ -221,7 +242,11 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             drawer.closeDrawer(GravityCompat.START);
         } else {
             try {
-                super.onBackPressed();
+//                if(getLastFragmentName().equals(MapPartnersFragment.TAG)){
+//                    popBackStackSecure(MapPartnersFragment.TAG);
+//                    popBackStackSecure(MapTasksFragment.TAG);
+//                }else
+                    super.onBackPressed();
             } catch (Exception e) {
                 e.printStackTrace();
             }

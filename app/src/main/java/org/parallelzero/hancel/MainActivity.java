@@ -116,29 +116,23 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         if (tasksMap == null) tasksMap = new MapTasksFragment();
         if (tasksMap != null && !tasksMap.isVisible()) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_default, tasksMap, MapTasksFragment.TAG);
-            ft.addToBackStack(MapTasksFragment.TAG);
-            ft.commitAllowingStateLoss();
+            showFragmentFull(tasksMap,MapTasksFragment.TAG,true);
             tasksMap.getMapAsync(this);
         }
         showPartnersFragment();
-
     }
 
     private void showPartnersFragment() {
         if (mPartnersFragment == null) mPartnersFragment = new MapPartnersFragment();
         if(!mPartnersFragment.isVisible()) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_map_partners, mPartnersFragment, MapPartnersFragment.TAG);
-            ft.addToBackStack(MapPartnersFragment.TAG);
-            ft.commitAllowingStateLoss();
+            showFragment(mPartnersFragment,MapPartnersFragment.TAG,false,R.id.content_map_partners);
         }
     }
 
     public void removePartnersFragment() {
-        popBackStackSecure(MapPartnersFragment.TAG);
-//        removeFragment(mPartnersFragment);
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapPartnersFragment.TAG);
+//        if(fragment != null) getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        removeFragment(mPartnersFragment);
     }
 
     public void shareLocation() {
@@ -358,7 +352,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         while(it.hasNext()){
             Track track = it.next();
             subscribeTrack(getFbRef(),track.trackId,track.alias);
-            mPartnersFragment.addPartner(new Partner(track.alias,track.getLastUpdate()));
+            if(mPartnersFragment!=null)mPartnersFragment.addPartner(new Partner(track.alias,track.getLastUpdate()));
         }
     }
 

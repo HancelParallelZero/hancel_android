@@ -212,7 +212,7 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
 
     @Override
     public void onDestroy() {
-        if (DEBUG) Log.w(TAG, "onDestroy");
+        if (DEBUG) Log.d(TAG, "onDestroy");
         getMain().removePartnersFragment();
         super.onDestroy();
     }
