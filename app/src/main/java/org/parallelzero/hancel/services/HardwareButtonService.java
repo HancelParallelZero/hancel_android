@@ -365,7 +365,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
     public class HardwareButtonServiceBinder extends Binder {
         public HardwareButtonService getService() {
-
             return HardwareButtonService.this;
         }
     }
