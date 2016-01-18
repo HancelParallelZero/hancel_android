@@ -130,8 +130,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     public void removePartnersFragment() {
-//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MapPartnersFragment.TAG);
-//        if(fragment != null) getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         removeFragment(mPartnersFragment);
     }
 

@@ -52,10 +52,10 @@ public class MapPartnersFragment extends Fragment {
 
         mPartnersAdapter = new ListPartnersAdapter();
         mPartnersAdapter.setOnItemClickListener(onItemClickListener);
-        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 12, 20:35"));
-        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 13, 20:35"));
-        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 14, 20:35"));
-        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 15, 20:35"));
+//        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 12, 20:35"));
+//        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 13, 20:35"));
+//        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 14, 20:35"));
+//        mPartnersAdapter.addItem(0,new Partner("testing","Tuesday 15, 20:35"));
         mPartnersRecycler.setAdapter(mPartnersAdapter);
 
         ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mPartnersAdapter);

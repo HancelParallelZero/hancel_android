@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainBackground">
+
+    <RelativeLayout
+        android:id="@+id/rl_alias_header"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@color/secondaryBackgound"
+        android:elevation="10dp">
+
+        <TextView
+            android:id="@+id/tv_alias_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:lines="3"
+            android:text="@string/msg_alias_help"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_alias_alias"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/hint_alias_alias"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/white"
+        android:textColorHint="@color/black" />
+
+    <Button
+        android:id="@+id/bt_alias_accept"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_alias_alias"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/alias_accept" />
+
+</RelativeLayout>

@@ -65,5 +65,8 @@
     <string name="hancel_fractual_link">http://hanselapp.com</string>
     <string name="msg_ring_desc_hint">swipe left to delete ring, swipe right to enable/disable ring.</string>
     <string name="msg_parners_empty">Not active partners</string>
+    <string name="msg_alias_help">Please choose alias or nickname. This alias is showed for your partners</string>
+    <string name="hint_alias_alias">Alias or nickname</string>
+    <string name="alias_accept">ACCEPT</string>
 
 </resources>
