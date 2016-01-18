@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Hancel</string>
+    <string name="key_debug" translatable="false">AIzaSyDvdxR50ECGFT6q2hUxa76PeV9RCYHcHtE</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Ajusted</string>
+    <string name="send_to">Compartir con:</string>
+    <string name="drawer_separator1">Información sobre Hancel</string>
+    drawer_separator1
+
+    <!-- Hardware button alarm service -->
+    <string name="no_panic_alert">Sin alertas</string>
+    <string name="panic_alert_sent">Alerta enviada</string>
+    <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
+    <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
+    <string name="no_configured_rings">No se encontraron anillos configurados</string>
+    <string name="map_provider">http://maps.google.com/?q=</string>
+
+    <!-- Main Layout -->
+    <string name="button_rings">Anillos</string>
+    <string name="button_about">Acerca de</string>
+    <string name="button_history">Historia</string>
+    <string name="button_help">Ayuda</string>
+	<string name="button_share">Compartir</string>
+    <!-- nuevo -->
+    <string name="button_home">Inicio</string>
+    <string name="msg_rings_empty">Adiciona un Anillo</string>
+    <string name="hint_ring_name">Nombre del anillo</string>
+    <string name="ring_pick_contact">Adicionar Contacto</string>
+    <string name="msg_ring_contacts_empty">Adiciona Contactos</string>
+    <string name="msg_ring_help">Crea anillos con contactos de confianza, seran notificados en el momento de una alerta.</string>
+    <string name="error_ring_empty_name">Ingresa un nombre para tu anillo</string>
+    <string name="error_ring_empty_contacts">Ingresa por lo menos un contacto</string>
+    <string name="ring_edit_save">GUARDAR</string>
+    <string name="ring_save">GUARDAR ANILLO</string>
+    <string name="ring_desc_contacts">contactos</string>
+    <string name="msg_home_help">Con Hancel comparte tu ubicación anónimamente o notifica a tus anillos de confianza en cualquier momento.</string>
+    <string name="alert_send_sms">ENVIAR POR SMS</string>
+    <string name="alert_send_share">COMPARTIR</string>
+    <string name="alert_help">Hancel generará un link de tu posición o enviará un SMS a los contactos de tus anillos activos</string>
+    <string name="msg_home_generate_link">Creando link de seguimiento..</string>
+    <string name="home_tracking_service">Compartiendo tú ubicación:</string>
+    <string name="msg_alert_not_rings">No existen anillos activos</string>
+
+    <!-- About -->
+    <string name="about_licence_l1">Hancel %s parallel zero</string>
+    <string name="about_licence_l2">(rfc 3261) GNU GPL License V2</string>
+    <string name="about_based_title">Basado en</string>
+    <string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
+    <string name="about_text_colaboration">Colaboración</string>
+    <string name="about_survey_title">Revisa tu nivel de riesgo</string>
+    <string name="about_survey_link">http://bit.ly/hancel_riesgos</string>
+    <string name="content_description_welcome"></string>
+    <string name="image_credits_value">Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo @amalia_toledo, Gloria Meneses @gpmeneses, Pilar Saenz @mapisaro</string>
+    <string name="image_credits">Creditos en orden alfabetico:</string>
+    <string name="button_map">Mapa</string>
+    <string name="hancel_based_on">Basado en</string>
+    <string name="content_description_hancel_fractual">Hancel App por Fractual</string>
+    <string name="hancel_fractual_link">http://hanselapp.com</string>
+    <string name="msg_ring_desc_hint">Deslizar a la izquier el anillo lo borra a la derecha lo activa o desactiva</string>
+
+</resources>

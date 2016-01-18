@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.parallelzero.hancel">
+    package="org.parallelzero.hancel" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="com.meridian.itinerary.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.meridian.itinerary.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -24,33 +23,34 @@
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".IntroActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <!--
+            intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter
+            -->
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:priority="0">
+            <intent-filter android:priority="0" >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -60,8 +60,6 @@
                     android:host="hancel.firebaseio.com"
                     android:scheme="https" />
             </intent-filter>
-
-
         </activity>
 
         <meta-data
@@ -70,11 +68,13 @@
 
         <!-- Tracking services -->
         <service android:name=".services.TrackLocationService" />
-        <receiver android:name=".services.StatusScheduleReceiver"></receiver>
+
+        <receiver android:name=".services.StatusScheduleReceiver" />
 
         <!-- Hardware button alarm -->
         <service android:name=".services.HardwareButtonService" />
-        <receiver android:name=".services.HardwareButtonReceiver"></receiver>
+
+        <receiver android:name=".services.HardwareButtonReceiver" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

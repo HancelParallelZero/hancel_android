@@ -13,10 +13,13 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -37,7 +40,7 @@ public class Tools {
     public static final String TAG = Tools.class.getSimpleName();
 
 
-	public static void showToast(Context context, int i) {
+    public static void showToast(Context context, int i) {
         int duration = Toast.LENGTH_LONG;
         Toast.makeText(context, i, duration).show();
     }
@@ -46,17 +49,21 @@ public class Tools {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static String getAndroidDeviceId(Context ctx){
-    	return Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
+    public static String getAndroidDeviceId(Context ctx) {
+        return Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-	public static void hideKeyboard(Activity act) {
-		act.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    public static void hideKeyboard(Activity act) {
+        act.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+    public static void setButtonTintBackground(Context ctx,Button mButtonSMS, int tintColor){
+        mButtonSMS.getBackground().setColorFilter(ContextCompat.getColor(ctx, tintColor), PorterDuff.Mode.MULTIPLY);
     }
 
 //	VALIDATORS
 
-	public static boolean isEmailValid(CharSequence email) {
+    public static boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
@@ -80,18 +87,18 @@ public class Tools {
 
     public static boolean isAddressValid(CharSequence address) {
         //TODO
-    	return true;
+        return true;
     }
 
-    public static boolean isValidCarNumber(String carnum){
+    public static boolean isValidCarNumber(String carnum) {
 
-	    Pattern pattern = Pattern.compile("^([a-zA-Z]{2,3}\\d{3,4})$");
-	    Matcher matcher = pattern.matcher(carnum);
-	    return matcher.matches();
+        Pattern pattern = Pattern.compile("^([a-zA-Z]{2,3}\\d{3,4})$");
+        Matcher matcher = pattern.matcher(carnum);
+        return matcher.matches();
 
-	}
+    }
 
-    public static int getVersionCode(Context ctx){
+    public static int getVersionCode(Context ctx) {
         try {
             return ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
 
@@ -101,7 +108,7 @@ public class Tools {
         }
     }
 
-    public static String getVersionName(Context ctx){
+    public static String getVersionName(Context ctx) {
         try {
             return ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionName;
 
@@ -114,7 +121,7 @@ public class Tools {
 
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
         Bitmap crop;
-        if (bitmap.getWidth() >= bitmap.getHeight()){
+        if (bitmap.getWidth() >= bitmap.getHeight()) {
 
             crop = Bitmap.createBitmap(
                     bitmap,
@@ -124,7 +131,7 @@ public class Tools {
                     bitmap.getHeight()
             );
 
-        }else{
+        } else {
 
             crop = Bitmap.createBitmap(
                     bitmap,
@@ -135,8 +142,7 @@ public class Tools {
             );
         }
 
-        final Bitmap output = Bitmap.createBitmap(crop.getWidth(),
-                crop.getHeight(), Bitmap.Config.ARGB_8888);
+        final Bitmap output = Bitmap.createBitmap(crop.getWidth(), crop.getHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(output);
 
         final int color = Color.RED;
@@ -161,19 +167,16 @@ public class Tools {
 
     public static String getGoogleApiKey(Context ctx) {
         try {
-            ApplicationInfo ai = ctx.getPackageManager().getApplicationInfo(
-                    ctx.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo ai = ctx.getPackageManager().getApplicationInfo(ctx.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             String myAPIKey = bundle.getString("clientId");
             System.out.println("API KEY : " + myAPIKey);
             return myAPIKey;
         } catch (PackageManager.NameNotFoundException e) {
-            if(DEBUG) Log.e(TAG,
-                    "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            if (DEBUG) Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
             return null;
         } catch (NullPointerException e) {
-            if(DEBUG) Log.e(TAG,
-                    "Failed to load meta-data, NullPointer: " + e.getMessage());
+            if (DEBUG) Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
             return null;
         }
     }
@@ -182,7 +185,7 @@ public class Tools {
 //        return Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
 //    }
 
-    public static void shareText (Context ctx,String text){
+    public static void shareText(Context ctx, String text) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -197,4 +200,9 @@ public class Tools {
     }
 
 
+    public static void viewLink(Context ctx, String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        ctx.startActivity(i);
+    }
 }

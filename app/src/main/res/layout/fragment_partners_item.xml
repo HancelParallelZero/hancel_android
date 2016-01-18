@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_track"
+    android:layout_width="150dp"
+    android:layout_height="60dp"
+    android:background="@color/colorAccent"
+    android:layout_margin="1dp"
+    >
+
+    <TextView
+        android:id="@+id/tv_partner_alias"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
+        android:text="Alias Track"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+
+    <TextView
+        android:id="@+id/tv_partner_last_update"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="end"
+        android:layout_below="@id/tv_partner_alias"
+        android:fontFamily="sans-serif-medium"
+        android:lines="1"
+        android:textSize="11sp"
+        android:gravity="center_horizontal"
+        android:text="Tuesday 13 18:54"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="normal"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+
+</RelativeLayout>

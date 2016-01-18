@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#E5520F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="mainBackground">#EF7E1D</color>
+    <color name="secondaryBackgound">#E3E3E3</color>
+    <color name="secondaryText">#575756</color>
 
     <!-- GENERIC COLORS -->
     <color name="red">#f00</color>
@@ -17,6 +19,10 @@
     <color name="brown">#584949</color>
     <color name="purple">#950ad7</color>
     <color name="cyan">#00b1ff</color>
+    <color name="text_contrast">#ff000000</color>
+    <color name="text_default">#ff5b656f</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="transwhite">#AAFFFFFF</color>
 
 
 </resources>

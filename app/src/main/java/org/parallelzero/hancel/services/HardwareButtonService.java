@@ -1,6 +1,7 @@
 package org.parallelzero.hancel.services;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -56,8 +57,15 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     private GoogleApiClient mGoogleApiClient;
     private Location lastLocation;
     private SendSMSMessage smsTask;
+    private BroadcastReceiver mReceiver;
     private final IBinder mBinder = new HardwareButtonServiceBinder();
 
+
+    public class HardwareButtonServiceBinder extends Binder {
+        public HardwareButtonService getService() {
+            return HardwareButtonService.this;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -70,7 +78,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         hwButtonReceiver = new HardwareButtonReceiver();
-        registerReceiver(hwButtonReceiver, filter);
+        registerReceiver(mReceiver, filter);
         lastLocation = null;
     }
 
@@ -160,6 +168,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      * Starts the asyncronous task to send the sms messages
      */
     private void startSMSTask() {
+
         if (smsTask == null) {
             smsTask = new SendSMSMessage();
             smsTask.execute();
@@ -368,4 +377,5 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             return HardwareButtonService.this;
         }
     }
+
 }
