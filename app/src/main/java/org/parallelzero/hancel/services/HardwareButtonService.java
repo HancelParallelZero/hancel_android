@@ -166,12 +166,11 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      * Starts the asyncronous task to send the sms messages
      */
     private void startSMSTask() {
-        if (smsTask == null) {
-            if (DEBUG) Log.i(TAG, "=== smsTask is null. Starting task ");
+        if (smsTask == null || smsTask.getStatus() == AsyncTask.Status.FINISHED) {
+            if (DEBUG) Log.i(TAG, "=== smsTask is null or finished. Starting task ");
             smsTask = new SendSMSMessage();
             smsTask.execute();
         }
-        
     }
 
     /**
@@ -326,6 +325,13 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 }
                 if(DEBUG) Log.i(TAG, "=== " + result);
             }
+            try {
+                this.finalize();
+                if (DEBUG) Log.i(TAG, "=== Finalizing smsTask ");
+            } catch (Throwable throwable) {
+                if(DEBUG) Log.i(TAG, "=== Error finalizing the smsTask ");
+                throwable.printStackTrace();
+            }
             return null;
         }
 
@@ -371,34 +377,23 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                             if(DEBUG)Log.i(TAG,"=== Intent OnReceive Sent " + getResultCode() );
                             switch (getResultCode()) {
                                 case Activity.RESULT_OK:
-                                    Toast.makeText(getBaseContext(), getString(R.string.sms_sent),
-                                            Toast.LENGTH_LONG).show();
-                                    //result = "OK";
+                                    result = "OK";
                                     if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_sent));
                                     break;
                                 case SmsManager.RESULT_ERROR_NO_SERVICE:
                                     result = getString(R.string.sms_not_sent);
-                                    /*Toast.makeText(
-                                            getBaseContext(),getString(R.string.sms_not_sent),
-                                            Toast.LENGTH_LONG).show();*/
                                     if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_not_sent));
                                     break;
                                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                                     result = getString(R.string.sms_generic_fail);
-                                    /*Toast.makeText(getBaseContext(), getString(R.string.sms_generic_fail),
-                                            Toast.LENGTH_LONG).show();*/
                                     if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_generic_fail));
                                     break;
                                 case SmsManager.RESULT_ERROR_NULL_PDU:
                                     result = getString(R.string.sms_null_pdu);
-                                    /*Toast.makeText(getBaseContext(), getString(R.string.sms_null_pdu),
-                                            Toast.LENGTH_LONG).show();*/
                                     if(DEBUG)Log.i(TAG,"=== NULL PDU ");
                                     break;
                                 case SmsManager.RESULT_ERROR_RADIO_OFF:
                                     result = getString(R.string.sms_radio_off);
-                                    Toast.makeText(getBaseContext(),getString(R.string.sms_radio_off),
-                                            Toast.LENGTH_LONG).show();
                                     if(DEBUG)Log.i(TAG,"=== Error. Airplane Mode ");
                                     break;
                             }
@@ -414,13 +409,11 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                             if(DEBUG)Log.i(TAG,"=== Intent OnReceive Delivered "  + getResultCode());
                             switch (getResultCode()) {
                                 case Activity.RESULT_OK:
-                                    Toast.makeText(getBaseContext(), getString(R.string.sms_delivered),
-                                            Toast.LENGTH_LONG).show();
+                                    Tools.showToast(getBaseContext(), getString(R.string.sms_delivered));
                                     if(DEBUG)Log.i(TAG,"=== SMS OK  ");
                                     break;
                                 case Activity.RESULT_CANCELED:
-                                    Toast.makeText(getBaseContext(),getString(R.string.sms_canceled),
-                                            Toast.LENGTH_LONG).show();
+                                    Tools.showToast(getBaseContext(), getString(R.string.sms_canceled));
                                     if(DEBUG)Log.i(TAG,"=== SMS Canceled  " );
                                     break;
                             }

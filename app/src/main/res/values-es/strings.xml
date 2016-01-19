@@ -17,6 +17,14 @@
     <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
     <string name="no_configured_rings">No se encontraron anillos configurados</string>
     <string name="map_provider">http://maps.google.com/?q=</string>
+    <string name="any_sms_sent">Imposible enviar mensaje a %count1 contactos de </string>
+    <string name="sms_sent">Mensaje de alerta enviado</string>
+    <string name="sms_not_sent">No Enviado: Servicio no disponible. Verifique su SIM-card.</string>
+    <string name="sms_generic_fail">No Enviado: Falla general."</string>
+    <string name="sms_null_pdu">No Enviado: No se pudo crear el PDU."</string>
+    <string name="sms_radio_off">ALERTA NO ENVIADA. Verifique su móvil tenga desactivado el modo avión. </string>
+    <string name="sms_delivered">Mensaje de alerta recibido.</string>
+    <string name="sms_canceled">No Recibido: Cancelado.</string>
 
     <!-- Main Layout -->
     <string name="button_rings">Anillos</string>
