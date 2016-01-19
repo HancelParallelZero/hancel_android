@@ -13,15 +13,16 @@
     <!-- Hardware button alarm service -->
     <string name="no_panic_alert">No Alerts</string>
     <string name="panic_alert_sent">Alert Sent</string>
-    <string name="tracking_invalid_contac_numbers">Contact numbers are not valid</string>
+    <string name="tracking_invalid_contac_numbers">%count Contact numbers are not valid</string>
     <string name="tracking_SMS_message">[ALERT]I need help. my location is: %map and my battery level is %battery Inform the authorities.\n By Hancel APP, security app</string>
     <string name="no_configured_rings">No configured rings found</string>
     <string name="map_provider">http://maps.google.com/?q=</string>
+    <string name="any_sms_sent">Impossible to send SMS message to %count1 contacts of </string>
     <string name="sms_sent">SMS alert message sent</string>
     <string name="sms_not_sent">Not Sent: No service available. Check your SIM-card.</string>
     <string name="sms_generic_fail">Not Sent: Generic failure."</string>
     <string name="sms_null_pdu">Not Sent: NULL PDU."</string>
-    <string name="sms_radio_off">Not Sent: Radio off. Check your mobile is not in Airplane mode.</string>
+    <string name="sms_radio_off">ALERT NOT SENT. Check your mobile is not in airplane mode. </string>
     <string name="sms_delivered">SMS alert message Delivered.</string>
     <string name="sms_canceled">Not Delivered: Canceled.</string>
 

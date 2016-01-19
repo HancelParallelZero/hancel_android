@@ -93,7 +93,6 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     }
 
     private void sendDataFrame(Location location) {
-
         if(DEBUG)Log.i(TAG, "=== Sending Tracking to server");
         if(trackerRef!=null)trackerRef.removeValue();
         trackerRef = getFbRef().child(trackId).push();
