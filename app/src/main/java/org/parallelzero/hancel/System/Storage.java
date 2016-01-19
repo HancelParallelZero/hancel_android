@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.models.Ring;
 import org.parallelzero.hancel.models.Track;
@@ -28,6 +29,7 @@ public class Storage {
     private static final String PREF_TRACKING_TARGET = "trackingTarget";
     private static final String PREF_FIRST_INTRO = "firsIntro";
     private static final String PREF_SAVE_TRACKERS = "saveTrackers";
+    private static final String PREF_CURRENT_ALIAS = "currentAlias";
 
     public static void setLastPanicAlertDate(Context ctx, String time) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -170,5 +172,17 @@ public class Storage {
         Iterator<Track> it = trackers.iterator();
         while (it.hasNext())if(it.next().trackId.equals(trackerId))return true;
         return false;
+    }
+
+    public static String getCurrentAlias(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return prefs.getString(PREF_CURRENT_ALIAS, "");
+    }
+
+    public static void setCurrentAlias(Context ctx, String alias){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = prefs.edit();
+        ed.putString(PREF_CURRENT_ALIAS, alias);
+        ed.commit();
     }
 }
