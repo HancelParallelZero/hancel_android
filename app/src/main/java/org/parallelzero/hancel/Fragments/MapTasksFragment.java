@@ -1,12 +1,11 @@
 package org.parallelzero.hancel.Fragments;
 
-import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -78,7 +77,7 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
         Iterator<Track> it = data.iterator();
         while (it.hasNext()) {
             Track track = it.next();
-            if (!hmIDs.containsKey(track.loc.getTime())) addMark(track);
+            if (!hmIDs.containsKey(track.upd)) addMark(track);
             else if (DEBUG) Log.d(TAG, "skip add mark");
         }
     }
@@ -86,12 +85,12 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
     public void addMark(Track track) {
         if (DEBUG)Log.d(TAG,"addMark: "+track.toString());
         Marker marker = map.addMarker(new MarkerOptions()
-                        .position(new LatLng(track.loc.getLatitude(), track.loc.getLongitude()))
+                        .position(new LatLng(track.lat, track.lon))
                         .title(track.alias)
         );
-        hmIDs.put(track.loc.getTime(), marker.getId());
+        hmIDs.put(track.upd, marker.getId());
         hmMarks.put(track, marker);
-        animToPosition(new LatLng(track.loc.getLatitude(),track.loc.getLongitude()));
+        animToPosition(new LatLng(track.lat,track.lon));
         if (DEBUG) Log.d(TAG, "[MAP_FRAGMENT] addMark: " + marker.getId());
     }
 
@@ -186,28 +185,41 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
 
     }
 
-
-    public void addPoints(Map<String, Object> tracks, String trackId, String alias) {
+    public void addPoints(Map<String, Object> tracks, String trackId) {
         if (tracks != null) {
             List<Track> data = new ArrayList<>();
             if (DEBUG) Log.d(TAG, "data: " + tracks.toString());
             Iterator<Object> it = tracks.values().iterator();
             while (it.hasNext()) {
                 Map<String, Object> fbtrack = (Map<String, Object>) it.next();
-                Location loc = new Location("");
-                loc.setLatitude(Double.parseDouble(fbtrack.get("latitude").toString()));
-                loc.setLongitude(Double.parseDouble(fbtrack.get("longitude").toString()));
-                loc.setAccuracy(Float.parseFloat(fbtrack.get("accuracy").toString()));
-//                        loc.setBearing(Float.parseFloat(track.get("bearing").toString()));
-                loc.setTime(Long.parseLong(fbtrack.get("time").toString()));
-                Track track = new Track();
-                track.trackId = trackId;
-                track.loc = loc;
-                track.alias=alias;
+                Track track = getTrack(trackId, fbtrack);
                 data.add(track);
             }
             addPoints(data);
         } else if (DEBUG) Log.w(TAG, "no data");
+    }
+
+    @NonNull
+    private static Track getTrack(String trackId, Map<String, Object> fbtrack) {
+        Track track = new Track();
+        track.trackId = trackId;
+        track.alias=fbtrack.get("alias").toString();
+        track.lat=Double.parseDouble(fbtrack.get("lat").toString());
+        track.lon=Double.parseDouble(fbtrack.get("lon").toString());
+        track.acu=Float.parseFloat(fbtrack.get("acu").toString());
+        track.upd=Long.parseLong(fbtrack.get("upd").toString());
+        return track;
+    }
+
+
+    public static Track getTrack(Map<String, Object> tracks,String trackId){
+
+        Iterator<Object> it = tracks.values().iterator();
+        while (it.hasNext()){
+            Map<String, Object> fbtrack = (Map<String, Object>) it.next();
+            return getTrack(trackId, fbtrack);
+        }
+        return null;
     }
 
     @Override

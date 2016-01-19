@@ -135,9 +135,13 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
 
     public void removeFragment(Fragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.remove(fragment).commit();
+        try {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.remove(fragment).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getLastFragmentName() {

@@ -76,5 +76,6 @@
     <string name="msg_alias_help">Please choose alias or nickname. This alias is showed for your partners</string>
     <string name="hint_alias_alias">Alias or nickname</string>
     <string name="alias_accept">ACCEPT</string>
+    <string name="msg_track_invalid">Track invalid</string>
 
 </resources>
