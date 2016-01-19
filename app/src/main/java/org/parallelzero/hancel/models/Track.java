@@ -9,19 +9,26 @@ public class Track {
 
     public String trackId;
 
-    public Location loc;
 
     public String alias;
 
-    private int color;
+    public int color;
 
     private boolean enable;
 
     private String lastUpdate;
 
+    public double lat;
+
+    public double lon;
+
+    public float acu;
+
+    public long upd;
+
     public Track(String trackId, String alias) {
-        this.trackId=trackId;
-        this.alias=alias;
+        this.trackId = trackId;
+        this.alias = alias;
     }
 
     public Track() {
@@ -46,12 +53,12 @@ public class Track {
 
     @Override
     public String toString() {
-        return "track: "+trackId+" alias:"+alias+" loc:"+loc;
+        return "track: " + trackId + " alias:" + alias;
     }
 
     public String getLastUpdate() {
         // TODO: set last update on track
-        lastUpdate="Wednesday 23, 17:25";
+        lastUpdate = "Wednesday 23, 17:25";
         return lastUpdate;
     }
 }

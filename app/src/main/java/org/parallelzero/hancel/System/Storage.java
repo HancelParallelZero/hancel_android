@@ -2,6 +2,7 @@ package org.parallelzero.hancel.System;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.models.Ring;
 import org.parallelzero.hancel.models.Track;
+import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class Storage {
     private static final String PREF_FIRST_INTRO = "firsIntro";
     private static final String PREF_SAVE_TRACKERS = "saveTrackers";
     private static final String PREF_CURRENT_ALIAS = "currentAlias";
+    private static final String PREF_CURRENT_COLOR = "currentColor";
 
     public static void setLastPanicAlertDate(Context ctx, String time) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -159,12 +162,30 @@ public class Storage {
         editor.commit();
     }
 
+    @Deprecated
     public static void addTracker(Context ctx, String trackId, String alias) {
-
         ArrayList<Track> trackers = getTrackers(ctx);
         trackers.add(new Track(trackId, alias));
         saveTrackers(ctx, trackers);
+    }
 
+    public static void addTracker(Context ctx, Track track) {
+        ArrayList<Track> trackers = getTrackers(ctx);
+        trackers.add(track);
+        saveTrackers(ctx, trackers);
+    }
+
+    public static void updateTracker(Context ctx, Track track) {
+        ArrayList<Track> trackers = getTrackers(ctx);
+        Iterator<Track> it = trackers.iterator();
+        while (it.hasNext()){
+            Track currentTrack = it.next();
+            if(currentTrack.trackId.equals(track.trackId)){
+                trackers.remove(trackers.indexOf(currentTrack));
+                trackers.add(track);
+            }
+        }
+        saveTrackers(ctx, trackers);
     }
 
     public static boolean isOldTracker(Context ctx,String trackerId) {
@@ -184,5 +205,10 @@ public class Storage {
         SharedPreferences.Editor ed = prefs.edit();
         ed.putString(PREF_CURRENT_ALIAS, alias);
         ed.commit();
+    }
+
+    public static int getCurrentColor(Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return prefs.getInt(PREF_CURRENT_COLOR, Color.MAGENTA);
     }
 }
