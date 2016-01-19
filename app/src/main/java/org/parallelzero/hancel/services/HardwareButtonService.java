@@ -1,5 +1,7 @@
 package org.parallelzero.hancel.services;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +19,7 @@ import android.os.ResultReceiver;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -60,12 +63,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     private BroadcastReceiver mReceiver;
     private final IBinder mBinder = new HardwareButtonServiceBinder();
 
-
-    public class HardwareButtonServiceBinder extends Binder {
-        public HardwareButtonService getService() {
-            return HardwareButtonService.this;
-        }
-    }
 
     @Override
     public void onCreate() {
@@ -168,7 +165,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      * Starts the asyncronous task to send the sms messages
      */
     private void startSMSTask() {
-
         if (smsTask == null) {
             smsTask = new SendSMSMessage();
             smsTask.execute();
@@ -263,8 +259,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      * or the power button is pressed 4 or more times.
      */
     public class SendSMSMessage extends AsyncTask<Void, Void, Void> {
-        //Contacts con = new Contacts(getApplicationContext());
-
         @Override
         protected void onCancelled() {
         }
@@ -343,7 +337,78 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             SmsManager sms = SmsManager.getDefault();
             try {
                 ArrayList<String> parts = sms.divideMessage(message);
-                sms.sendMultipartTextMessage(mobileNumber, null, parts, null, null);
+                int numParts = parts.size();
+                Context context = getApplicationContext();
+                ArrayList<PendingIntent> sent = new ArrayList<PendingIntent>(numParts);
+                ArrayList<PendingIntent> delivered = new ArrayList<PendingIntent>(numParts);
+                if(DEBUG)Log.i(TAG,"=== Send SMS  ");
+
+                for (int i = 0; i < numParts; i++) {
+                    PendingIntent sentIntent = PendingIntent.getBroadcast(context,
+                            0, new Intent("SENT"), 0);
+                    if(DEBUG)Log.i(TAG,"=== building intents for SMS " );
+
+                    context.registerReceiver(new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context arg0, Intent arg1) {
+                            if(DEBUG)Log.i(TAG,"=== Intent OnReceive Sent " + getResultCode() );
+                            switch (getResultCode()) {
+                                case Activity.RESULT_OK:
+                                    Toast.makeText(getBaseContext(), getString(R.string.sms_sent),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_sent));
+                                    break;
+                                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                                    Toast.makeText(
+                                            getBaseContext(),getString(R.string.sms_not_sent),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_not_sent));
+                                    break;
+                                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                                    Toast.makeText(getBaseContext(), getString(R.string.sms_generic_fail),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_generic_fail));
+                                    break;
+                                case SmsManager.RESULT_ERROR_NULL_PDU:
+                                    Toast.makeText(getBaseContext(), getString(R.string.sms_null_pdu),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== NULL PDU ");
+                                    break;
+                                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                                    Toast.makeText(getBaseContext(),getString(R.string.sms_radio_off),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== Error. Airplane Mode ");
+                                    break;
+                            }
+                        }
+                    }, new IntentFilter("SENT"));
+
+                    sent.add(sentIntent);
+                    PendingIntent deliveredIntent = PendingIntent.getBroadcast(
+                            context, 0, new Intent("DELIVERED"), 0);
+                    context.registerReceiver(new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context arg0, Intent arg1) {
+                            if(DEBUG)Log.i(TAG,"=== Intent OnReceive Delivered "  + getResultCode());
+                            switch (getResultCode()) {
+                                case Activity.RESULT_OK:
+                                    Toast.makeText(getBaseContext(), getString(R.string.sms_delivered),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== SMS OK  ");
+                                    break;
+                                case Activity.RESULT_CANCELED:
+                                    Toast.makeText(getBaseContext(),getString(R.string.sms_canceled),
+                                            Toast.LENGTH_LONG).show();
+                                    if(DEBUG)Log.i(TAG,"=== SMS Canceled  " );
+                                    break;
+                            }
+                        }
+                    }, new IntentFilter("DELIVERED"));
+                    delivered.add(deliveredIntent);
+                }
+
+                sms.sendMultipartTextMessage(mobileNumber, null, parts, sent, delivered);
+
                 if(DEBUG)Log.i(TAG,"=== Message  " + message + " sent to " + mobileNumber);
             }
             catch (Exception e) {
