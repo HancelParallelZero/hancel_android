@@ -250,9 +250,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
                     Map<String, Object> tracks = (Map<String, Object>) dataSnapshot.getValue();
                     if (tracks!=null) {
                         Track track = MapTasksFragment.getTrack(tracks,trackId);
-                        if (Storage.isOldTracker(MainActivity.this, trackId))
-                            Storage.updateTracker(MainActivity.this, track);
-                        else Storage.addTracker(MainActivity.this, track);
+                        if (!Storage.isOldTracker(MainActivity.this, trackId)) Storage.addTracker(MainActivity.this, track);
                         if (tasksMap.isVisible()) tasksMap.addPoints(tracks, trackId);
                     }
                 }
