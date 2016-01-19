@@ -80,9 +80,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         fabHide();
         initPermissionsFlow();
         new initStartAsync().execute();
+        checkAlias();
         loadDataFromIntent();
         startHardwareButtonService();
-        checkAlias();
+
     }
 
     private void checkAlias() {
@@ -190,6 +191,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
             Firebase.setAndroidContext(MainActivity.this);
             fbRef = new Firebase(Config.FIREBASE_MAIN);
+
 
             showMapFragment();
 
