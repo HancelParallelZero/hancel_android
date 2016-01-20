@@ -28,7 +28,7 @@ android {
         applicationId "org.parallelzero.hancel"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 80
+        versionCode 81
         versionName "1.1"
     }
     buildTypes {
