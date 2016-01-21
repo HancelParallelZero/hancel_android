@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationServices;
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
+import org.parallelzero.hancel.models.Track;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/2/15.
@@ -39,6 +40,7 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     private LocationRequest locationRequest;
     private String trackId;
     private Firebase trackerRef;
+    private Firebase oldPush;
 
     public Firebase getFbRef() {
         return fbRef;
@@ -93,12 +95,20 @@ public class TrackLocationService extends Service implements ConnectionCallbacks
     }
 
     private void sendDataFrame(Location location) {
-
         if(DEBUG)Log.i(TAG, "=== Sending Tracking to server");
-        if(trackerRef!=null)trackerRef.removeValue();
-        trackerRef = getFbRef().child(trackId).push();
+//        if(trackerRef!=null)trackerRef.removeValue();
+        if(oldPush!=null)oldPush.removeValue();
+        oldPush = trackerRef = getFbRef().child(trackId).push();
         if (DEBUG) Log.d(TAG, "== trackerRef: " + trackerRef);
-        trackerRef.setValue(location, new Firebase.CompletionListener() {
+        Track track = new Track();
+        track.lat=location.getLatitude();
+        track.lon=location.getLongitude();
+        track.acu=location.getAccuracy();
+        track.upd=location.getTime();
+
+        track.alias=Storage.getCurrentAlias(this);
+        track.color=Storage.getCurrentColor(this);
+        trackerRef.setValue(track, new Firebase.CompletionListener() {
 
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {

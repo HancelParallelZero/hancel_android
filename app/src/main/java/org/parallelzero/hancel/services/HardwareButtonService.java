@@ -1,5 +1,7 @@
 package org.parallelzero.hancel.services;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +19,7 @@ import android.os.ResultReceiver;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -60,12 +63,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     private BroadcastReceiver mReceiver;
     private final IBinder mBinder = new HardwareButtonServiceBinder();
 
-
-    public class HardwareButtonServiceBinder extends Binder {
-        public HardwareButtonService getService() {
-            return HardwareButtonService.this;
-        }
-    }
 
     @Override
     public void onCreate() {
@@ -117,6 +114,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
     public void sendAlertSMS() {
         startLocationService();
+        startSMSTask();
     }
 
 
@@ -168,8 +166,8 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      * Starts the asyncronous task to send the sms messages
      */
     private void startSMSTask() {
-
-        if (smsTask == null) {
+        if (smsTask == null || smsTask.getStatus() == AsyncTask.Status.FINISHED) {
+            if (DEBUG) Log.i(TAG, "=== smsTask is null or finished. Starting task ");
             smsTask = new SendSMSMessage();
             smsTask.execute();
         }
@@ -263,8 +261,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      * or the power button is pressed 4 or more times.
      */
     public class SendSMSMessage extends AsyncTask<Void, Void, Void> {
-        //Contacts con = new Contacts(getApplicationContext());
-
         @Override
         protected void onCancelled() {
         }
@@ -273,6 +269,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
         protected Void doInBackground(Void... params) {
             ArrayList<String> numbers = new ArrayList<String>();
             String location = "";
+            result = "OK";
 
             if (lastLocation != null) {
                 location = getString(R.string.map_provider) + lastLocation.getLatitude() + ","
@@ -291,7 +288,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             }
             else {
                 isSendMesagge = true;
-                int fails = 0;
+                int fails = 0, nonValid = 0;
                 String message = getString(R.string.tracking_SMS_message);
                 message = message.replace("%map", location).replace("%battery",
                         getBatteryLevel() + "%");
@@ -299,20 +296,41 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 for (int i = 0; i < numbers.size(); i++) {
                     try {
                         String number = numbers.get(i).replaceAll("\\D+", "");
-                        if (number != null && number.length() > 0)
+                        if (number != null && number.length() > 0) {
                             sendSMS(number, message);
+                            if(!result.equalsIgnoreCase("OK")) {
+                                fails ++;
+                                if (DEBUG)
+                                    Log.i(TAG, "=== Error sending SMS to: " + numbers.get(i));
+                            }
+                        }
+                        else{
+                            nonValid ++;
+                            fails ++;
+                        }
                     } catch (Exception ex) {
                         if(DEBUG) Log.i(TAG, "=== Error sending SMS to: " + numbers.get(i) + ex.getMessage());
-                        fails += 1;
+                        fails ++;
                     }
                 }
-
-                if (fails == numbers.size()) {
-                    result = getString(R.string.tracking_invalid_contac_numbers);
+                if (fails > 0) {
+                    result += getString(R.string.any_sms_sent);
+                    result = result.replace("%count1", String.valueOf(fails));
+                    result += String.valueOf(numbers.size());
                     if(DEBUG)Log.i(TAG,"=== Error sending SMS to : " + numbers.toString());
                 }
-                else
-                    result = "OK";
+                if (nonValid > 0){
+                    result += getString(R.string.tracking_invalid_contac_numbers);
+                    result.replace("%count", String.valueOf(nonValid));
+                }
+                if(DEBUG) Log.i(TAG, "=== " + result);
+            }
+            try {
+                this.finalize();
+                if (DEBUG) Log.i(TAG, "=== Finalizing smsTask ");
+            } catch (Throwable throwable) {
+                if(DEBUG) Log.i(TAG, "=== Error finalizing the smsTask ");
+                throwable.printStackTrace();
             }
             return null;
         }
@@ -322,28 +340,89 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             super.onPostExecute(r);
             isSendMesagge = false;
 
-            /*if (!Util.isTrackLocationServiceRunning(getApplicationContext())) {
-                Util.inicarServicio(getApplicationContext());
-            }*/
+            if(DEBUG)Log.i(TAG,"=== PostExecute " );
 
             if (result.equalsIgnoreCase("OK")) {
+                //TODO: Check if is necesary to save the datetime for the last alarm sent
                 String currentDateandTime = Tools.getDateFormatTrack(Calendar.getInstance());
                 Storage.setLastPanicAlertDate(getApplicationContext(),
                         currentDateandTime);
-                Tools.showToast(getApplicationContext(), getString(
-                        R.string.panic_alert_sent));
+                /*Tools.showToast(getApplicationContext(), getString(
+                        R.string.panic_alert_sent));*/
+                Tools.showToast(getBaseContext(), getString(R.string.sms_sent));
             }
             else {
                 Tools.showToast(getApplicationContext(), result);
             }
-
         }
 
         private void sendSMS(String mobileNumber, String message) {
             SmsManager sms = SmsManager.getDefault();
             try {
                 ArrayList<String> parts = sms.divideMessage(message);
-                sms.sendMultipartTextMessage(mobileNumber, null, parts, null, null);
+                int numParts = parts.size();
+                Context context = getApplicationContext();
+                ArrayList<PendingIntent> sent = new ArrayList<PendingIntent>(numParts);
+                ArrayList<PendingIntent> delivered = new ArrayList<PendingIntent>(numParts);
+
+                for (int i = 0; i < numParts; i++) {
+                    PendingIntent sentIntent = PendingIntent.getBroadcast(context,
+                            0, new Intent("SENT"), 0);
+                    if(DEBUG)Log.i(TAG,"=== building intents for SMS " );
+
+                    context.registerReceiver(new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context arg0, Intent arg1) {
+                            result = "FAIL";
+                            if(DEBUG)Log.i(TAG,"=== Intent OnReceive Sent " + getResultCode() );
+                            switch (getResultCode()) {
+                                case Activity.RESULT_OK:
+                                    result = "OK";
+                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_sent));
+                                    break;
+                                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                                    result = getString(R.string.sms_not_sent);
+                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_not_sent));
+                                    break;
+                                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                                    result = getString(R.string.sms_generic_fail);
+                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_generic_fail));
+                                    break;
+                                case SmsManager.RESULT_ERROR_NULL_PDU:
+                                    result = getString(R.string.sms_null_pdu);
+                                    if(DEBUG)Log.i(TAG,"=== NULL PDU ");
+                                    break;
+                                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                                    result = getString(R.string.sms_radio_off);
+                                    if(DEBUG)Log.i(TAG,"=== Error. Airplane Mode ");
+                                    break;
+                            }
+                        }
+                    }, new IntentFilter("SENT"));
+
+                    sent.add(sentIntent);
+                    PendingIntent deliveredIntent = PendingIntent.getBroadcast(
+                            context, 0, new Intent("DELIVERED"), 0);
+                    context.registerReceiver(new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context arg0, Intent arg1) {
+                            if(DEBUG)Log.i(TAG,"=== Intent OnReceive Delivered "  + getResultCode());
+                            switch (getResultCode()) {
+                                case Activity.RESULT_OK:
+                                    Tools.showToast(getBaseContext(), getString(R.string.sms_delivered));
+                                    if(DEBUG)Log.i(TAG,"=== SMS OK  ");
+                                    break;
+                                case Activity.RESULT_CANCELED:
+                                    Tools.showToast(getBaseContext(), getString(R.string.sms_canceled));
+                                    if(DEBUG)Log.i(TAG,"=== SMS Canceled  " );
+                                    break;
+                            }
+                        }
+                    }, new IntentFilter("DELIVERED"));
+                    delivered.add(deliveredIntent);
+                }
+
+                sms.sendMultipartTextMessage(mobileNumber, null, parts, sent, delivered);
                 if(DEBUG)Log.i(TAG,"=== Message  " + message + " sent to " + mobileNumber);
             }
             catch (Exception e) {
@@ -367,10 +446,14 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 }
             }
             if(DEBUG)Log.i(TAG, "=== Number of contacts to notify: " + numbers.size());
-
             return numbers;
         }
     }
 
+    public class HardwareButtonServiceBinder extends Binder {
+        public HardwareButtonService getService() {
+            return HardwareButtonService.this;
+        }
+    }
 
 }

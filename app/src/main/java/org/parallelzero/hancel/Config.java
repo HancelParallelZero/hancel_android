@@ -22,7 +22,7 @@ public class Config {
 	public static final long    LOCATION_ROUTE_INTERVAL = 1000 * 60;
 	public static final long    LOCATION_MAP_INTERVAL = 1000 * 120;
 
-	public static final int		VIBRATION_TIME_SMS = 1000;
+	public static final int		VIBRATION_TIME_SMS = 500;
 
 	public static final String FIREBASE_MAIN = "https://hancel.firebaseio.com";
 	public static final String FIREBASE_TRANSACTIONS = "tracks";

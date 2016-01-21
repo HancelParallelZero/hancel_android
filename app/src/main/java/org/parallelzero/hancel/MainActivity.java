@@ -27,6 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import io.fabric.sdk.android.Fabric;
 
 import org.parallelzero.hancel.Fragments.AboutFragment;
+import org.parallelzero.hancel.Fragments.AliasFragment;
 import org.parallelzero.hancel.Fragments.ConfirmDialogFragment;
 import org.parallelzero.hancel.Fragments.InputDialogFragment;
 import org.parallelzero.hancel.Fragments.MainFragment;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private MainFragment mMainFragment;
     private AboutFragment mAboutFragment;
     private MapPartnersFragment mPartnersFragment;
+    private AliasFragment mAliasFragment;
+
     private int mStackLevel = 0;
     private HardwareButtonService mHardwareButtonService;
     private boolean mBound;
@@ -74,12 +77,18 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         startIntro();
         initDrawer();
-        showMain();
         fabHide();
         initPermissionsFlow();
         new initStartAsync().execute();
+        checkAlias();
         loadDataFromIntent();
         startHardwareButtonService();
+
+    }
+
+    private void checkAlias() {
+        if(Storage.getCurrentAlias(this).equals(""))showAliasFragment();
+        else showMain();
     }
 
     private class initStartAsync extends AsyncTask {
@@ -112,8 +121,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
     }
 
+    private void showMainFragment() {
+        popBackLastFragment();
+        if (mMainFragment == null) mMainFragment = new MainFragment();
+        if (!mMainFragment.isVisible()) showFragment(mMainFragment, MainFragment.TAG, false);
+    }
+
     private void showMapFragment() {
 
+        popBackLastFragment();
         if (tasksMap == null) tasksMap = new MapTasksFragment();
         if (tasksMap != null && !tasksMap.isVisible()) {
             showFragmentFull(tasksMap,MapTasksFragment.TAG,true);
@@ -125,8 +141,20 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private void showPartnersFragment() {
         if (mPartnersFragment == null) mPartnersFragment = new MapPartnersFragment();
         if(!mPartnersFragment.isVisible()) {
-            showFragment(mPartnersFragment,MapPartnersFragment.TAG,false,R.id.content_map_partners);
+            showFragment(mPartnersFragment, MapPartnersFragment.TAG, false, R.id.content_map_partners);
         }
+    }
+
+    private void showAliasFragment() {
+        if (mAliasFragment == null) mAliasFragment = new AliasFragment();
+        if(!mAliasFragment.isVisible()) {
+            showFragment(mAliasFragment,AliasFragment.TAG,false);
+        }
+    }
+
+    public void removeAliasFragment() {
+        removeFragment(mAliasFragment);
+        showMain();
     }
 
     public void removePartnersFragment() {
@@ -159,7 +187,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: ACTION:" + action);
 
-        if (Intent.ACTION_VIEW.equals(action)) { // TODO: maybe OR with BROWSER and others filters
+        if (Intent.ACTION_VIEW.equals(action)&&Storage.getCurrentAlias(this).length()!=0) { // TODO: maybe OR with BROWSER and others filters
+
+            Firebase.setAndroidContext(MainActivity.this);
+            fbRef = new Firebase(Config.FIREBASE_MAIN);
+
 
             showMapFragment();
 
@@ -174,16 +206,18 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
             if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
 
-            String trackerId = uri.getPath();
-            if(!Storage.isOldTracker(this,trackerId)) showInputDialogFragment(trackerId);
+            String trackId = uri.getPath();
+//            if(!Storage.isOldTracker(this,trackId)) showInputDialogFragment(trackerId);
+            subscribeTrack(getFbRef(), trackId);
 
         }
 
     }
 
+    @Deprecated
     public void newTrackId(String trackId, String alias) {
         Storage.addTracker(this,trackId,alias);
-        subscribeTrack(getFbRef(), trackId, alias);
+//        subscribeTrack(getFbRef(), trackId, alias);
     }
 
     private void subscribeForSingleTrack(Firebase fb, String trackId, String alias) {
@@ -204,22 +238,31 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
-    private void subscribeTrack(Firebase fb, final String trackId, final String alias) {
-        if (DEBUG) Log.d(TAG, "subscribeTrack");
-        fb.child(trackId).addValueEventListener(new ValueEventListener() {
+    private void subscribeTrack(Firebase fb, final String trackId) {
+        if (DEBUG) Log.d(TAG, "subscribeTrack: " + trackId);
+        Firebase child = fb.child(trackId);
+        if(child!=null){
+            child.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (DEBUG) Log.d(TAG, "onDataChange:");
-                Map<String, Object> tracks = (Map<String, Object>) dataSnapshot.getValue();
-                tasksMap.addPoints(tracks, trackId, alias);
-            }
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (DEBUG) Log.d(TAG, "onDataChange:");
+                    Map<String, Object> tracks = (Map<String, Object>) dataSnapshot.getValue();
+                    if (tracks!=null) {
+                        Track track = MapTasksFragment.getTrack(tracks,trackId);
+                        if (!Storage.isOldTracker(MainActivity.this, trackId)) Storage.addTracker(MainActivity.this, track);
+                        if (tasksMap.isVisible()) tasksMap.addPoints(tracks, trackId);
+                    }
+                }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                if (DEBUG) Log.d(TAG, "firebaseError:" + firebaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    if (DEBUG) Log.d(TAG, "firebaseError:" + firebaseError.getMessage());
+                }
+            });
+        }else
+            Tools.showToast(this,R.string.msg_track_invalid);
+
 
     }
 
@@ -249,9 +292,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @Override
     void showMain() {
-        popBackLastFragment();
-        if (mMainFragment == null) mMainFragment = new MainFragment();
-        if (!mMainFragment.isVisible()) showFragment(mMainFragment, MainFragment.TAG, false);
+        showMainFragment();
     }
 
     @Override
@@ -349,11 +390,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         Iterator<Track> it = trackers.iterator();
         while(it.hasNext()){
             Track track = it.next();
-            subscribeTrack(getFbRef(),track.trackId,track.alias);
+            subscribeTrack(getFbRef(),track.trackId);
             if(mPartnersFragment!=null)mPartnersFragment.addPartner(new Partner(track.alias,track.getLastUpdate()));
         }
     }
-
 
     public Firebase getFbRef() {
         return fbRef;
