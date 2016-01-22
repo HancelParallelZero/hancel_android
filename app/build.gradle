@@ -10,8 +10,8 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
-if(project.hasProperty("MyProject.signing") && new File(project.property("MyProject.signing") + ".gradle").exists()) {
-    apply from: project.property("MyProject.signing") + ".gradle";
+if(project.hasProperty("hancel.signing") && new File(project.property("hancel.signing") + ".gradle").exists()) {
+    apply from: project.property("hancel.signing") + ".gradle";
 }
 
 repositories {
