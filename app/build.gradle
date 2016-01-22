@@ -10,18 +10,15 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
+if(project.hasProperty("MyProject.signing") && new File(project.property("MyProject.signing") + ".gradle").exists()) {
+    apply from: project.property("MyProject.signing") + ".gradle";
+}
+
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-
 android {
-    signingConfigs {
-        signed_default {
-            keyAlias 'HancelParallelZero'
-            keyPassword 'saturn097607'
-        }
-    }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
     defaultConfig {
@@ -31,6 +28,7 @@ android {
         versionCode 81
         versionName "1.1"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -51,6 +49,7 @@ android {
             ext.betaDistributionEmails = "gpmeneses@gmail.com"
         }
     }
+
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'

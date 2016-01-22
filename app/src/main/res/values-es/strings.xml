@@ -1,15 +1,10 @@
 <resources>
-    <string name="app_name">Hancel</string>
-    <string name="key_debug" translatable="false">AIzaSyDvdxR50ECGFT6q2hUxa76PeV9RCYHcHtE</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Ajusted</string>
     <string name="send_to">Compartir con:</string>
     <string name="drawer_separator1">Información sobre Hancel</string>
-    drawer_separator1
-
     <!-- Hardware button alarm service -->
     <string name="no_panic_alert">Sin alertas</string>
     <string name="panic_alert_sent">Alerta enviada</string>
@@ -53,8 +48,6 @@
     <string name="msg_alert_not_rings">No existen anillos activos</string>
 
     <!-- About -->
-    <string name="about_licence_l1">Hancel %s parallel zero</string>
-    <string name="about_licence_l2">(rfc 3261) GNU GPL License V2</string>
     <string name="about_based_title">Basado en</string>
     <string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
     <string name="about_text_colaboration">Colaboración</string>

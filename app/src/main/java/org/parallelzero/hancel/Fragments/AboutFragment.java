@@ -30,13 +30,10 @@ public class AboutFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.about, container, false);
         TextView aboutText = (TextView) view.findViewById(R.id.AboutTextL1);
-        try {
-            aboutText.setText(String.format(getString(R.string.about_licence_l1),
-                    getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            if(DEBUG) Log.i(TAG, "cannot get version name");
-        }
+
+        aboutText.setText(String.format(getString(R.string.about_licence_l1),
+                    Tools.getVersionName(getActivity()),
+                    ""+Tools.getVersionCode(getActivity())));
 
         _tv_survey = (TextView)view.findViewById(R.id.tv_about_survey);
         _tv_survey.setOnClickListener(onSurverClickListener);

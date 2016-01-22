@@ -53,7 +53,7 @@
     <string name="msg_alert_not_rings">There are not active rings</string>
 
     <!-- About -->
-    <string name="about_licence_l1">Hancel %s parallel zero</string>
+    <string formatted="false" name="about_licence_l1">Hancel %s (rev%s) Parallel Zero</string>
     <string name="about_licence_l2">(rfc 3261) GNU GPL License V2</string>
     <string name="about_based_title">Based on</string>
     <string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
