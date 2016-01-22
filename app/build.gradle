@@ -25,7 +25,7 @@ android {
         applicationId "org.parallelzero.hancel"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 81
+        versionCode 82
         versionName "1.1"
     }
 
@@ -46,7 +46,7 @@ android {
         }
         prod {
             minSdkVersion 15
-            ext.betaDistributionEmails = "gpmeneses@gmail.com"
+            ext.betaDistributionEmailsFilePath="beta_distribution_emails.txt"
         }
     }
 
