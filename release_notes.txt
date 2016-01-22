@@ -1,0 +1,10 @@
+20160122 revision 82
+
+- bottom scroll list for partners
+- SMS via roaming
+- fix many bugs (tracking)
+- implementation crashlytics Beta Testers
+- automatic distribution via gradle
+- others minors
+
+
