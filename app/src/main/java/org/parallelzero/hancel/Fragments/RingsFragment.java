@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
@@ -33,17 +35,23 @@ public class RingsFragment extends Fragment {
     private RecyclerView mRingsRecycler;
     private ListRingsAdapter mRingsAdapter;
     private TextView mEmptyMessage;
+    private FloatingActionButton mAddRingFromContacts;
+    private FloatingActionButton mAddRingFromQRCode;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_rings,container,false);
-        getMain().fabSetOnClickListener(onRingAddClickListener);
-        getMain().fabShow();
 
         mEmptyMessage = (TextView)view.findViewById(R.id.tv_rings_empty_list);
         mRingsRecycler= (RecyclerView) view.findViewById(R.id.rv_rings);
+        mAddRingFromContacts = (FloatingActionButton) view.findViewById(R.id.bt_rings_from_contacts);
+        mAddRingFromQRCode = (FloatingActionButton) view.findViewById(R.id.bt_rings_from_qrcode);
+        mAddRingFromContacts.setIconDrawable(getResources().getDrawable(R.drawable.ic_contact_mail_white_36dp,getActivity().getTheme()));
+        mAddRingFromQRCode.setIconDrawable(getResources().getDrawable(R.drawable.ic_qrcode_scan_white_36dp,getActivity().getTheme()));
+        mAddRingFromContacts.setOnClickListener(onRingAddFromContactsListener);
+        mAddRingFromQRCode.setOnClickListener(onRingAddFromQRcodeListener);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mRingsRecycler.setLayoutManager(gridLayoutManager);
@@ -146,10 +154,19 @@ public class RingsFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener onRingAddClickListener = new View.OnClickListener() {
+    private View.OnClickListener onRingAddFromContactsListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(DEBUG) Log.d(TAG, "onRingAddClickListener");
+            if(DEBUG) Log.d(TAG, "onRingAddFromContactsListener");
+            getMain().showRingEditFragment();
+        }
+
+
+    };
+    private View.OnClickListener onRingAddFromQRcodeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(DEBUG) Log.d(TAG, "onRingAddFromQRcodeListener");
             getMain().showRingEditFragment();
         }
     };

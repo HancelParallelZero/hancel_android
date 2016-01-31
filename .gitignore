@@ -45,3 +45,6 @@ build/
 #NDK
 obj/
 app/fabric.properties
+
+#Crashlytics
+com_crashlytics_export_strings.xml

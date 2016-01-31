@@ -29,7 +29,7 @@ public class ConfirmDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int theme=R.style.BaseTheme_Dialog;
-        int style = DialogFragment.STYLE_NO_TITLE;
+        int style = DialogFragment.STYLE_NORMAL;
         setStyle(style, theme);
     }
 

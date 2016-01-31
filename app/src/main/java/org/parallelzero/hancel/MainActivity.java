@@ -91,8 +91,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         else showMain();
     }
 
-
-
     private class initStartAsync extends AsyncTask {
 
         @Override

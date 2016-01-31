@@ -76,5 +76,7 @@
     <string name="hint_alias_alias">Alias or nickname</string>
     <string name="alias_accept">ACCEPT</string>
     <string name="msg_track_invalid">Track invalid</string>
+    <string name="rings_label_from_contacts">From Contacts..</string>
+    <string name="rings_label_from_qrcode">From QR code..</string>
 
 </resources>
