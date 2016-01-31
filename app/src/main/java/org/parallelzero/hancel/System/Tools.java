@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,6 +17,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -26,6 +29,9 @@ import android.widget.Toast;
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -205,4 +211,30 @@ public class Tools {
         i.setData(Uri.parse(url));
         ctx.startActivity(i);
     }
+
+    public static Bitmap getContactBitmapFromURI(Context ctx, Uri uri) {
+        Cursor cursor = ctx.getContentResolver().query(uri, new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            if (DEBUG) Log.e(TAG, "Failed getContact cursor");
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return BitmapFactory.decodeStream(new ByteArrayInputStream(data));
+                }else
+                if (DEBUG) Log.e(TAG, "Failed getContact data is null");
+            } else{
+                if (DEBUG) Log.e(TAG, "Failed getContact cursor index");
+            }
+        } finally {
+            cursor.close();
+        }
+
+        if (DEBUG) Log.e(TAG, "Failed getContact bitmap");
+        return null;
+
+    }
+
 }

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.support.design.widget.FloatingActionButton;
@@ -62,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     private Uri uriContact;
     private FloatingActionButton _fab;
-    private OnPickerContact contactListener;
+    private OnPickerContactUri contactListener;
 
 
     public void initDrawer() {
@@ -346,8 +347,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             String name = retrieveContactName();
             String number = retrieveContactNumber();
             Bitmap photo = retrieveContactPhoto();
+            Uri uri = retrieveContactPhotoUri();
+            if (DEBUG) Log.d(TAG, "Contact Uri Photo: " + uri.toString());
 
-            if (contactListener != null) contactListener.onPickerContact(name, number, photo);
+            if (contactListener != null) contactListener.onPickerContact(name, number, uri);
 
         }
 
@@ -412,13 +415,37 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     }
 
-    public void setContactListener(OnPickerContact contactListener) {
+    private Uri retrieveContactPhotoUri() {
+
+        Cursor cursorID = getContentResolver().query(uriContact, new String[]{Contacts._ID}, null, null, null);
+        String contactID = "";
+        if (cursorID != null && cursorID.moveToFirst()) {
+            contactID = cursorID.getString(cursorID.getColumnIndex(Contacts._ID));
+            cursorID.close();
+        }
+//
+////        return Uri.withAppendedPath(Contacts.CONTENT_URI,contactID);
+//        return ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(contactID));
+
+        Uri contactUri = ContentUris.withAppendedId(Contacts.CONTENT_URI,new Long(contactID));
+        Uri photoUri = Uri.withAppendedPath(contactUri, Contacts.Photo.CONTENT_DIRECTORY);
+
+        return photoUri;
+
+
+    }
+
+    public void setContactListener(OnPickerContactUri contactListener) {
         this.contactListener = contactListener;
     }
 
 
     public interface OnPickerContact {
         void onPickerContact(String name, String number, Bitmap photo);
+    }
+
+    public interface OnPickerContactUri {
+        void onPickerContact(String name, String number, Uri uri);
     }
 
 

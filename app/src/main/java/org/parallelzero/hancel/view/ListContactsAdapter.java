@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.parallelzero.hancel.R;
+import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.view.ListContactsAdapter.ContactViewHolder;
 
@@ -40,7 +44,8 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
         final Contact contact = contacts.get(position);
         holder.contact_name.setText(contact.getName());
         holder.contact_phone.setText(contact.getPhone());
-//        holder.contact_photo.setImageBitmap(contact.getPhoto());
+//        Picasso.with(ctx).load(contact.photoUri).into(holder.contact_photo);
+//        holder.contact_photo.setImageBitmap(Tools.getContactBitmapFromURI(ctx,contact.photoUri));
     }
 
     @Override
@@ -115,7 +120,7 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
 
         protected final TextView contact_name;
         protected final TextView contact_phone;
-//        protected final ImageView contact_photo;
+        protected final ImageView contact_photo;
 
         private final ListContactsAdapter mAdapter;
 
@@ -126,7 +131,7 @@ public class ListContactsAdapter extends RecyclerView.Adapter<ContactViewHolder>
             this.mAdapter = adapter;
             contact_name = (TextView) itemView.findViewById(R.id.tv_contact_name);
             contact_phone = (TextView) itemView.findViewById(R.id.tv_contact_phone);
-//            contact_photo = (ImageView) itemView.findViewById(R.id.iv_contact_icon);
+            contact_photo = (ImageView) itemView.findViewById(R.id.iv_contact_icon);
         }
 
         @Override

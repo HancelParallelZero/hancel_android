@@ -169,13 +169,14 @@ public class Storage {
         saveTrackers(ctx, trackers);
     }
 
-    public static void addTracker(Context ctx, Track track) {
+
+    synchronized public static void addTracker(Context ctx, Track track) {
         ArrayList<Track> trackers = getTrackers(ctx);
         trackers.add(track);
         saveTrackers(ctx, trackers);
     }
 
-    public static void updateTracker(Context ctx, Track track) {
+    synchronized public static void updateTracker(Context ctx, Track track) {
         ArrayList<Track> trackers = getTrackers(ctx);
         Iterator<Track> it = trackers.iterator();
         while (it.hasNext()){

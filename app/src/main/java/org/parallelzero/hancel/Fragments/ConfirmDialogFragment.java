@@ -1,9 +1,7 @@
 package org.parallelzero.hancel.Fragments;
 
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +28,9 @@ public class ConfirmDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        int theme=R.style.BaseTheme_Dialog;
         int style = DialogFragment.STYLE_NO_TITLE;
-        setStyle(style, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        setStyle(style, theme);
     }
 
     @Override

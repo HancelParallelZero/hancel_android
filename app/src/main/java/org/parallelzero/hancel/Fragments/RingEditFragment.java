@@ -46,9 +46,10 @@ public class RingEditFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        int theme = android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
+        int theme = R.style.BaseTheme_DialogHeigh;
         int style = DialogFragment.STYLE_NORMAL;
-        setStyle(style,android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        setStyle(style,theme);
 
     }
 

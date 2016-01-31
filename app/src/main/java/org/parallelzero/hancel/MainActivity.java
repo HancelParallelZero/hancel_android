@@ -50,7 +50,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContact, OnMapReadyCallback {
+public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContactUri, OnMapReadyCallback {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
@@ -90,6 +90,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if(Storage.getCurrentAlias(this).equals(""))showAliasFragment();
         else showMain();
     }
+
+
 
     private class initStartAsync extends AsyncTask {
 
@@ -251,6 +253,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
                     if (tracks!=null) {
                         Track track = MapTasksFragment.getTrack(tracks,trackId);
                         if (!Storage.isOldTracker(MainActivity.this, trackId)) Storage.addTracker(MainActivity.this, track);
+//                        else Storage.updateTracker(MainActivity.this,track);
                         if (tasksMap.isVisible()) tasksMap.addPoints(tracks, trackId);
                     }
                 }
@@ -266,15 +269,24 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
-    @Override
-    public void onPickerContact(String name, String phone, Bitmap photo) {
+//    @Override
+//    public void onPickerContact(String name, String phone, Bitmap photo) {
+//
+//        if (DEBUG) Log.d(TAG, "Contact Name: " + name);
+//        if (DEBUG) Log.d(TAG, "Contact Phone Number: " + phone);
+//
+//        if (mRingEditFragment != null)
+//            mRingEditFragment.addConctact(new Contact(name, phone, photo));
+//
+//    }
 
+    @Override
+    public void onPickerContact(String name, String phone, Uri uri) {
         if (DEBUG) Log.d(TAG, "Contact Name: " + name);
         if (DEBUG) Log.d(TAG, "Contact Phone Number: " + phone);
 
         if (mRingEditFragment != null)
-            mRingEditFragment.addConctact(new Contact(name, phone, photo));
-
+            mRingEditFragment.addConctact(new Contact(name, phone, uri));
     }
 
     @Override

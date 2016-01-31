@@ -108,7 +108,7 @@ public class MapTasksFragment extends SupportMapFragment implements OnMapClickLi
     /*
     private void moveMyLocationButton(View mapView) {
 
-        // Get the button view
+        // Get the button vie
         View locationButton = ((View) mapView.findViewById(1).getParent()).findViewById(2);
 
         // and next place it, for exemple, on bottom right (as Google Maps app)

@@ -1,11 +1,14 @@
 package org.parallelzero.hancel.models;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/5/15.
  */
 public class Contact {
+
+    public Uri photoUri;
 
     public String name;
 
@@ -18,6 +21,14 @@ public class Contact {
         this.phone=phone;
         this.photo=photo;
     }
+
+
+    public Contact(String name, String phone, Uri uri) {
+        this.name=name;
+        this.phone=phone;
+        this.photoUri =uri;
+    }
+
 
     public String getName() {
         return name;
