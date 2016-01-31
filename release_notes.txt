@@ -1,3 +1,8 @@
+
+20160122 revision 111
+- fix many bugs
+- fix dialog themes and others (UI)
+
 20160122 revision 84
 
 - fix permissions 
