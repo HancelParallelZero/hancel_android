@@ -1,5 +1,7 @@
+20160131 revision 111
+- fix load map on production version
 
-20160122 revision 111
+20160130 revision 111
 - fix many bugs
 - fix dialog themes and others (UI)
 
