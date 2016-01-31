@@ -53,15 +53,6 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_rings_empty_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rl_rings_header"
-        android:gravity="center"
-        android:paddingBottom="70dp"
-        android:text="@string/msg_rings_empty" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_rings"
         android:layout_width="match_parent"

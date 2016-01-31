@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ItemDecoration;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,12 +43,11 @@ public class RingsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_rings,container,false);
 
-        mEmptyMessage = (TextView)view.findViewById(R.id.tv_rings_empty_list);
         mRingsRecycler= (RecyclerView) view.findViewById(R.id.rv_rings);
         mAddRingFromContacts = (FloatingActionButton) view.findViewById(R.id.bt_rings_from_contacts);
         mAddRingFromQRCode = (FloatingActionButton) view.findViewById(R.id.bt_rings_from_qrcode);
-        mAddRingFromContacts.setIconDrawable(getResources().getDrawable(R.drawable.ic_contact_mail_white_36dp,getActivity().getTheme()));
-        mAddRingFromQRCode.setIconDrawable(getResources().getDrawable(R.drawable.ic_qrcode_scan_white_36dp,getActivity().getTheme()));
+        mAddRingFromContacts.setIconDrawable(getResources().getDrawable(R.drawable.ic_contact_mail_white_36dp));
+        mAddRingFromQRCode.setIconDrawable(getResources().getDrawable(R.drawable.ic_qrcode_scan_white_36dp));
         mAddRingFromContacts.setOnClickListener(onRingAddFromContactsListener);
         mAddRingFromQRCode.setOnClickListener(onRingAddFromQRcodeListener);
 
@@ -81,11 +79,9 @@ public class RingsFragment extends Fragment {
 
     private void refreshUI(){
         if(mRingsAdapter.getItemCount()>0){
-            mEmptyMessage.setVisibility(View.GONE);
             mRingsRecycler.setVisibility(View.VISIBLE);
         }else{
             mRingsRecycler.setVisibility(View.GONE);
-            mEmptyMessage.setVisibility(View.VISIBLE);
         }
 
     }
