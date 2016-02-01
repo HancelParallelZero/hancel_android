@@ -1,20 +1,15 @@
 package org.parallelzero.hancel;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
@@ -34,10 +29,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.google.android.gms.maps.MapFragment;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import org.parallelzero.hancel.Fragments.MapPartnersFragment;
-import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.services.HardwareButtonService;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
@@ -62,15 +56,22 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
-    private FloatingActionButton _fab;
     private OnPickerContactUri contactListener;
+    private FloatingActionButton fabPrimary;
+    private FloatingActionButton fabSecondary;
+    private FloatingActionsMenu fabMenu;
 
 
     public void initDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        _fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabMenu = (FloatingActionsMenu) findViewById(R.id.multiple_actions_down);
+        fabPrimary = (FloatingActionButton) findViewById(R.id.bt_rings_from_contacts);
+        fabSecondary = (FloatingActionButton) findViewById(R.id.bt_rings_from_qrcode);
+        fabPrimary.setIconDrawable(getResources().getDrawable(R.drawable.ic_contact_mail_white_36dp));
+        fabSecondary.setIconDrawable(getResources().getDrawable(R.drawable.ic_qrcode_scan_white_36dp));
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,6 +81,26 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    public void setFbPrimaryListener(OnClickListener listener){
+        fabPrimary.setOnClickListener(listener);
+    }
+
+    public void setFbSecondaryListener(OnClickListener listener){
+        fabSecondary.setOnClickListener(listener);
+    }
+
+    public void fabHide() {
+        fabMenu.setVisibility(View.GONE);
+    }
+
+    public void fabShow() {
+        fabMenu.setVisibility(View.VISIBLE);
+    }
+
+    public void fabColapse(){
+        fabMenu.collapse();
     }
 
 
@@ -156,21 +177,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
     }
 
-    public void fabHide() {
-        _fab.setVisibility(View.GONE);
-    }
-
-    public void fabShow() {
-        _fab.setVisibility(View.VISIBLE);
-    }
-
-    public void fabSetIcon(int resourse) {
-        _fab.setImageResource(resourse);
-    }
-
-    public void fabSetOnClickListener(OnClickListener onButtonActionListener) {
-        _fab.setOnClickListener(onButtonActionListener);
-    }
 
     public void showSnackLong(String msg) {
         Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -348,9 +354,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             String number = retrieveContactNumber();
             Bitmap photo = retrieveContactPhoto();
             Uri uri = retrieveContactPhotoUri();
-            if (DEBUG) Log.d(TAG, "Contact Uri Photo: " + uri.toString());
+//            if (DEBUG) Log.d(TAG, "Contact Uri Photo: " + uri.toString());
 
-            if (contactListener != null) contactListener.onPickerContact(name, number, uri);
+            if (contactListener != null) contactListener.onPickerContact(name, number, uri.toString());
 
         }
 
@@ -445,7 +451,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     }
 
     public interface OnPickerContactUri {
-        void onPickerContact(String name, String number, Uri uri);
+        void onPickerContact(String name, String number, String uri);
     }
 
 

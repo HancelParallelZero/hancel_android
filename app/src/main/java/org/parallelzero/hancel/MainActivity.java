@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -279,7 +278,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 //    }
 
     @Override
-    public void onPickerContact(String name, String phone, Uri uri) {
+    public void onPickerContact(String name, String phone, String uri) {
         if (DEBUG) Log.d(TAG, "Contact Name: " + name);
         if (DEBUG) Log.d(TAG, "Contact Phone Number: " + phone);
 
@@ -386,6 +385,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @Override
     protected void onPause() {
+        unregisterReceiver(fbConnectReceiver);
         super.onPause();
     }
 

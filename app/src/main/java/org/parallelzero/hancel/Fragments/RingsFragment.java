@@ -43,16 +43,13 @@ public class RingsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_rings,container,false);
 
-        mRingsRecycler= (RecyclerView) view.findViewById(R.id.rv_rings);
-        mAddRingFromContacts = (FloatingActionButton) view.findViewById(R.id.bt_rings_from_contacts);
-        mAddRingFromQRCode = (FloatingActionButton) view.findViewById(R.id.bt_rings_from_qrcode);
-        mAddRingFromContacts.setIconDrawable(getResources().getDrawable(R.drawable.ic_contact_mail_white_36dp));
-        mAddRingFromQRCode.setIconDrawable(getResources().getDrawable(R.drawable.ic_qrcode_scan_white_36dp));
-        mAddRingFromContacts.setOnClickListener(onRingAddFromContactsListener);
-        mAddRingFromQRCode.setOnClickListener(onRingAddFromQRcodeListener);
 
+        mRingsRecycler= (RecyclerView) view.findViewById(R.id.rv_rings);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mRingsRecycler.setLayoutManager(gridLayoutManager);
+
+        getMain().setFbPrimaryListener(onRingAddFromContactsListener);
+        getMain().setFbSecondaryListener(onRingAddFromQRcodeListener);
 
         mRingsAdapter= new ListRingsAdapter();
         mRingsAdapter.setOnItemClickListener(onItemClickListener);
@@ -154,6 +151,7 @@ public class RingsFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(DEBUG) Log.d(TAG, "onRingAddFromContactsListener");
+            getMain().fabColapse();
             getMain().showRingEditFragment();
         }
 
@@ -163,9 +161,16 @@ public class RingsFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(DEBUG) Log.d(TAG, "onRingAddFromQRcodeListener");
+            getMain().fabColapse();
             getMain().showRingEditFragment();
         }
     };
+
+    @Override
+    public void onResume() {
+        getMain().fabShow();
+        super.onResume();
+    }
 
     @Override
     public void onDestroy() {

@@ -8,7 +8,7 @@ import android.net.Uri;
  */
 public class Contact {
 
-    public Uri photoUri;
+    public String photoUri;
 
     public String name;
 
@@ -23,7 +23,7 @@ public class Contact {
     }
 
 
-    public Contact(String name, String phone, Uri uri) {
+    public Contact(String name, String phone, String uri) {
         this.name=name;
         this.phone=phone;
         this.photoUri =uri;

@@ -161,7 +161,6 @@ public class MapPartnersFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        getMain().fabHide();
         super.onDestroy();
     }
 
