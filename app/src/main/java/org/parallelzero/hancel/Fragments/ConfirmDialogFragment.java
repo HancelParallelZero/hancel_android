@@ -1,7 +1,9 @@
 package org.parallelzero.hancel.Fragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,8 @@ public class ConfirmDialogFragment extends DialogFragment {
 
     private static final boolean DEBUG = Config.DEBUG;
     public static final String TAG = ConfirmDialogFragment.class.getSimpleName();
-    private Button mButtonSMS;
-    private Button mButtonShare;
+    private AppCompatButton mButtonSMS;
+    private AppCompatButton mButtonShare;
     private boolean sms_enable;
 
     @Override
@@ -37,8 +39,8 @@ public class ConfirmDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dialog_confirm, container, false);
 
-        mButtonSMS = (Button) v.findViewById(R.id.bt_alert_dialog_sms);
-        mButtonShare = (Button) v.findViewById(R.id.bt_alert_dialog_share);
+        mButtonSMS = (AppCompatButton) v.findViewById(R.id.bt_alert_dialog_sms);
+        mButtonShare = (AppCompatButton) v.findViewById(R.id.bt_alert_dialog_share);
 
         mButtonSMS.setOnClickListener(onSMSClickListener);
         mButtonShare.setOnClickListener(onShareClickListener);
@@ -51,11 +53,15 @@ public class ConfirmDialogFragment extends DialogFragment {
     private void validateSMS() {
 
         if (Storage.getRingsEnable(getActivity()).size() == 0 || Storage.getRings(getActivity()).size() == 0) {
-            Tools.setButtonTintBackground(getActivity(), mButtonSMS, R.color.grey);
+            ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xffffcc00});
+            mButtonSMS.setSupportBackgroundTintList(csl);
+//            Tools.setButtonTintBackground(getActivity(), mButtonSMS, R.color.grey);
             sms_enable = false;
         }
         else {
-            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
+            ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xffffcc00});
+            mButtonSMS.setSupportBackgroundTintList(csl);
+//            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
             sms_enable = true;
         }
 
