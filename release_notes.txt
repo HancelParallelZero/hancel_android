@@ -1,3 +1,6 @@
+20160204 revision 119
+- Google Play version
+
 20160131 revision 113
 - fix load map on production version
 
