@@ -43,7 +43,7 @@
     <string name="ring_edit_save">SAVE</string>
     <string name="ring_save">SAVE RING</string>
     <string name="ring_desc_contacts">contacts</string>
-    <string name="msg_home_help">Share your location with Hancel anonymously or notify your trsuted rings in any moment.</string>
+    <string name="msg_home_help">Share your location with Hancel anonymously or notify your trusted rings in any moment.</string>
     <string name="alert_send_sms">SEND BY SMS</string>
     <string name="alert_send_share">SHARE</string>
     <string name="alert_help">Hancel will generate a link with your position or send an SMS to your active ring contacts</string>
