@@ -178,7 +178,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         }
     }
 
-
     private void loadDataFromIntent() {
 
         Intent intent = getIntent();
@@ -191,49 +190,14 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             Firebase.setAndroidContext(MainActivity.this);
             fbRef = new Firebase(Config.FIREBASE_MAIN);
 
-
             showMapFragment();
 
             Uri uri = intent.getData();
-            String url = uri.toString();
-
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: URI: " + url);
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: HOST: " + uri.getHost());
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PATH: " + uri.getPath());
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: QUERY: " + uri.getQuery());
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: SCHEME: " + uri.getScheme());
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
-            if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
-
+            printUriData(uri);
             String trackId = uri.getPath();
-//            if(!Storage.isOldTracker(this,trackId)) showInputDialogFragment(trackerId);
             subscribeTrack(getFbRef(), trackId);
 
         }
-
-    }
-
-    @Deprecated
-    public void newTrackId(String trackId, String alias) {
-        Storage.addTracker(this,trackId,alias);
-//        subscribeTrack(getFbRef(), trackId, alias);
-    }
-
-    private void subscribeForSingleTrack(Firebase fb, String trackId, String alias) {
-
-        fb.child(trackId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (DEBUG) Log.d(TAG, "onDataChange: " + child.getValue());
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
 
     }
 

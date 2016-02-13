@@ -103,7 +103,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         fabMenu.collapse();
     }
 
-
     public void showFragment(Fragment fragment, String fragmentTag, boolean toStack) {
 
         try {
@@ -155,7 +154,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
     }
 
-
     public void removeFragment(Fragment fragment) {
         try {
             FragmentManager fm = getSupportFragmentManager();
@@ -177,7 +175,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
     }
 
-
     public void showSnackLong(String msg) {
         Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
@@ -194,7 +191,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Storage.setShareLocationEnable(this, true);
     }
 
-
     public void startSMSService() {
         if (DEBUG) Log.d(TAG, "[MainActivity] startSMSService");
         Intent service = new Intent(this, HardwareButtonService.class);
@@ -208,13 +204,22 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Storage.setShareLocationEnable(this, false);
     }
 
-
     public void loadPermissions(String perm, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
                 ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
             }
         }
+    }
+
+    public void printUriData(Uri uri){
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: URI: " + uri.toString());
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: HOST: " + uri.getHost());
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PATH: " + uri.getPath());
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: QUERY: " + uri.getQuery());
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: SCHEME: " + uri.getScheme());
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
+        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
     }
 
     @Override
