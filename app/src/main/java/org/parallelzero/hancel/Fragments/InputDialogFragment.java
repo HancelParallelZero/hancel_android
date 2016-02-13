@@ -69,10 +69,8 @@ public class InputDialogFragment extends DialogFragment {
     private View.OnClickListener onClickContinueListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
-            if(isValidData())getMain().newTrackId(trackId,alias);
+//            if(isValidData())getMain().newTrackId(trackId,alias);
             getDialog().dismiss();
-
         }
     };
 
