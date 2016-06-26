@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -23,18 +21,15 @@ import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-import io.fabric.sdk.android.Fabric;
-
 import org.parallelzero.hancel.Fragments.AboutFragment;
 import org.parallelzero.hancel.Fragments.AliasFragment;
 import org.parallelzero.hancel.Fragments.ConfirmDialogFragment;
+import org.parallelzero.hancel.Fragments.ContactsRingFragment;
 import org.parallelzero.hancel.Fragments.InputDialogFragment;
 import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapPartnersFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
-import org.parallelzero.hancel.Fragments.ContactsRingFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
-import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
@@ -47,6 +42,8 @@ import org.parallelzero.hancel.services.TrackLocationService;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+
+import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContactUri, OnMapReadyCallback {
@@ -65,7 +62,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     private MapPartnersFragment mPartnersFragment;
     private AliasFragment mAliasFragment;
 
-    private int mStackLevel = 0;
     private HardwareButtonService mHardwareButtonService;
     private boolean mBound;
 
@@ -119,6 +115,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     public void initPermissionsFlow(){
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
     }
+
+    /**************************************************
+     ************ FRAGMENT PRIMITIVES *****************
+     *************************************************/
 
     private void showMainFragment() {
         popBackLastFragment();
@@ -230,17 +230,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     }
 
-//    @Override
-//    public void onPickerContact(String name, String phone, Bitmap photo) {
-//
-//        if (DEBUG) Log.d(TAG, "Contact Name: " + name);
-//        if (DEBUG) Log.d(TAG, "Contact Phone Number: " + phone);
-//
-//        if (mRingEditFragment != null)
-//            mRingEditFragment.addConctact(new Contact(name, phone, photo));
-//
-//    }
-
     @Override
     public void onPickerContact(String name, String phone, String uri) {
         if (DEBUG) Log.d(TAG, "Contact Name: " + name);
@@ -282,41 +271,17 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     public void showConfirmAlertFragment() {
         ConfirmDialogFragment mConfirmDialogFragment = new ConfirmDialogFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(mConfirmDialogFragment, ConfirmDialogFragment.TAG);
-        ft.show(mConfirmDialogFragment);
-        ft.commitAllowingStateLoss();
+        showDialogFragment(mConfirmDialogFragment,ConfirmDialogFragment.TAG);
     }
 
     public void showAddContactsRingFragment() {
         mContactsRingFragment = new ContactsRingFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(mContactsRingFragment, ContactsRingFragment.TAG);
-        ft.show(mContactsRingFragment);
-        ft.commitAllowingStateLoss();
+        showDialogFragment(mContactsRingFragment,ContactsRingFragment.TAG);
     }
 
     public void showInputDialogFragment(String trackId) {
         InputDialogFragment dialog = InputDialogFragment.newInstance(trackId);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(dialog, InputDialogFragment.TAG);
-        ft.show(dialog);
-        ft.commitAllowingStateLoss();
-    }
-
-
-    public void showTestDialog() {
-        mStackLevel++;
-        // DialogFragment.show() will take care of adding the fragment
-        // in a transaction.  We also want to remove any currently showing
-        // dialog, so make our own transaction and take care of that here.
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag(TestDialogFragment.TAG);
-        if (prev != null) ft.remove(prev);
-        ft.addToBackStack(null);
-        // Create and show the dialog.
-        TestDialogFragment newFragment = TestDialogFragment.newInstance(mStackLevel);
-        newFragment.show(ft, "dialog");
+        showDialogFragment(dialog,InputDialogFragment.TAG);
     }
 
 

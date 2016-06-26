@@ -14,6 +14,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +33,7 @@ import android.view.View.OnClickListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.services.HardwareButtonService;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
@@ -61,6 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     private FloatingActionButton fabSecondary;
     private FloatingActionsMenu fabMenu;
 
+    private int mStackLevel = 0;
 
     public void initDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -136,6 +139,28 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         if (toStack) ft.addToBackStack(fragmentTag);
         ft.commitAllowingStateLoss();
 
+    }
+
+    public void showDialogFragment(DialogFragment dialog, String TAG) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(dialog, TAG);
+        ft.show(dialog);
+        ft.commitAllowingStateLoss();
+    }
+
+
+    public void showTestDialog() {
+        mStackLevel++;
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(TestDialogFragment.TAG);
+        if (prev != null) ft.remove(prev);
+        ft.addToBackStack(null);
+        // Create and show the dialog.
+        TestDialogFragment newFragment = TestDialogFragment.newInstance(mStackLevel);
+        newFragment.show(ft, "dialog");
     }
 
     public void popBackStackSecure(String TAG) {
