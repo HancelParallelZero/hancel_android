@@ -32,7 +32,7 @@ import org.parallelzero.hancel.Fragments.InputDialogFragment;
 import org.parallelzero.hancel.Fragments.MainFragment;
 import org.parallelzero.hancel.Fragments.MapPartnersFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
-import org.parallelzero.hancel.Fragments.RingEditFragment;
+import org.parallelzero.hancel.Fragments.ContactsRingFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
 import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     public MapTasksFragment tasksMap;
     private RingsFragment mRingsFragment;
-    private RingEditFragment mRingEditFragment;
+    private ContactsRingFragment mContactsRingFragment;
     private MainFragment mMainFragment;
     private AboutFragment mAboutFragment;
     private MapPartnersFragment mPartnersFragment;
@@ -246,8 +246,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if (DEBUG) Log.d(TAG, "Contact Name: " + name);
         if (DEBUG) Log.d(TAG, "Contact Phone Number: " + phone);
 
-        if (mRingEditFragment != null)
-            mRingEditFragment.addConctact(new Contact(name, phone, uri));
+        if (mContactsRingFragment != null)
+            mContactsRingFragment.addConctact(new Contact(name, phone, uri));
     }
 
     @Override
@@ -288,11 +288,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         ft.commitAllowingStateLoss();
     }
 
-    public void showRingEditFragment() {
-        mRingEditFragment = new RingEditFragment();
+    public void showAddContactsRingFragment() {
+        mContactsRingFragment = new ContactsRingFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(mRingEditFragment, RingEditFragment.TAG);
-        ft.show(mRingEditFragment);
+        ft.add(mContactsRingFragment, ContactsRingFragment.TAG);
+        ft.show(mContactsRingFragment);
         ft.commitAllowingStateLoss();
     }
 

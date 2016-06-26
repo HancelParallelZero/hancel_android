@@ -17,9 +17,7 @@ import android.widget.TextView;
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.System.Storage;
 import org.parallelzero.hancel.models.Partner;
-import org.parallelzero.hancel.models.Ring;
 import org.parallelzero.hancel.view.ItemTouchHelperAdapter;
 import org.parallelzero.hancel.view.ListPartnersAdapter;
 
@@ -155,7 +153,7 @@ public class MapPartnersFragment extends Fragment {
         @Override
         public void onClick(View view) {
             if(DEBUG) Log.d(TAG, "onRingAddClickListener");
-            getMain().showRingEditFragment();
+            getMain().showAddContactsRingFragment();
         }
     };
 

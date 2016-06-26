@@ -152,7 +152,7 @@ public class RingsFragment extends Fragment {
         public void onClick(View view) {
             if(DEBUG) Log.d(TAG, "onRingAddFromContactsListener");
             getMain().fabColapse();
-            getMain().showRingEditFragment();
+            getMain().showAddContactsRingFragment();
         }
 
 
@@ -162,7 +162,7 @@ public class RingsFragment extends Fragment {
         public void onClick(View view) {
             if(DEBUG) Log.d(TAG, "onRingAddFromQRcodeListener");
             getMain().fabColapse();
-            getMain().showRingEditFragment();
+            getMain().showAddContactsRingFragment();
         }
     };
 
