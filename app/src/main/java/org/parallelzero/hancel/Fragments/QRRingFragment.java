@@ -29,9 +29,9 @@ import java.util.List;
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/5/15.
  */
-public class ContactsRingFragment extends DialogFragment {
+public class QRRingFragment extends DialogFragment {
 
-    public static final String TAG = ContactsRingFragment.class.getSimpleName();
+    public static final String TAG = QRRingFragment.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
 
     private Button mButtonPicker;
