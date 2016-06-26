@@ -53,7 +53,7 @@
     <string name="about_text_colaboration">Colaboración</string>
     <string name="about_survey_title">Revisa tu nivel de riesgo</string>
     <string name="about_survey_link">http://bit.ly/hancel_riesgos</string>
-    <string name="content_description_welcome"></string>
+    <string name="content_description_welcome">Hancel</string>
     <string name="image_credits_value">Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo @amalia_toledo, Gloria Meneses @gpmeneses, Pilar Saenz @mapisaro</string>
     <string name="image_credits">Creditos en orden alfabetico:</string>
     <string name="button_map">Mapa</string>
@@ -61,5 +61,15 @@
     <string name="content_description_hancel_fractual">Hancel App por Fractual</string>
     <string name="hancel_fractual_link">http://hanselapp.com</string>
     <string name="msg_ring_desc_hint">Deslizar a la izquier el anillo lo borra a la derecha lo activa o desactiva</string>
+    <string name="alias_accept">Aceptar</string>
+    <string name="button_continuar">CONTINUAR</string>
+    <string name="hint_alias_alias">Alias o nickname</string>
+    <string name="hint_tracking_name">Nombre o Alias del Tracking</string>
+    <string name="msg_alias_help">Por favor escoga un Alias o NickName. Este alias se mostrara a sus compañeros</string>
+    <string name="msg_parners_empty">Compañeros nos activos</string>
+    <string name="msg_track_alias">Por favor escoge un nombre para el track</string>
+    <string name="msg_track_invalid">Track invalido</string>
+    <string name="rings_label_from_contacts">Desde contactos</string>
+    <string name="rings_label_from_qrcode">Desde código QR..</string>
 
 </resources>

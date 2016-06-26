@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hancel</string>
+    <string name="app_name" translatable="false">Hancel</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -52,20 +52,20 @@
     <string name="msg_alert_not_rings">There are not active rings</string>
 
     <!-- About -->
-    <string formatted="false" name="about_licence_l1">Hancel %s (rev%s) Parallel Zero</string>
-    <string name="about_licence_l2">(rfc 3261) GNU GPL License V2</string>
+    <string formatted="false" name="about_licence_l1" translatable="false">Hancel %s (rev%s) Parallel Zero</string>
+    <string name="about_licence_l2" translatable="false">(rfc 3261) GNU GPL License V2</string>
     <string name="about_based_title">Based on</string>
     <string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
     <string name="about_text_colaboration">Colaboration</string>
     <string name="about_survey_title">Check your risk level</string>
     <string name="about_survey_link">http://bit.ly/hancel_riesgos</string>
-    <string name="content_description_welcome"></string>
+    <string name="content_description_welcome">Hancel</string>
     <!--<string name="image_credits_value">using alert by Alain LOUBET, motion by Juan Pablo Bravo, share by Housin Aziz, history by Paweł Wypych, telephone by Benny Forsberg, service tower by Nick Abrams, Tools by Kenton Quatman, Smartphone by Yamini Chandra, Trash by Filip Malinowski, Speech by P.J. Onori, Wireless by Thomas Le Bas y Minicons by Dani Rolli from the noun project under CC-BY 3.0 and The PICOL-Icons by Melih Bilgil under CC-BY 3.0</string>-->
     <string name="image_credits_value">Andrés Felipe Calderón @unjuguetero, Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo @amalia_toledo, Gloria Meneses @gpmeneses, Juan Diego CastaNeda @ María del Pilar Saenz @mapisaro</string>
     <string name="image_credits">Credits in alphabetic order:</string>
     <string name="hint_tracking_name">Name or alias of tracking</string>
-    <string name="button_continuar">CONTINUAR</string>
-    <string name="msg_track_alias">Escoger un nombre para este track</string>
+    <string name="button_continuar">CONTINUE</string>
+    <string name="msg_track_alias">Please choose track name</string>
     <string name="button_map">Map</string>
     <string name="hancel_based_on">Based on</string>
     <string name="content_description_hancel_fractual">Hancel App by Fractual</string>
