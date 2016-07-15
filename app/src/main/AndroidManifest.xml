@@ -63,7 +63,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/key_prod" />
+            android:value="@string/key_debug" />
 
         <!-- Tracking services -->
         <service android:name=".services.TrackLocationService" />
