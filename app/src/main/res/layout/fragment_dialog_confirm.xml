@@ -28,7 +28,7 @@
             android:textSize="20sp" />
 
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_alert_dialog_sms"
             android:layout_width="@dimen/alert_width_buttons"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:text="@string/alert_send_sms"
             android:textColor="@color/white" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_alert_dialog_share"
             android:layout_width="@dimen/alert_width_buttons"
             android:layout_height="wrap_content"

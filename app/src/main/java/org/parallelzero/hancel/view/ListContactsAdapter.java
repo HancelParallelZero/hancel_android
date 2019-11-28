@@ -1,7 +1,7 @@
 package org.parallelzero.hancel.view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.view.ListContactsAdapter.ContactViewHolder;
 

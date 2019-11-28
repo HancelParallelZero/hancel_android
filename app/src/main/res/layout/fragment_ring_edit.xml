@@ -45,7 +45,7 @@
         android:text="@string/msg_ring_contacts_empty" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_contacts"
         android:layout_width="match_parent"
         android:layout_height="270dp"
