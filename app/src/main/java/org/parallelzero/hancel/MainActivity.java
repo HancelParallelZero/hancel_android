@@ -14,10 +14,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -51,7 +47,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     public static final String TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
 
-    private Firebase fbRef;
     private OnTrackServiceConnected fbConnectReceiver;
 
     public MapTasksFragment tasksMap;
@@ -92,8 +87,6 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         protected Object doInBackground(Object[] objects) {
 
             Fabric.with(MainActivity.this, new Crashlytics());
-            Firebase.setAndroidContext(MainActivity.this);
-            fbRef = new Firebase(Config.FIREBASE_MAIN);
             String trackId = Tools.getAndroidDeviceId(MainActivity.this);
             Storage.setTrackId(MainActivity.this, trackId);
 
@@ -186,47 +179,16 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: ACTION:" + action);
 
         if (Intent.ACTION_VIEW.equals(action)&&Storage.getCurrentAlias(this).length()!=0) { // TODO: maybe OR with BROWSER and others filters
-
-            Firebase.setAndroidContext(MainActivity.this);
-            fbRef = new Firebase(Config.FIREBASE_MAIN);
-
             showMapFragment();
-
             Uri uri = intent.getData();
             printUriData(uri);
             String trackId = uri.getPath();
-            subscribeTrack(getFbRef(), trackId);
-
         }
 
     }
 
-    private void subscribeTrack(Firebase fb, final String trackId) {
+    private void subscribeTrack(String trackId) {
         if (DEBUG) Log.d(TAG, "subscribeTrack: " + trackId);
-        Firebase child = fb.child(trackId);
-        if(child!=null){
-            child.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (DEBUG) Log.d(TAG, "onDataChange:");
-                    Map<String, Object> tracks = (Map<String, Object>) dataSnapshot.getValue();
-                    if (tracks!=null) {
-                        Track track = MapTasksFragment.getTrack(tracks,trackId);
-                        if (!Storage.isOldTracker(MainActivity.this, trackId)) Storage.addTracker(MainActivity.this, track);
-//                        else Storage.updateTracker(MainActivity.this,track);
-                        if (tasksMap.isVisible()) tasksMap.addPoints(tracks, trackId);
-                    }
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    if (DEBUG) Log.d(TAG, "firebaseError:" + firebaseError.getMessage());
-                }
-            });
-        }else
-            Tools.showToast(this,R.string.msg_track_invalid);
-
 
     }
 
@@ -329,13 +291,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         Iterator<Track> it = trackers.iterator();
         while(it.hasNext()){
             Track track = it.next();
-            subscribeTrack(getFbRef(),track.trackId);
+            subscribeTrack(track.trackId);
             if(mPartnersFragment!=null)mPartnersFragment.addPartner(new Partner(track.alias,track.getLastUpdate()));
         }
-    }
-
-    public Firebase getFbRef() {
-        return fbRef;
     }
 
     private void startHardwareButtonService(){
