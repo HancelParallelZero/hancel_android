@@ -16,6 +16,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
 import org.parallelzero.hancel.Fragments.AboutFragment;
 import org.parallelzero.hancel.Fragments.AliasFragment;
@@ -105,8 +106,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         }
     }
 
+    @WithPermissions(
+            permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.SEND_SMS,
+                    Manifest.permission.READ_CONTACTS
+            }
+    )
     public void initPermissionsFlow(){
-        loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION);
     }
 
     /**************************************************
