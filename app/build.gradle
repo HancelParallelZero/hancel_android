@@ -2,13 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.livinglifetechway.quickpermissions_plugin'
 
-
 if(project.hasProperty("hancel.signing") && new File(project.property("hancel.signing") + ".gradle").exists()) {
     apply from: project.property("hancel.signing") + ".gradle";
-}
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
 }
 
 android {
@@ -19,23 +14,17 @@ android {
         targetSdkVersion 28
         versionCode 137
         versionName "1.3"
-
-        signingConfigs {
-            release {
-                storeFile file(System.getenv("storeFile"))
-                storePassword System.getenv("storePassword")
-                keyAlias System.getenv("keyAlias")
-                keyPassword System.getenv("keyPassword")
-            }
-        }
     }
 
     buildTypes {
+        debug {
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
             ext.betaDistributionEmailsFilePath="beta_emails.txt"
             ext.betaDistributionReleaseNotesFilePath="beta_changelog.txt"
         }
