@@ -17,11 +17,14 @@ android {
     }
 
     buildTypes {
+        debug {
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
             ext.betaDistributionEmailsFilePath="beta_emails.txt"
             ext.betaDistributionReleaseNotesFilePath="beta_changelog.txt"
         }
