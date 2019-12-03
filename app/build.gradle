@@ -2,13 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.livinglifetechway.quickpermissions_plugin'
 
-
 if(project.hasProperty("hancel.signing") && new File(project.property("hancel.signing") + ".gradle").exists()) {
     apply from: project.property("hancel.signing") + ".gradle";
-}
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
 }
 
 android {
