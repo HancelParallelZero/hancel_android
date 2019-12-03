@@ -229,14 +229,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Storage.setShareLocationEnable(this, false);
     }
 
-    public void loadPermissions(String perm, int requestCode) {
-        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
-                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
-            }
-        }
-    }
-
     public void printUriData(Uri uri){
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: URI: " + uri.toString());
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: HOST: " + uri.getHost());
@@ -245,34 +237,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: SCHEME: " + uri.getScheme());
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (DEBUG) Log.d(TAG, "PERMISSIONS_REQUEST_FINE_LOCATION PERMISSION_GRANTED");
-                    loadPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, PERMISSIONS_REQUEST_COARSE_LOCATION);
-                    loadPermissions(Manifest.permission.READ_CONTACTS, PERMISSIONS_READ_CONTACTS);
-                    loadPermissions(Manifest.permission.SEND_SMS, PERMISSIONS_SEND_SMS);
-                }
-                return;
-            }
-            case PERMISSIONS_REQUEST_COARSE_LOCATION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                }
-            }
-            case PERMISSIONS_READ_CONTACTS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                }
-            }
-
-        }
-
     }
 
     @Override

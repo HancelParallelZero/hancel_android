@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'com.livinglifetechway.quickpermissions_plugin'
+
 
 if(project.hasProperty("hancel.signing") && new File(project.property("hancel.signing") + ".gradle").exists()) {
     apply from: project.property("hancel.signing") + ".gradle";
@@ -56,15 +58,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    //    compile 'com.google.android.gms:play-services:7.5.0'
     implementation 'com.google.android.gms:play-services-location:8.4.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.firebase:firebase-client-android:2.5.0+'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.google.code.gson:gson:2.4'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.github.paolorotolo:appintro:3.2.0'
