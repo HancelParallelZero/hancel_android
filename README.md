@@ -16,4 +16,18 @@ Features:
 
 ## NOTE: Current version is only for testing, this is a Beta version, help us improve it!
 
+## (optional) Building signed version
+
+Please generate your own API keys for the next services and put it in `app/src/main/res/values/api_keys.xml` like this:
+
+```xml
+<resources>
+    <string name="key_debug" translatable="false">AIzaSyDvdxR50ECGFT600000000000000000000</string>
+    <string name="key_prod" translatable="false">AIzaSyA-s1RQ-pzo8FlNOPkrVn1qy0000000000</string>
+    <string name="crashlytics" translatable="false">78deae26fe9c8f597807a086900000000000000</string>
+</resources>
+```
+
+
+
 

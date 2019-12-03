@@ -1,0 +1,5 @@
+<resources>
+    <string name="key_debug" translatable="false">AIzaSyDvdxR50ECGFT600000000000000000000</string>
+    <string name="key_prod" translatable="false">AIzaSyA-s1RQ-pzo8FlNOPkrVn1qy0000000000</string>
+    <string name="crashlytics" translatable="false">78deae26fe9c8f597807a086900000000000000</string> 
+</resources>
