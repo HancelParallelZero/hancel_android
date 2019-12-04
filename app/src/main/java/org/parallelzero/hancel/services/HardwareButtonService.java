@@ -52,7 +52,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     private boolean isFirstTime, isSendMesagge, locationActivted;
     public static boolean serviceRunning, countTimer;
     private static int countStart;
-    private Timer timer;
     private HardwareButtonReceiver hwButtonReceiver;
     private Handler handlerTime;
     private ResultReceiver resultReceiver;
@@ -67,7 +66,6 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     @Override
     public void onCreate() {
         super.onCreate();
-        timer = new Timer();
         serviceRunning = locationActivted = false;
         countTimer = true;
         countStart = -1;
@@ -198,14 +196,18 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
-        serviceRunning = false;
-        unregisterReceiver(hwButtonReceiver);
+        try {
+            serviceRunning = false;
+            if(hwButtonReceiver!=null){
+                unregisterReceiver(hwButtonReceiver);
+            }
+        } catch (Exception e) {
+            Log.e(TAG,"unregisterReceiver Exception: "+e.getMessage());
+        }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-
         return mBinder;
     }
 
@@ -272,7 +274,8 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             result = "OK";
 
             if (lastLocation != null) {
-                location = getString(R.string.map_provider) + lastLocation.getLatitude() + ","
+                location = getString(R.string.map_provider)
+                        + lastLocation.getLatitude() + ","
                         + lastLocation.getLongitude() + "\n";
             }
 
@@ -300,8 +303,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                             sendSMS(number, message);
                             if(!result.equalsIgnoreCase("OK")) {
                                 fails ++;
-                                if (DEBUG)
-                                    Log.i(TAG, "=== Error sending SMS to: " + numbers.get(i));
+                                if (DEBUG) Log.i(TAG, "=== Error sending SMS to: " + numbers.get(i));
                             }
                         }
                         else{
@@ -326,8 +328,8 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 if(DEBUG) Log.i(TAG, "=== " + result);
             }
             try {
-                this.finalize();
                 if (DEBUG) Log.i(TAG, "=== Finalizing smsTask ");
+                this.finalize();
             } catch (Throwable throwable) {
                 if(DEBUG) Log.i(TAG, "=== Error finalizing the smsTask ");
                 throwable.printStackTrace();

@@ -38,8 +38,8 @@ public class ConfirmDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dialog_confirm, container, false);
 
-        mButtonSMS = (AppCompatButton) v.findViewById(R.id.bt_alert_dialog_sms);
-        mButtonShare = (AppCompatButton) v.findViewById(R.id.bt_alert_dialog_share);
+        mButtonSMS = v.findViewById(R.id.bt_alert_dialog_sms);
+        mButtonShare = v.findViewById(R.id.bt_alert_dialog_share);
 
         mButtonSMS.setOnClickListener(onSMSClickListener);
         mButtonShare.setOnClickListener(onShareClickListener);
@@ -79,13 +79,10 @@ public class ConfirmDialogFragment extends DialogFragment {
     };
 
 
-    private View.OnClickListener onShareClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (DEBUG) Log.d(TAG, "onShareClickListener");
-            getMain().shareLocation();
-            getDialog().dismiss();
-        }
+    private View.OnClickListener onShareClickListener = view -> {
+        if (DEBUG) Log.d(TAG, "onShareClickListener");
+        getMain().shareLocation();
+        getDialog().dismiss();
     };
 
     @Override
