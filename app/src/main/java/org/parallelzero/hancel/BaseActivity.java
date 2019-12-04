@@ -1,37 +1,34 @@
 package org.parallelzero.hancel;
 
-import android.Manifest;
 import android.content.ContentUris;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
@@ -41,6 +38,7 @@ import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/5/15.
@@ -49,11 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     public static final String TAG = BaseActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
-
-    public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 0;
-    public static final int PERMISSIONS_REQUEST_COARSE_LOCATION = 1;
-    private static final int PERMISSIONS_READ_CONTACTS = 2;
-    private static final int PERMISSIONS_SEND_SMS = 3;
 
     private static final int PICK_CONTACT = 0;
 
@@ -64,24 +57,26 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     private FloatingActionsMenu fabMenu;
 
     private int mStackLevel = 0;
+    private DrawerLayout drawerLaoyout;
 
     public void initDrawer() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fabMenu = (FloatingActionsMenu) findViewById(R.id.multiple_actions_down);
-        fabPrimary = (FloatingActionButton) findViewById(R.id.bt_rings_from_contacts);
-        fabSecondary = (FloatingActionButton) findViewById(R.id.bt_rings_from_qrcode);
+        drawerLaoyout = findViewById(R.id.drawer_layout);
+        fabMenu = findViewById(R.id.multiple_actions_down);
+        fabPrimary = findViewById(R.id.bt_rings_from_contacts);
+        fabSecondary = findViewById(R.id.bt_rings_from_qrcode);
         fabPrimary.setIconDrawable(getResources().getDrawable(R.drawable.ic_contact_mail_white_36dp));
         fabSecondary.setIconDrawable(getResources().getDrawable(R.drawable.ic_qrcode_scan_white_36dp));
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
     }
@@ -201,11 +196,11 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     }
 
     public void showSnackLong(String msg) {
-        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Snackbar.make(drawerLaoyout, msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void showSnackLong(int msg) {
-        Snackbar.make(this.getCurrentFocus(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Snackbar.make(drawerLaoyout, msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void startTrackLocationService() {
@@ -286,23 +281,16 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-
             showMain();
-
-        } else if (id == R.id.nav_map){
-
-            showMap();
-
-        } else if (id == R.id.nav_rings) {
-
+//        } else if (id == R.id.nav_map){
+//            showMap();
+        }
+        else if (id == R.id.nav_rings) {
             showRings();
-
         } else if (id == R.id.nav_help) {
             showHelp();
-
         } else if (id == R.id.nav_about) {
             showAbout();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

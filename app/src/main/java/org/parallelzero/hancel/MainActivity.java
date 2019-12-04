@@ -12,10 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.material.snackbar.Snackbar;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
 import org.parallelzero.hancel.Fragments.AboutFragment;
@@ -187,10 +189,10 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: ACTION:" + action);
 
         if (Intent.ACTION_VIEW.equals(action)&&Storage.getCurrentAlias(this).length()!=0) { // TODO: maybe OR with BROWSER and others filters
-            showMapFragment();
+//            showMapFragment();
             Uri uri = intent.getData();
             printUriData(uri);
-            String trackId = uri.getPath();
+//            String trackId = uri.getPath();
         }
 
     }
@@ -284,7 +286,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @Override
     protected void onPause() {
-        unregisterReceiver(fbConnectReceiver);
+        try {
+            if(fbConnectReceiver!=null)unregisterReceiver(fbConnectReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onPause();
     }
 
