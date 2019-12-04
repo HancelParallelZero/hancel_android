@@ -48,11 +48,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     public static final String TAG = BaseActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
 
-    public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 0;
-    public static final int PERMISSIONS_REQUEST_COARSE_LOCATION = 1;
-    private static final int PERMISSIONS_READ_CONTACTS = 2;
-    private static final int PERMISSIONS_SEND_SMS = 3;
-
     private static final int PICK_CONTACT = 0;
 
     private Uri uriContact;
@@ -286,23 +281,16 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-
             showMain();
-
-        } else if (id == R.id.nav_map){
-
-            showMap();
-
-        } else if (id == R.id.nav_rings) {
-
+//        } else if (id == R.id.nav_map){
+//            showMap();
+        }
+        else if (id == R.id.nav_rings) {
             showRings();
-
         } else if (id == R.id.nav_help) {
             showHelp();
-
         } else if (id == R.id.nav_about) {
             showAbout();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
