@@ -11,9 +11,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.hpsaturn.tools.DeviceUtil;
+import com.hpsaturn.tools.UITools;
+
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.System.Tools;
 
 import java.util.Objects;
 
@@ -34,8 +36,8 @@ public class AboutFragment extends Fragment {
 
         aboutText.setText(
                 String.format(getString(R.string.about_licence_l1),
-                        Tools.getVersionName(Objects.requireNonNull(getActivity())),
-                        ""+Tools.getVersionCode(getActivity())
+                        DeviceUtil.getVersionName(Objects.requireNonNull(getActivity())),
+                        DeviceUtil.getVersionCode(getActivity())+""
                 )
         );
 
@@ -49,7 +51,7 @@ public class AboutFragment extends Fragment {
     private View.OnClickListener onSurverClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Tools.viewLink(Objects.requireNonNull(getActivity()), _tv_survey.getText().toString());
+            UITools.viewLink(Objects.requireNonNull(getActivity()), _tv_survey.getText().toString());
         }
     };
 }

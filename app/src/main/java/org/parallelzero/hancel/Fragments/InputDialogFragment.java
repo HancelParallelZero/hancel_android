@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.hpsaturn.tools.UITools;
+
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.System.Tools;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/9/15.
@@ -77,7 +78,7 @@ public class InputDialogFragment extends DialogFragment {
     private boolean isValidData() {
         alias = mEditAlias.getText().toString();
         if(alias.length()==0){
-            Tools.showToast(getActivity(),R.string.msg_track_alias);
+            UITools.showToast(getActivity(),R.string.msg_track_alias);
             return false;
         }
         return true;

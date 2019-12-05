@@ -2,17 +2,18 @@ package org.parallelzero.hancel.Fragments;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.SwitchCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.hpsaturn.tools.UITools;
+
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Storage;
-import org.parallelzero.hancel.System.Tools;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/7/15.
@@ -43,7 +44,7 @@ public class AliasFragment extends Fragment {
                 Storage.setCurrentAlias(getActivity(),alias);
                 getMain().removeAliasFragment();
             }
-            else Tools.showToast(getActivity(),R.string.msg_alias_help);
+            else UITools.showToast(getActivity(),R.string.msg_alias_help);
         }
     };
 

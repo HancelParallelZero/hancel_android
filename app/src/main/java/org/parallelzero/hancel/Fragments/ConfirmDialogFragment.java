@@ -9,11 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hpsaturn.tools.UITools;
+
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Storage;
-import org.parallelzero.hancel.System.Tools;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/8/15.
@@ -70,7 +71,7 @@ public class ConfirmDialogFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             if (DEBUG) Log.d(TAG, "onSMSClickListener");
-            if (!sms_enable) Tools.showToast(getActivity(), R.string.msg_alert_not_rings);
+            if (!sms_enable) UITools.showToast(getActivity(), R.string.msg_alert_not_rings);
             else {
                 getMain().sendSMS();
                 getDialog().dismiss();
