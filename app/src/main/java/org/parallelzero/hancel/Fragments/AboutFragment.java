@@ -15,6 +15,8 @@ import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Tools;
 
+import java.util.Objects;
+
 /**
  * Created by izel on 9/11/15.
  */
@@ -28,16 +30,16 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.about, container, false);
-        TextView aboutText = (TextView) view.findViewById(R.id.AboutTextL1);
+        TextView aboutText = view.findViewById(R.id.AboutTextL1);
 
-        aboutText.setText(String.format(getString(R.string.about_licence_l1),
-                    Tools.getVersionName(getActivity()),
-                    ""+Tools.getVersionCode(getActivity())));
+        aboutText.setText(
+                String.format(getString(R.string.about_licence_l1),
+                        Tools.getVersionName(Objects.requireNonNull(getActivity())),
+                        ""+Tools.getVersionCode(getActivity())
+                )
+        );
 
-        _tv_survey = (TextView)view.findViewById(R.id.tv_about_survey);
-        _tv_survey.setOnClickListener(onSurverClickListener);
-
-        _sv_about = (ScrollView)view.findViewById(R.id.sv_about);
+        _sv_about = view.findViewById(R.id.sv_about);
         Animation translatebu= AnimationUtils.loadAnimation(getActivity(), R.anim.about);
         _sv_about.startAnimation(translatebu);
 
@@ -47,7 +49,7 @@ public class AboutFragment extends Fragment {
     private View.OnClickListener onSurverClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Tools.viewLink(getActivity(), _tv_survey.getText().toString());
+            Tools.viewLink(Objects.requireNonNull(getActivity()), _tv_survey.getText().toString());
         }
     };
 }
