@@ -15,10 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hpsaturn.tools.UITools;
+
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
-import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.models.Ring;
 import org.parallelzero.hancel.view.ItemTouchHelperAdapter;
@@ -144,11 +145,11 @@ public class ContactsRingFragment extends DialogFragment {
 
         name = mEditRingName.getText().toString();
         if(name.length()==0){
-            Tools.showToast(getActivity(),R.string.error_ring_empty_name);
+            UITools.showToast(getActivity(),R.string.error_ring_empty_name);
             return false;
         }
         else if (mContactsAdapter.getItemCount()==0){
-            Tools.showToast(getActivity(),R.string.error_ring_empty_contacts);
+            UITools.showToast(getActivity(),R.string.error_ring_empty_contacts);
             return false;
         }
         return true;

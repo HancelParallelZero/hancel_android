@@ -12,12 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.material.snackbar.Snackbar;
+import com.hpsaturn.tools.DeviceUtil;
+import com.hpsaturn.tools.UITools;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
 import org.parallelzero.hancel.Fragments.AboutFragment;
@@ -30,7 +30,6 @@ import org.parallelzero.hancel.Fragments.MapPartnersFragment;
 import org.parallelzero.hancel.Fragments.MapTasksFragment;
 import org.parallelzero.hancel.Fragments.RingsFragment;
 import org.parallelzero.hancel.System.Storage;
-import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.models.Partner;
 import org.parallelzero.hancel.models.Track;
@@ -40,7 +39,6 @@ import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -90,7 +88,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         protected Object doInBackground(Object[] objects) {
 
             Fabric.with(MainActivity.this, new Crashlytics());
-            String trackId = Tools.getAndroidDeviceId(MainActivity.this);
+            String trackId = DeviceUtil.getAndroidDeviceId(MainActivity.this);
             Storage.setTrackId(MainActivity.this, trackId);
 
             setContactListener(MainActivity.this);
@@ -166,7 +164,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     public void shareLocation() {
         showSnackLong(R.string.msg_home_generate_link);
         String share_text = Config.FIREBASE_MAIN + "/" + Storage.getTrackId(this);
-        Tools.shareText(MainActivity.this, share_text);
+        UITools.shareText(MainActivity.this, share_text,"Share Location");
         startTrackLocationService();
     }
 

@@ -56,39 +56,6 @@
                 android:textColor="@color/text_contrast"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/hancel_based_on"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:text="@string/hancel_based_on"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_default"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-
-                <ImageView
-                    android:id="@+id/logoHancelFractual"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/content_description_hancel_fractual"
-                    android:src="@drawable/logo_hancel_fractual" />
-
-                <TextView
-                    android:id="@+id/url_hancel_fractual"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:gravity="center"
-                    android:textColorLink="@color/colorPrimaryDark"
-                    android:textSize="15sp"
-                    android:text="@string/hancel_fractual_link"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
-
 
             <TextView
                 android:id="@+id/textColaboration"
@@ -128,28 +95,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/surveyTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:text="@string/about_survey_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_default"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_about_survey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:gravity="center"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:textSize="15sp"
-                android:text="@string/about_survey_link"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/developers_credits"
@@ -173,7 +118,6 @@
                 android:text="@string/image_credits_value"
                 android:textColor="@color/text_contrast"
                 android:textSize="14sp" />
-
 
         </LinearLayout>
     </ScrollView>

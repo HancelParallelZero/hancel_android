@@ -78,5 +78,5 @@
     <string name="msg_track_invalid">Track invalid</string>
     <string name="rings_label_from_contacts">From Contacts..</string>
     <string name="rings_label_from_qrcode">From QR code..</string>
-
+    <string name="content_share_title">Share Hancel with:</string>
 </resources>

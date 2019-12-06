@@ -12,10 +12,10 @@
             android:icon="@drawable/bt_drawer_grey_rings"
             android:title="@string/button_rings" />
 
-<!--        <item-->
-<!--            android:id="@+id/nav_map"-->
-<!--            android:icon="@drawable/bt_drawer_grey_history"-->
-<!--            android:title="@string/button_map" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_map"-->
+        <!--            android:icon="@drawable/bt_drawer_grey_history"-->
+        <!--            android:title="@string/button_map" />-->
 
 
     </group>
@@ -28,13 +28,14 @@
                 android:icon="@drawable/bt_drawer_grey_help"
                 android:title="@string/button_help" />
             <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/bt_drawer_grey_about"
-                android:title="@string/button_about" />
-            <item
                 android:id="@+id/nav_share"
                 android:icon="@android:drawable/ic_menu_share"
                 android:title="@string/button_share" />
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/bt_drawer_grey_about"
+                android:title="@string/button_about" />
 
         </menu>
     </item>

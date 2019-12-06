@@ -19,25 +19,23 @@ import android.os.ResultReceiver;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.hpsaturn.tools.UITools;
 
 import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Storage;
-import org.parallelzero.hancel.System.Tools;
 import org.parallelzero.hancel.models.Contact;
 import org.parallelzero.hancel.models.Ring;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
 
 /**
  * Created by izel on 3/11/15.
@@ -346,15 +344,15 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
             if (result.equalsIgnoreCase("OK")) {
                 //TODO: Check if is necesary to save the datetime for the last alarm sent
-                String currentDateandTime = Tools.getDateFormatTrack(Calendar.getInstance());
+                String currentDateandTime = UITools.getDateFormatTrack(Calendar.getInstance());
                 Storage.setLastPanicAlertDate(getApplicationContext(),
                         currentDateandTime);
                 /*Tools.showToast(getApplicationContext(), getString(
                         R.string.panic_alert_sent));*/
-                Tools.showToast(getBaseContext(), getString(R.string.sms_sent));
+                UITools.showToast(getBaseContext(), getString(R.string.sms_sent));
             }
             else {
-                Tools.showToast(getApplicationContext(), result);
+                UITools.showToast(getApplicationContext(), result);
             }
         }
 
@@ -411,11 +409,11 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                             if(DEBUG)Log.i(TAG,"=== Intent OnReceive Delivered "  + getResultCode());
                             switch (getResultCode()) {
                                 case Activity.RESULT_OK:
-                                    Tools.showToast(getBaseContext(), getString(R.string.sms_delivered));
+                                    UITools.showToast(getBaseContext(), getString(R.string.sms_delivered));
                                     if(DEBUG)Log.i(TAG,"=== SMS OK  ");
                                     break;
                                 case Activity.RESULT_CANCELED:
-                                    Tools.showToast(getBaseContext(), getString(R.string.sms_canceled));
+                                    UITools.showToast(getBaseContext(), getString(R.string.sms_canceled));
                                     if(DEBUG)Log.i(TAG,"=== SMS Canceled  " );
                                     break;
                             }
@@ -435,7 +433,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
         private ArrayList contactsRingNumbers() {
             List<Contact> contacts;
             ArrayList<Ring> enableRings = Storage.getRingsEnable(getApplicationContext());
-            ArrayList<String> numbers = new ArrayList<String>();
+            ArrayList<String> numbers = new ArrayList<>();
 
             if(enableRings == null)
                 return null;

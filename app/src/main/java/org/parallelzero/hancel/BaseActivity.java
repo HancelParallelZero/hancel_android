@@ -29,6 +29,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.hpsaturn.tools.UITools;
 
 import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
@@ -287,7 +288,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
         else if (id == R.id.nav_rings) {
             showRings();
-        } else if (id == R.id.nav_help) {
+        } else if (id == R.id.nav_share) {
+            UITools.shareText(this,UITools.getGooglePlayLink(this),getString(R.string.content_share_title));
+        }
+        else if (id == R.id.nav_help) {
             showHelp();
         } else if (id == R.id.nav_about) {
             showAbout();
