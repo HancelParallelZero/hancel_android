@@ -65,12 +65,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Fabric.with(MainActivity.this, new Crashlytics());
 
         startIntro();
         initDrawer();
         fabHide();
-        initPermissionsFlow();
-        new initStartAsync().execute();
+        String trackId = DeviceUtil.getAndroidDeviceId(MainActivity.this);
+        Storage.setTrackId(this, trackId);
+        setContactListener(this);
+        if (Storage.isShareLocationEnable(this)) startTrackLocationService();
         checkAlias();
         loadDataFromIntent();
         startHardwareButtonService();
@@ -82,39 +85,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         else showMain();
     }
 
-    private class initStartAsync extends AsyncTask {
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            Fabric.with(MainActivity.this, new Crashlytics());
-            String trackId = DeviceUtil.getAndroidDeviceId(MainActivity.this);
-            Storage.setTrackId(MainActivity.this, trackId);
-
-            setContactListener(MainActivity.this);
-
-            if (Storage.isShareLocationEnable(MainActivity.this)) startTrackLocationService();
-
-            return null;
-        }
-    }
-
     private void startIntro() {
         if (Storage.isFirstIntro(this)) {
             startActivity(new Intent(this, IntroActivity.class));
             Storage.setFirstIntro(this, false);
         }
-    }
-
-    @WithPermissions(
-            permissions = {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.READ_CONTACTS
-            }
-    )
-    public void initPermissionsFlow(){
     }
 
     /**************************************************
@@ -244,6 +219,14 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         showDialogFragment(mConfirmDialogFragment,ConfirmDialogFragment.TAG);
     }
 
+    @WithPermissions(
+            permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.SEND_SMS,
+                    Manifest.permission.READ_CONTACTS
+            }
+    )
     public void showAddContactsRingFragment() {
         mContactsRingFragment = new ContactsRingFragment();
         showDialogFragment(mContactsRingFragment,ContactsRingFragment.TAG);
