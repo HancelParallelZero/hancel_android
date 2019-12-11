@@ -49,6 +49,7 @@ dependencies {
     implementation project(path: ':libtoolscommon')
     testImplementation 'junit:junit:4.12'
     implementation 'com.google.android.gms:play-services-location:8.4.0'
+    implementation 'info.guardianproject.panic:panic:0.5'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
