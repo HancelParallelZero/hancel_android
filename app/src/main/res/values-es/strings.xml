@@ -40,9 +40,9 @@
     <string name="ring_save">GUARDAR ANILLO</string>
     <string name="ring_desc_contacts">contactos</string>
     <string name="msg_home_help">Con Hancel comparte tu ubicación anónimamente o notifica a tus anillos de confianza en cualquier momento.</string>
-    <string name="alert_send_sms">ENVIAR POR SMS</string>
+    <string name="alert_send_sms">CONFIRMAR ENVIO</string>
     <string name="alert_send_share">COMPARTIR</string>
-    <string name="alert_help">Hancel generará un link de tu posición o enviará un SMS a los contactos de tus anillos activos</string>
+    <string name="alert_help">Enviar un SMS a los contactos de tus anillos activos</string>
     <string name="msg_home_generate_link">Creando link de seguimiento..</string>
     <string name="home_tracking_service">Compartiendo tú ubicación:</string>
     <string name="msg_alert_not_rings">No existen anillos activos</string>

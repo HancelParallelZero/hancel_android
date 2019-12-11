@@ -83,21 +83,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     private void checkAlias() {
-        if(Storage.getCurrentAlias(this).equals("")){
-            showAliasFragment();
-        }
+        if(Storage.getCurrentAlias(this).equals(""))  showAliasFragment();
         else showMain();
     }
-
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() != KeyEvent.ACTION_DOWN) {
-            DeviceUtil.hideKeyBoard(this);
-            return true;
-        } else
-            return false;
-    }
-
 
     private void startIntro() {
         if (Storage.isFirstIntro(this)) {
@@ -196,6 +184,15 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
         if (mContactsRingFragment != null)
             mContactsRingFragment.addConctact(new Contact(name, phone, uri));
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() != KeyEvent.ACTION_DOWN) {
+            DeviceUtil.hideKeyBoard(this);
+            return true;
+        } else
+            return false;
     }
 
     @Override
