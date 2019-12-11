@@ -1,6 +1,7 @@
 package org.parallelzero.hancel;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -19,6 +19,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.hpsaturn.tools.DeviceUtil;
+import com.hpsaturn.tools.Logger;
 import com.hpsaturn.tools.UITools;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
@@ -42,6 +43,10 @@ import org.parallelzero.hancel.services.TrackLocationService;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import info.guardianproject.panic.Panic;
+import info.guardianproject.panic.PanicResponder;
+import info.guardianproject.panic.PanicTrigger;
+import info.guardianproject.panic.PanicUtils;
 import io.fabric.sdk.android.Fabric;
 
 
@@ -49,6 +54,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
+
+    private static final int CONNECT_RESULT = 0x01;
 
     private OnTrackServiceConnected fbConnectReceiver;
 
@@ -77,6 +84,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         setContactListener(this);
         if (Storage.isShareLocationEnable(this)) startTrackLocationService();
         checkAlias();
+        registerPanicKit();
         loadDataFromIntent();
         startHardwareButtonService();
 
@@ -92,6 +100,11 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
             startActivity(new Intent(this, IntroActivity.class));
             Storage.setFirstIntro(this, false);
         }
+    }
+
+    private void registerPanicKit(){
+        PanicResponder.setTriggerPackageName(this,"info.guardianproject.ripple");
+        Logger.d(TAG,"TriggerPackageName: "+PanicResponder.getTriggerPackageName(this));
     }
 
     /**************************************************
