@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,7 +45,7 @@ import java.util.Iterator;
 import io.fabric.sdk.android.Fabric;
 
 
-public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContactUri, OnMapReadyCallback {
+public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContactUri, OnMapReadyCallback, View.OnKeyListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG = Config.DEBUG;
@@ -81,9 +83,21 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     private void checkAlias() {
-        if(Storage.getCurrentAlias(this).equals(""))showAliasFragment();
+        if(Storage.getCurrentAlias(this).equals("")){
+            showAliasFragment();
+        }
         else showMain();
     }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() != KeyEvent.ACTION_DOWN) {
+            DeviceUtil.hideKeyBoard(this);
+            return true;
+        } else
+            return false;
+    }
+
 
     private void startIntro() {
         if (Storage.isFirstIntro(this)) {
