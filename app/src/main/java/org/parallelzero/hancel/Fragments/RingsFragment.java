@@ -1,21 +1,21 @@
 package org.parallelzero.hancel.Fragments;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
-import org.parallelzero.hancel.Config;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.hpsaturn.tools.Logger;
+
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Storage;
@@ -29,7 +29,6 @@ import org.parallelzero.hancel.view.ListRingsAdapter;
 public class RingsFragment extends Fragment {
 
     public static final String TAG = RingsFragment.class.getSimpleName();
-    private static final boolean DEBUG = Config.DEBUG;
 
     private RecyclerView mRingsRecycler;
     private ListRingsAdapter mRingsAdapter;
@@ -44,7 +43,7 @@ public class RingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rings,container,false);
 
 
-        mRingsRecycler= (RecyclerView) view.findViewById(R.id.rv_rings);
+        mRingsRecycler= view.findViewById(R.id.rv_rings);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mRingsRecycler.setLayoutManager(gridLayoutManager);
 
@@ -67,7 +66,7 @@ public class RingsFragment extends Fragment {
 
     public void addRing(Ring ring) {
 
-        if(DEBUG)Log.d(TAG, "addRing: " + ring.toString());
+        Logger.d(TAG, "addRing: " + ring.toString());
         mRingsAdapter.addItem(0, ring);
         Storage.saveRing(getActivity(),ring);
         refreshUI();
@@ -113,13 +112,13 @@ public class RingsFragment extends Fragment {
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-            if (DEBUG) Log.d(TAG, "ItemTouchHelperCallback: onMove");
+            Logger.d(TAG, "ItemTouchHelperCallback: onMove");
             return true;
         }
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            if (DEBUG) Log.d(TAG, "ItemTouchHelperCallback: onSwiped: direction="+direction);
+            Logger.d(TAG, "ItemTouchHelperCallback: onSwiped: direction="+direction);
             int position = viewHolder.getAdapterPosition();
             if(direction==16) {
                 Storage.removeRing(getActivity(), mRingsAdapter.getItem(position));
@@ -143,27 +142,19 @@ public class RingsFragment extends Fragment {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            if(DEBUG) Log.d(TAG, "OnItemClickListener => Clicked: " + position + ", index " + mRingsRecycler.indexOfChild(view));
+            Logger.d(TAG, "OnItemClickListener => Clicked: " + position + ", index " + mRingsRecycler.indexOfChild(view));
         }
     };
 
-    private View.OnClickListener onRingAddFromContactsListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(DEBUG) Log.d(TAG, "onRingAddFromContactsListener");
-            getMain().fabColapse();
-            getMain().showAddContactsRingFragment();
-        }
-
-
+    private View.OnClickListener onRingAddFromContactsListener = view -> {
+        Logger.d(TAG, "onRingAddFromContactsListener");
+        getMain().fabColapse();
+        getMain().showAddContactsRingFragment();
     };
-    private View.OnClickListener onRingAddFromQRcodeListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(DEBUG) Log.d(TAG, "onRingAddFromQRcodeListener");
-            getMain().fabColapse();
-            getMain().showAddContactsRingFragment();
-        }
+    private View.OnClickListener onRingAddFromQRcodeListener = view -> {
+        Logger.d(TAG, "onRingAddFromQRcodeListener");
+        getMain().fabColapse();
+        getMain().showAddContactsRingFragment();
     };
 
     @Override

@@ -2,26 +2,27 @@ package org.parallelzero.hancel.Fragments;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.DialogFragment;
+
+import com.hpsaturn.tools.Logger;
 import com.hpsaturn.tools.UITools;
 
-import org.parallelzero.hancel.Config;
 import org.parallelzero.hancel.MainActivity;
 import org.parallelzero.hancel.R;
 import org.parallelzero.hancel.System.Storage;
+
+import java.util.Objects;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/8/15.
  */
 public class ConfirmDialogFragment extends DialogFragment {
 
-    private static final boolean DEBUG = Config.DEBUG;
     public static final String TAG = ConfirmDialogFragment.class.getSimpleName();
     private AppCompatButton mButtonSMS;
     private AppCompatButton mButtonShare;
@@ -55,13 +56,11 @@ public class ConfirmDialogFragment extends DialogFragment {
         if (Storage.getRingsEnable(getActivity()).size() == 0 || Storage.getRings(getActivity()).size() == 0) {
             ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xffffcc00});
             mButtonSMS.setSupportBackgroundTintList(csl);
-//            Tools.setButtonTintBackground(getActivity(), mButtonSMS, R.color.grey);
             sms_enable = false;
         }
         else {
             ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xffffcc00});
             mButtonSMS.setSupportBackgroundTintList(csl);
-//            Tools.setButtonTintBackground(getActivity(),mButtonSMS,R.color.red);
             sms_enable = true;
         }
 
@@ -70,20 +69,23 @@ public class ConfirmDialogFragment extends DialogFragment {
     private View.OnClickListener onSMSClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (DEBUG) Log.d(TAG, "onSMSClickListener");
-            if (!sms_enable) UITools.showToast(getActivity(), R.string.msg_alert_not_rings);
+            Logger.d(TAG, "onSMSClickListener");
+            if (!sms_enable) {
+                Logger.i(TAG,""+getString(R.string.msg_alert_not_rings));
+                getMain().showSnackLong(getString(R.string.msg_alert_not_rings));
+            }
             else {
                 getMain().sendSMS();
-                getDialog().dismiss();
+                Objects.requireNonNull(getDialog()).dismiss();
             }
         }
     };
 
 
     private View.OnClickListener onShareClickListener = view -> {
-        if (DEBUG) Log.d(TAG, "onShareClickListener");
+        Logger.d(TAG, "onShareClickListener");
         getMain().shareLocation();
-        getDialog().dismiss();
+        Objects.requireNonNull(getDialog()).dismiss();
     };
 
     @Override

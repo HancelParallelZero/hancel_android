@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hpsaturn.tools.Logger;
 import com.hpsaturn.tools.UITools;
 
 import org.parallelzero.hancel.Config;
@@ -58,11 +59,11 @@ public class ContactsRingFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ring_edit, container, false);
 
-        mEditRingName = (EditText)view.findViewById(R.id.et_ring_edit_name);
-        mEmptyMessage = (TextView)view.findViewById(R.id.tv_ring_contacts_empty);
-        mButtonPicker = (Button)view.findViewById(R.id.bt_ring_edit_pick_contact);
-        mButtonSave   = (Button)view.findViewById(R.id.bt_ring_edit_save);
-        mContactsRecycler= (RecyclerView) view.findViewById(R.id.rv_contacts);
+        mEditRingName = view.findViewById(R.id.et_ring_edit_name);
+        mEmptyMessage = view.findViewById(R.id.tv_ring_contacts_empty);
+        mButtonPicker = view.findViewById(R.id.bt_ring_edit_pick_contact);
+        mButtonSave   = view.findViewById(R.id.bt_ring_edit_save);
+        mContactsRecycler= view.findViewById(R.id.rv_contacts);
         mButtonPicker.setOnClickListener(onPickerContactListener);
         mButtonSave.setOnClickListener(onSaveButtonListener);
 
@@ -129,7 +130,6 @@ public class ContactsRingFragment extends DialogFragment {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
-//            getMain().getCharactersFragment().notifyPlayersChange();
         }
 
     }
@@ -167,25 +167,17 @@ public class ContactsRingFragment extends DialogFragment {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            if(DEBUG) Log.d(TAG, "OnItemClickListener => Clicked: " + position + ", index " + mContactsRecycler.indexOfChild(view));
+            Logger.d(TAG, "OnItemClickListener => Clicked: " + position + ", index " + mContactsRecycler.indexOfChild(view));
         }
     };
 
-    private View.OnClickListener onPickerContactListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            getMain().getContact();
-        }
-    };
+    private View.OnClickListener onPickerContactListener = view -> getMain().getContact();
 
-    private View.OnClickListener onSaveButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if(isValidData()){
-                if(DEBUG)Log.d(TAG,"saving ring..");
-                getMain().getRingsFragment().addRing(saveData());
-                getDialog().dismiss();
-            }
+    private View.OnClickListener onSaveButtonListener = view -> {
+        if(isValidData()){
+            Logger.d(TAG,"saving ring..");
+            getMain().getRingsFragment().addRing(saveData());
+            getDialog().dismiss();
         }
     };
 
