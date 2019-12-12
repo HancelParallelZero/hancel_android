@@ -237,6 +237,8 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
 
     @WithPermissions(
             permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.SEND_SMS,
                     Manifest.permission.READ_CONTACTS
             }
