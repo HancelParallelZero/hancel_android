@@ -2,23 +2,46 @@
 
 Hancel is an open source security app designed for Android mobiles having in mind journalists and activists, but useful for a more general public.
 
-Hancel is focused on three dimensions:
+### Hancel is focused on three dimensions:
 
 - Alert on life-threatening situation or physical imminent attack
 - Offer secure & private communication tools
 - Promote digital self-protection
 
-Features:
-- Hardware panic button (via power button)
-- Software panic button
-- Share current location and tracking
-- Rings (Circle of partners for alarms)
+### Features:
 
-## NOTE: Current version is only for testing, this is a Beta version, help us improve it!
+- [X] Hardware panic button (via power button)
+- [X] Software panic button
+- [X] Rings (Circle of partners for alarms via SMS)
+- [ ] Share current location and tracking
 
-## (optional) Building signed version
+**NOTE**: Current version is only for testing, this is a Beta version, help us improve it!
+___
 
-Please generate your own API keys for the next services and put it in `app/src/main/res/values/api_keys.xml` like this:
+## Installation
+
+<a href="http://play.google.com/store/apps/details?id=org.parallelzero.hancel" target="_blank"><img src="https://github.com/kike-canaries/android-hpma115s0/blob/master/assets/googleplay/gplayicon.png" align="right" width="128" ></a>
+
+You can install it from the [release section](https://github.com/HancelParallelZero/hancel_android/releases) downloading the last apk or from [GooglePlay](http://play.google.com/store/apps/details?id=org.parallelzero.hancel)
+
+## Building (optional)
+
+For build a debug version please install Android SDK and Android Tools and follow the next steps:
+
+``` bash
+git clone --recursive https://github.com/HancelParallelZero/hancel_android.git
+cd hancel_android
+./gradlew assembleDebug
+```
+Is possible that the submodules will be updated in the future, for this, please run before:
+
+``` bash
+git submodule update --init --recursive
+```
+
+## Troubleshooting
+
+For signed versions and possible `api-key` issues please generate your own API keys for the next services and put it in `app/src/main/res/values/api_keys.xml` like this:
 
 ```xml
 <resources>
