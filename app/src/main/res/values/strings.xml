@@ -13,7 +13,7 @@
     <string name="no_panic_alert">No Alerts</string>
     <string name="panic_alert_sent">Alert Sent</string>
     <string name="tracking_invalid_contac_numbers">%count Contact numbers are not valid</string>
-    <string name="tracking_SMS_message">[ALERT]I need help. my location is: %map and my battery level is %battery Inform the authorities.\n By Hancel APP, security app</string>
+    <string name="tracking_SMS_message">[ALERT] I need help!! \nMy location is: %map \nMy battery level is %battery \nInform the authorities.\nBy Hancel APP</string>
     <string name="no_configured_rings">No configured rings found</string>
     <string name="map_provider">http://maps.google.com/?q=</string>
     <string name="any_sms_sent">Impossible to send SMS message to %count1 contacts of </string>
