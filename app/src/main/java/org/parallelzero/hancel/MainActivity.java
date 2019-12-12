@@ -8,15 +8,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.hpsaturn.tools.DeviceUtil;
+import com.hpsaturn.tools.Logger;
 import com.hpsaturn.tools.UITools;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
@@ -40,13 +41,13 @@ import org.parallelzero.hancel.services.TrackLocationService;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import info.guardianproject.panic.PanicResponder;
 import io.fabric.sdk.android.Fabric;
 
 
-public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContactUri, OnMapReadyCallback {
+public class MainActivity extends BaseActivity implements BaseActivity.OnPickerContactUri, OnMapReadyCallback, View.OnKeyListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
-    private static final boolean DEBUG = Config.DEBUG;
 
     private OnTrackServiceConnected fbConnectReceiver;
 
@@ -65,38 +66,25 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Fabric.with(MainActivity.this, new Crashlytics());
 
         startIntro();
         initDrawer();
         fabHide();
-        initPermissionsFlow();
-        new initStartAsync().execute();
+        String trackId = DeviceUtil.getAndroidDeviceId(MainActivity.this);
+        Storage.setTrackId(this, trackId);
+        setContactListener(this);
+        if (Storage.isShareLocationEnable(this)) startTrackLocationService();
         checkAlias();
+        registerPanicKit();
         loadDataFromIntent();
         startHardwareButtonService();
 
     }
 
     private void checkAlias() {
-        if(Storage.getCurrentAlias(this).equals(""))showAliasFragment();
+        if(Storage.getCurrentAlias(this).equals(""))  showAliasFragment();
         else showMain();
-    }
-
-    private class initStartAsync extends AsyncTask {
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            Fabric.with(MainActivity.this, new Crashlytics());
-            String trackId = DeviceUtil.getAndroidDeviceId(MainActivity.this);
-            Storage.setTrackId(MainActivity.this, trackId);
-
-            setContactListener(MainActivity.this);
-
-            if (Storage.isShareLocationEnable(MainActivity.this)) startTrackLocationService();
-
-            return null;
-        }
     }
 
     private void startIntro() {
@@ -106,15 +94,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         }
     }
 
-    @WithPermissions(
-            permissions = {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.READ_CONTACTS
-            }
-    )
-    public void initPermissionsFlow(){
+    private void registerPanicKit(){
+        PanicResponder.setTriggerPackageName(this,"info.guardianproject.ripple");
+        Logger.d(TAG,"TriggerPackageName: "+PanicResponder.getTriggerPackageName(this));
     }
 
     /**************************************************
@@ -169,13 +151,13 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     public void sendSMS() {
-        if(DEBUG) Log.d(TAG, " Before mHardwareButtonService");
+        Logger.d(TAG, " Before mHardwareButtonService");
         if(mHardwareButtonService != null ) {
-            if(DEBUG) Log.d(TAG, " mHardwareButtonService ins not null");
+            Logger.d(TAG, " mHardwareButtonService ins not null");
             getHardwareButtonService().sendAlertSMS();
         }
         else{
-            if(DEBUG) Log.d(TAG, " mHardwareButtonService is null");
+            Logger.d(TAG, " mHardwareButtonService is null");
         }
     }
 
@@ -184,7 +166,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         Intent intent = getIntent();
         String action = intent.getAction();
 
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: ACTION:" + action);
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: ACTION:" + action);
 
         if (Intent.ACTION_VIEW.equals(action)&&Storage.getCurrentAlias(this).length()!=0) { // TODO: maybe OR with BROWSER and others filters
 //            showMapFragment();
@@ -196,17 +178,26 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     private void subscribeTrack(String trackId) {
-        if (DEBUG) Log.d(TAG, "subscribeTrack: " + trackId);
+        Logger.d(TAG, "subscribeTrack: " + trackId);
 
     }
 
     @Override
     public void onPickerContact(String name, String phone, String uri) {
-        if (DEBUG) Log.d(TAG, "Contact Name: " + name);
-        if (DEBUG) Log.d(TAG, "Contact Phone Number: " + phone);
+        Logger.d(TAG, "Contact Name: " + name);
+        Logger.d(TAG, "Contact Phone Number: " + phone);
 
         if (mContactsRingFragment != null)
             mContactsRingFragment.addConctact(new Contact(name, phone, uri));
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() != KeyEvent.ACTION_DOWN) {
+            DeviceUtil.hideKeyBoard(this);
+            return true;
+        } else
+            return false;
     }
 
     @Override
@@ -244,6 +235,14 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         showDialogFragment(mConfirmDialogFragment,ConfirmDialogFragment.TAG);
     }
 
+    @WithPermissions(
+            permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.SEND_SMS,
+                    Manifest.permission.READ_CONTACTS
+            }
+    )
     public void showAddContactsRingFragment() {
         mContactsRingFragment = new ContactsRingFragment();
         showDialogFragment(mContactsRingFragment,ContactsRingFragment.TAG);
@@ -264,7 +263,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(TrackLocationService.TRACK_SERVICE_CONNECT)) {
-                if (DEBUG) Log.i(TAG, "[MainActivity] service Connected");
+                Logger.i(TAG, "[MainActivity] service Connected");
                 if (mMainFragment != null) mMainFragment.setServiceButtonEnable(true);
             }
         }
@@ -309,7 +308,7 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
     }
 
     private void startHardwareButtonService(){
-        if(DEBUG)Log.d(TAG,"startHardwareButtonService");
+        Logger.d(TAG,"startHardwareButtonService");
         startService(new Intent(this, HardwareButtonService.class));
         HardwareButtonReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
     }
@@ -322,12 +321,12 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnPickerC
                     (HardwareButtonService.HardwareButtonServiceBinder) service;
             mHardwareButtonService = binder.getService();
             mBound = true;
-            if(DEBUG)Log.d(TAG,"HardwareButtonService onServiceConnected");
+            Logger.d(TAG,"HardwareButtonService onServiceConnected");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            if(DEBUG)Log.d(TAG,"HardwareButtonService onServiceDisconnected");
+            Logger.d(TAG,"HardwareButtonService onServiceDisconnected");
             mBound = false;
         }
     };

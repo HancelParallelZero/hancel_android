@@ -1,5 +1,6 @@
 package org.parallelzero.hancel;
 
+import android.Manifest;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,17 +29,17 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.hpsaturn.tools.Logger;
 import com.hpsaturn.tools.UITools;
+import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
 import org.parallelzero.hancel.Fragments.TestDialogFragment;
 import org.parallelzero.hancel.System.Storage;
-import org.parallelzero.hancel.services.HardwareButtonService;
 import org.parallelzero.hancel.services.StatusScheduleReceiver;
 import org.parallelzero.hancel.services.TrackLocationService;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 /**
  * Created by Antonio Vanegas @hpsaturn on 11/5/15.
@@ -47,7 +47,6 @@ import java.util.Objects;
 public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
     public static final String TAG = BaseActivity.class.getSimpleName();
-    private static final boolean DEBUG = Config.DEBUG;
 
     private static final int PICK_CONTACT = 0;
 
@@ -161,7 +160,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     public void popBackStackSecure(String TAG) {
         try {
-            if (DEBUG) Log.d(TAG, "popBackStackSecure to: " + TAG);
+            Logger.d(TAG, "popBackStackSecure to: " + TAG);
             getSupportFragmentManager().popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     public void popBackLastFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-            if (DEBUG) Log.d(TAG, "onBackPressed popBackStack for:" + getLastFragmentName());
+            Logger.d(TAG, "onBackPressed popBackStack for:" + getLastFragmentName());
             getSupportFragmentManager().popBackStack();
         }
     }
@@ -204,41 +203,42 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         Snackbar.make(drawerLaoyout, msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
+    @WithPermissions(
+            permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+            }
+    )
     public void startTrackLocationService() {
-        if (DEBUG) Log.d(TAG, "[MainActivity] startMainService");
+        Logger.d(TAG, "[MainActivity] startMainService");
         Intent service = new Intent(this, TrackLocationService.class);
         startService(service);
         StatusScheduleReceiver.startScheduleService(this, Config.DEFAULT_INTERVAL);
         Storage.setShareLocationEnable(this, true);
     }
 
-    public void startSMSService() {
-        if (DEBUG) Log.d(TAG, "[MainActivity] startSMSService");
-        Intent service = new Intent(this, HardwareButtonService.class);
-        startService(service);
-    }
 
     public void stopTrackLocationService() {
-        if (DEBUG) Log.d(TAG, "[MainActivity] stopTrackLocationService");
+        Logger.d(TAG, "[MainActivity] stopTrackLocationService");
         StatusScheduleReceiver.stopSheduleService(this);
         stopService(new Intent(this, TrackLocationService.class));
         Storage.setShareLocationEnable(this, false);
     }
 
     public void printUriData(Uri uri){
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: URI: " + uri.toString());
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: HOST: " + uri.getHost());
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PATH: " + uri.getPath());
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: QUERY: " + uri.getQuery());
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: SCHEME: " + uri.getScheme());
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
-        if (DEBUG) Log.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: URI: " + uri.toString());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: HOST: " + uri.getHost());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: PATH: " + uri.getPath());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: QUERY: " + uri.getQuery());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: SCHEME: " + uri.getScheme());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: PORT: " + uri.getPort());
+        Logger.d(TAG, "[HOME] EXTERNAL INTENT: AUTHORITY: " + uri.getAuthority());
     }
 
     @Override
     public void onBackPressed() {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -297,7 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             showAbout();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -333,14 +333,14 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         super.onActivityResult(reqCode, resultCode, data);
 
         if (reqCode == PICK_CONTACT && resultCode == RESULT_OK) {
-            if (DEBUG) Log.d(TAG, "Response: " + data.toString());
+            Logger.d(TAG, "Response: " + data.toString());
             uriContact = data.getData();
 
             String name = retrieveContactName();
             String number = retrieveContactNumber();
             Bitmap photo = retrieveContactPhoto();
             Uri uri = retrieveContactPhotoUri();
-//            if (DEBUG) Log.d(TAG, "Contact Uri Photo: " + uri.toString());
+//            Logger.d(TAG, "Contact Uri Photo: " + uri.toString());
 
             if (contactListener != null) contactListener.onPickerContact(name, number, uri.toString());
 

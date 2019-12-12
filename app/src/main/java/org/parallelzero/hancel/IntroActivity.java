@@ -19,7 +19,7 @@ public class IntroActivity extends AppIntro2 {
         addSlide(SlideItemFragment.newInstance(R.layout.welcome, R.drawable.slide_rings));
         addSlide(SlideItemFragment.newInstance(R.layout.welcome, R.drawable.slide_tracking));
         addSlide(SlideItemFragment.newInstance(R.layout.welcome, R.drawable.slide_alert));
-        addSlide(SlideItemFragment.newInstance(R.layout.welcome, R.drawable.slide_chat));
+//        addSlide(SlideItemFragment.newInstance(R.layout.welcome, R.drawable.slide_chat));
     }
 
     private void loadMainActivity(){

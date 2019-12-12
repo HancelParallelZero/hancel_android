@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.hpsaturn.tools.DeviceUtil;
 import com.hpsaturn.tools.UITools;
 
 import org.parallelzero.hancel.MainActivity;
@@ -28,8 +29,9 @@ public class AliasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_alias,container,false);
-        mAcceptButton = (Button)view.findViewById(R.id.bt_alias_accept);
-        mAliasEdit = (EditText)view.findViewById(R.id.et_alias_alias);
+        mAcceptButton = view.findViewById(R.id.bt_alias_accept);
+        mAliasEdit = view.findViewById(R.id.et_alias_alias);
+        mAliasEdit.setOnKeyListener(getMain());
         mAcceptButton.setOnClickListener(onAliasAcceptListener);
 
         return view;
@@ -43,6 +45,7 @@ public class AliasFragment extends Fragment {
             if(alias.length()!=0) {
                 Storage.setCurrentAlias(getActivity(),alias);
                 getMain().removeAliasFragment();
+                DeviceUtil.hideKeyBoard(getActivity());
             }
             else UITools.showToast(getActivity(),R.string.msg_alias_help);
         }

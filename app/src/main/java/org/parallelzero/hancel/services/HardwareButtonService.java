@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.hpsaturn.tools.Logger;
 import com.hpsaturn.tools.UITools;
 
 import org.parallelzero.hancel.Config;
@@ -44,10 +45,9 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                                     GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public static final String TAG = HardwareButtonService.class.getSimpleName();
-    private static final boolean DEBUG = Config.DEBUG;
 
     private String result;
-    private boolean isFirstTime, isSendMesagge, locationActivted;
+    private boolean isFirstTime, isSendMesagge, locationActivated;
     public static boolean serviceRunning, countTimer;
     private static int countStart;
     private HardwareButtonReceiver hwButtonReceiver;
@@ -64,7 +64,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     @Override
     public void onCreate() {
         super.onCreate();
-        serviceRunning = locationActivted = false;
+        serviceRunning = locationActivated = false;
         countTimer = true;
         countStart = -1;
         handlerTime = new Handler();
@@ -81,13 +81,13 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
         if (isFirstTime) {
             isFirstTime = false;
             serviceRunning = true;
-            locationActivted = false;
+            locationActivated = false;
         }
         try {
             resultReceiver = intent.getParcelableExtra("receiver");
             //Check for the number of times the button has been pressed
             if (countStart >= 5) {
-                if(DEBUG)Log.i(TAG, "=== 5 Intents");
+                Logger.i(TAG, "=== 5 Intents");
                 countStart = -1;
                 countTimer = true;
                 startLocationService();
@@ -101,7 +101,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 }
             }
         } catch (Exception e) {
-            if(DEBUG)Log.i(TAG, "=== No results available." + e);
+            Logger.i(TAG, "=== No results available." + e);
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -119,7 +119,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     */
     private void startLocationService() {
         if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
-            if(DEBUG) Log.i(TAG, "=== Starting geolocalization service: UNCONNECTED -> CONECTED");
+            Logger.i(TAG, "=== Starting geolocalization service: UNCONNECTED -> CONECTED");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
@@ -128,9 +128,9 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             mGoogleApiClient.connect();
         }
         else
-            if(DEBUG)Log.i(TAG, "=== Starting geolocalization service: ALREADY CONNECTED");
+            Logger.i(TAG, "=== Starting geolocalization service: ALREADY CONNECTED");
 
-        locationActivted = true;
+        locationActivated = true;
     }
 
     /**
@@ -139,12 +139,12 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
     private void stopLocationService() {
         if (mGoogleApiClient != null || mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
-            if(DEBUG)Log.i(TAG, "=== Stopping geolocalization service: CONNECTED -> UNCONNECTED");
+            Logger.i(TAG, "=== Stopping geolocalization service: CONNECTED -> UNCONNECTED");
         }
         else
-            if(DEBUG)Log.i(TAG, "=== Stopping geolocalization service: ALREADY CONNECTED");
+            Logger.i(TAG, "=== Stopping geolocalization service: ALREADY CONNECTED");
 
-        locationActivted = false;
+        locationActivated = false;
     }
 
     /*
@@ -163,7 +163,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
      */
     private void startSMSTask() {
         if (smsTask == null || smsTask.getStatus() == AsyncTask.Status.FINISHED) {
-            if (DEBUG) Log.i(TAG, "=== smsTask is null or finished. Starting task ");
+            Logger.i(TAG, "=== smsTask is null or finished. Starting task ");
             smsTask = new SendSMSMessage();
             smsTask.execute();
         }
@@ -211,7 +211,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
     @Override
     public void onConnected(Bundle bundle) {
-        locationActivted = true;
+        locationActivated = true;
         mLocationRequest = LocationRequest.create();
         setupLocationForMap();
         LocationServices.FusedLocationApi
@@ -225,7 +225,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
     @Override
     public void onConnectionSuspended(int i) {
-        locationActivted = false;
+        locationActivated = false;
     }
 
     @Override
@@ -240,7 +240,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        locationActivted = false;
+        locationActivated = false;
     }
 
     /*
@@ -277,15 +277,15 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                         + lastLocation.getLongitude() + "\n";
             }
 
-            if(DEBUG) Log.i(TAG, "=== Localization : " + location);
+            Logger.i(TAG, "=== Localization : " + location);
 
             numbers.addAll(contactsRingNumbers());
 
-            if(DEBUG) Log.i(TAG, "=== Contacts to notify : " + numbers.size());
+            Logger.i(TAG, "=== Contacts to notify : " + numbers.size());
 
             if (numbers.size() == 0) {
                 result = getString(R.string.no_configured_rings);
-                if(DEBUG)Log.i(TAG,"=== No rings found");
+                Logger.i(TAG,"=== No rings found");
             }
             else {
                 isSendMesagge = true;
@@ -301,7 +301,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                             sendSMS(number, message);
                             if(!result.equalsIgnoreCase("OK")) {
                                 fails ++;
-                                if (DEBUG) Log.i(TAG, "=== Error sending SMS to: " + numbers.get(i));
+                                Logger.i(TAG, "=== Error sending SMS to: " + numbers.get(i));
                             }
                         }
                         else{
@@ -309,7 +309,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                             fails ++;
                         }
                     } catch (Exception ex) {
-                        if(DEBUG) Log.i(TAG, "=== Error sending SMS to: " + numbers.get(i) + ex.getMessage());
+                        Logger.i(TAG, "=== Error sending SMS to: " + numbers.get(i) + ex.getMessage());
                         fails ++;
                     }
                 }
@@ -317,19 +317,19 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                     result += getString(R.string.any_sms_sent);
                     result = result.replace("%count1", String.valueOf(fails));
                     result += String.valueOf(numbers.size());
-                    if(DEBUG)Log.i(TAG,"=== Error sending SMS to : " + numbers.toString());
+                    Logger.i(TAG,"=== Error sending SMS to : " + numbers.toString());
                 }
                 if (nonValid > 0){
                     result += getString(R.string.tracking_invalid_contac_numbers);
                     result.replace("%count", String.valueOf(nonValid));
                 }
-                if(DEBUG) Log.i(TAG, "=== " + result);
+                Logger.i(TAG, "=== " + result);
             }
             try {
-                if (DEBUG) Log.i(TAG, "=== Finalizing smsTask ");
+                Logger.i(TAG, "=== Finalizing smsTask ");
                 this.finalize();
             } catch (Throwable throwable) {
-                if(DEBUG) Log.i(TAG, "=== Error finalizing the smsTask ");
+                Logger.i(TAG, "=== Error finalizing the smsTask ");
                 throwable.printStackTrace();
             }
             return null;
@@ -340,7 +340,7 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             super.onPostExecute(r);
             isSendMesagge = false;
 
-            if(DEBUG)Log.i(TAG,"=== PostExecute " );
+            Logger.i(TAG,"=== PostExecute " );
 
             if (result.equalsIgnoreCase("OK")) {
                 //TODO: Check if is necesary to save the datetime for the last alarm sent
@@ -368,33 +368,33 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 for (int i = 0; i < numParts; i++) {
                     PendingIntent sentIntent = PendingIntent.getBroadcast(context,
                             0, new Intent("SENT"), 0);
-                    if(DEBUG)Log.i(TAG,"=== building intents for SMS " );
+                    Logger.i(TAG,"=== building intents for SMS " );
 
                     context.registerReceiver(new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context arg0, Intent arg1) {
                             result = "FAIL";
-                            if(DEBUG)Log.i(TAG,"=== Intent OnReceive Sent " + getResultCode() );
+                            Logger.i(TAG,"=== Intent OnReceive Sent " + getResultCode() );
                             switch (getResultCode()) {
                                 case Activity.RESULT_OK:
                                     result = "OK";
-                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_sent));
+                                    Logger.i(TAG,"=== " +  getString(R.string.sms_sent));
                                     break;
                                 case SmsManager.RESULT_ERROR_NO_SERVICE:
                                     result = getString(R.string.sms_not_sent);
-                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_not_sent));
+                                    Logger.i(TAG,"=== " +  getString(R.string.sms_not_sent));
                                     break;
                                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                                     result = getString(R.string.sms_generic_fail);
-                                    if(DEBUG)Log.i(TAG,"=== " +  getString(R.string.sms_generic_fail));
+                                    Logger.i(TAG,"=== " +  getString(R.string.sms_generic_fail));
                                     break;
                                 case SmsManager.RESULT_ERROR_NULL_PDU:
                                     result = getString(R.string.sms_null_pdu);
-                                    if(DEBUG)Log.i(TAG,"=== NULL PDU ");
+                                    Logger.i(TAG,"=== NULL PDU ");
                                     break;
                                 case SmsManager.RESULT_ERROR_RADIO_OFF:
                                     result = getString(R.string.sms_radio_off);
-                                    if(DEBUG)Log.i(TAG,"=== Error. Airplane Mode ");
+                                    Logger.i(TAG,"=== Error. Airplane Mode ");
                                     break;
                             }
                         }
@@ -406,15 +406,15 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                     context.registerReceiver(new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context arg0, Intent arg1) {
-                            if(DEBUG)Log.i(TAG,"=== Intent OnReceive Delivered "  + getResultCode());
+                            Logger.i(TAG,"=== Intent OnReceive Delivered "  + getResultCode());
                             switch (getResultCode()) {
                                 case Activity.RESULT_OK:
                                     UITools.showToast(getBaseContext(), getString(R.string.sms_delivered));
-                                    if(DEBUG)Log.i(TAG,"=== SMS OK  ");
+                                    Logger.i(TAG,"=== SMS OK  ");
                                     break;
                                 case Activity.RESULT_CANCELED:
                                     UITools.showToast(getBaseContext(), getString(R.string.sms_canceled));
-                                    if(DEBUG)Log.i(TAG,"=== SMS Canceled  " );
+                                    Logger.i(TAG,"=== SMS Canceled  " );
                                     break;
                             }
                         }
@@ -423,10 +423,10 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
                 }
 
                 sms.sendMultipartTextMessage(mobileNumber, null, parts, sent, delivered);
-                if(DEBUG)Log.i(TAG,"=== Message  " + message + " sent to " + mobileNumber);
+                Logger.i(TAG,"=== Message  " + message + " sent to " + mobileNumber);
             }
             catch (Exception e) {
-                if(DEBUG)Log.i(TAG,"=== Error sending message to " + mobileNumber + " " + e.getMessage());
+                Logger.i(TAG,"=== Error sending message to " + mobileNumber + " " + e.getMessage());
             }
         }
 
@@ -441,11 +441,11 @@ public class HardwareButtonService extends Service implements GoogleApiClient.Co
             for (Ring ring: enableRings) {
                 contacts = ring.getContacts();
                 for(Contact c : contacts){
-                    if(DEBUG)Log.i(TAG, "Contact Number: " + c.getPhone());
+                    Logger.i(TAG, "Contact Number: " + c.getPhone());
                     numbers.add(c.getPhone().trim());
                 }
             }
-            if(DEBUG)Log.i(TAG, "=== Number of contacts to notify: " + numbers.size());
+            Logger.i(TAG, "=== Number of contacts to notify: " + numbers.size());
             return numbers;
         }
     }

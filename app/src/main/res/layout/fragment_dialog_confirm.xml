@@ -30,12 +30,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_alert_dialog_sms"
-            android:layout_width="@dimen/alert_width_buttons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/alert_margin_lateral"
-            android:backgroundTint="@color/grey"
+            android:layout_margin="@dimen/alert_margin_lateral"
+            android:backgroundTint="@color/colorPrimary"
             android:text="@string/alert_send_sms"
             android:textColor="@color/white" />
 
@@ -48,6 +48,7 @@
             android:layout_marginRight="@dimen/alert_margin_lateral"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/alert_send_share"
+            android:visibility="invisible"
             android:textColor="@color/white" />
 
 

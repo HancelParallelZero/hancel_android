@@ -9,7 +9,7 @@
     <string name="no_panic_alert">Sin alertas</string>
     <string name="panic_alert_sent">Alerta enviada</string>
     <string name="tracking_invalid_contac_numbers">Los números de contacto a notificar no son válidos</string>
-    <string name="tracking_SMS_message">[ALERTA]Necesito ayuda. Mi ubicación es: %map y mi nivel de batería %battery Avisa a los demás o a las autoridades.\n Vía Hancel APP, aplicación de seguridad</string>
+    <string name="tracking_SMS_message">[ALERTA] Necesito ayuda!! \nMi ubicacion: %map \nNivel de bateria %battery\n Avisa a las autoridades.\nVia Hancel App.</string>
     <string name="no_configured_rings">No se encontraron anillos configurados</string>
     <string name="map_provider">http://maps.google.com/?q=</string>
     <string name="any_sms_sent">Imposible enviar mensaje a %count1 contactos de </string>
@@ -40,9 +40,9 @@
     <string name="ring_save">GUARDAR ANILLO</string>
     <string name="ring_desc_contacts">contactos</string>
     <string name="msg_home_help">Con Hancel comparte tu ubicación anónimamente o notifica a tus anillos de confianza en cualquier momento.</string>
-    <string name="alert_send_sms">ENVIAR POR SMS</string>
+    <string name="alert_send_sms">CONFIRMAR</string>
     <string name="alert_send_share">COMPARTIR</string>
-    <string name="alert_help">Hancel generará un link de tu posición o enviará un SMS a los contactos de tus anillos activos</string>
+    <string name="alert_help">Enviar un SMS a los contactos de tus anillos activos</string>
     <string name="msg_home_generate_link">Creando link de seguimiento..</string>
     <string name="home_tracking_service">Compartiendo tú ubicación:</string>
     <string name="msg_alert_not_rings">No existen anillos activos</string>
