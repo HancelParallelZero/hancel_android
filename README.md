@@ -2,7 +2,7 @@
 
 <a href="https://github.com/HancelParallelZero/hancel_android/blob/master/screenshots/collage.jpg" target="_blank"><img src="https://raw.githubusercontent.com/HancelParallelZero/hancel_android/master/screenshots/collage.jpg" align="right" width="340" ></a>
 
-Hancel is an open source security app designed for Android mobiles having in mind journalists and activists, but useful for a more general public.
+Hancel is an security app designed for Android mobiles having in mind journalists and activists, but useful for a more general public.
 
 ### Hancel is focused on three dimensions:
 
@@ -18,6 +18,8 @@ Hancel is an open source security app designed for Android mobiles having in min
 - [ ] Share current location and tracking
 
 **NOTE**: Current version is only for testing, this is a Beta version, help us improve it!
+
+---
 
 # Installation
 
@@ -52,4 +54,15 @@ For signed versions and possible `api-key` issues please generate your own API k
     <string name="crashlytics" translatable="false">78deae26fe9c8f597807a086900000000000000</string>
 </resources>
 ```
+
+# Sponsors
+
+Hancel Parallell Zero is developed thanks to:
+
+[Fundación para la Libertad de Prensa - FLIP]*(https://www.flip.org.co/)   
+[Fundación Karisma](https://karisma.org.co/)
+
+<a href="https://github.com/HancelParallelZero/hancel_android/blob/master/screenshots/sponsors.jpg" target="_blank"><img src="https://raw.githubusercontent.com/HancelParallelZero/hancel_android/master/screenshots/sponsors.jpg" ></a>
+
+
 
