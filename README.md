@@ -1,6 +1,6 @@
-<a href="https://github.com/HancelParallelZero/hancel_android/blob/master/screenshots/collage.jpg" target="_blank"><img src="https://raw.githubusercontent.com/HancelParallelZero/hancel_android/master/screenshots/collage.jpg" align="right" width="340" ></a>
-
 # Hancel Parallel Zero
+
+<a href="https://github.com/HancelParallelZero/hancel_android/blob/master/screenshots/collage.jpg" target="_blank"><img src="https://raw.githubusercontent.com/HancelParallelZero/hancel_android/master/screenshots/collage.jpg" align="right" width="340" ></a>
 
 Hancel is an open source security app designed for Android mobiles having in mind journalists and activists, but useful for a more general public.
 
@@ -19,11 +19,11 @@ Hancel is an open source security app designed for Android mobiles having in min
 
 **NOTE**: Current version is only for testing, this is a Beta version, help us improve it!
 
-## Installation
+# Installation
 
 You can install it from the [release section](https://github.com/HancelParallelZero/hancel_android/releases) downloading the last apk.
 
-## Building (optional)
+# Building (optional)
 
 For build a debug version please install Android SDK and Android Tools and follow the next steps:
 
@@ -32,6 +32,9 @@ git clone --recursive https://github.com/HancelParallelZero/hancel_android.git
 cd hancel_android
 ./gradlew assembleDebug
 ```
+
+## Updates
+
 Is possible that the submodules will be updated in the future, for this, please run before:
 
 ``` bash
