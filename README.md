@@ -1,3 +1,5 @@
+<a href="https://github.com/HancelParallelZero/hancel_android/blob/master/screenshots/collage.jpg" target="_blank"><img src="https://raw.githubusercontent.com/HancelParallelZero/hancel_android/master/screenshots/collage.jpg" align="right" width="340" ></a>
+
 # Hancel Parallel Zero
 
 Hancel is an open source security app designed for Android mobiles having in mind journalists and activists, but useful for a more general public.
