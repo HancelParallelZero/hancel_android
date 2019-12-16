@@ -59,7 +59,7 @@ For signed versions and possible `api-key` issues please generate your own API k
 
 Hancel Parallell Zero is developed thanks to:
 
-[Fundación para la Libertad de Prensa - FLIP]*(https://www.flip.org.co/)   
+[Fundación para la Libertad de Prensa]*(https://www.flip.org.co/)   
 [Fundación Karisma](https://karisma.org.co/)
 
 <a href="https://github.com/HancelParallelZero/hancel_android/blob/master/screenshots/sponsors.jpg" target="_blank"><img src="https://raw.githubusercontent.com/HancelParallelZero/hancel_android/master/screenshots/sponsors.jpg" ></a>
