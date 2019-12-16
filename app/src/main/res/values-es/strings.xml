@@ -50,11 +50,11 @@
     <!-- About -->
     <string name="about_based_title">Basado en</string>
     <string name="about_based_link">http://www.linphone.org\n© 2011 Belledonne Communications</string>
-    <string name="about_text_colaboration">Colaboración</string>
+    <string name="about_text_colaboration">En colaboración con:</string>
     <string name="about_survey_title">Revisa tu nivel de riesgo</string>
     <string name="about_survey_link">http://bit.ly/hancel_riesgos</string>
     <string name="content_description_welcome">Hancel</string>
-    <string name="image_credits_value">Alvaro Antonio Vanegas @hpsaturn, Amalia Toledo @amalia_toledo, Gloria Meneses @gpmeneses, Pilar Saenz @mapisaro</string>
+    <string name="image_credits_value"></string>
     <string name="image_credits">Creditos en orden alfabetico:</string>
     <string name="button_map">Mapa</string>
     <string name="hancel_based_on">Basado en</string>
